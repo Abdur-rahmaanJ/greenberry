@@ -1,0 +1,22 @@
+
+var x = 1
+
+print eval (2+3-4+11)
+
+if arj = greenBerry : print ok
+if 3 > 2 : print apple
+if 2 > 3 : print orange
+
+for 5 times : print greenBerry
+
+print @x
+
+class Man : power = 10 action walk : print a
+
+make Man walk
+see power of Man
+
+
+
+
+
