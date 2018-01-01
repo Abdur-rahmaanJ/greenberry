@@ -9,6 +9,9 @@ plt.ylabel('some numbers')
 plt.show()
 """
 import pdb
+
+L_user = 'dear berry' + ' '
+
 class S: #Symbols
     EOF = '{***end-of-file***}'
     NL = '\n'
@@ -36,10 +39,25 @@ class S: #Symbols
     TO = 'to'
     SEE = 'see'
     OF = 'of'
+    
+class E:
+    global L_user
+    beg = ''
+    FOR = beg + L_user + ' you made a mistake on a for loop'
+    IF = beg + L_user + ' you made a mistake on an if statement'
+    FUNCDEF = beg + L_user + ' you ill defined a function'
+    FUNCCALL = beg + L_user + ' you wrongly called a function'
+    
+class M:
+    g_vars = {}
+    g_fs = {}
+    g_cls = {}
+    
 
 #another lrex woulde be to identify blobks first this is a side effect
 
 def greenBerry_eval(x):
+    global L_user
     class F:
         isPrintOn = 1
         isSimpleParseOn = 1
@@ -49,7 +67,7 @@ def greenBerry_eval(x):
         bEnd = 0
         
     def printd(this):
-        a = 0
+        a = 1
         if a == 1:
             print(' '*5,'@debug->', this)
             
@@ -90,12 +108,13 @@ def greenBerry_eval(x):
                 j += 1
         return [words[base+j], base+j]
         
-    def print_handling(i, words): #print
+    def print_handling(g_vars, i, words): #print
         #if words[i-1] != S.COLON:
         if F.isPrintOn:
             if i+1 < len(words) and words[i+1] not in [S.STRING, S.EVAL, S.VAR_REF]:
                 print(words[i+1])
             elif i+1 < len(words) and words[i+1] == S.VAR_REF:
+                print(g_vars,words[i+2])
                 print(g_vars[words[i+2]][1])
             elif i+1 < len(words) and words[i+1] == S.EVAL:
                 print(eval(words[i+2]))
@@ -127,7 +146,7 @@ def greenBerry_eval(x):
                 #print('--   * var ass exec *')
                 g_vars[words[i+1]] = [words[i+4], words[i+3]]
             elif elem == S.PRINT :
-                print_handling(i, words)
+                print_handling(g_vars, i, words)
             elif elem == S.PLOT:
                 plot_handling(i, words)
                 #print(words[base+1], words[base+2], words[base+3])
@@ -136,7 +155,7 @@ def greenBerry_eval(x):
             if elem == S.VAR:
                 g_vars[words[i+1]] = [words[i+4], words[i+3]]
             elif elem == S.PRINT :
-                print_handling(i, words)
+                print_handling(g_vars, i, words)
             elif elem == S.PLOT:
                 plot_handling(i, words)
                 
@@ -148,108 +167,101 @@ def greenBerry_eval(x):
     #if 1 < 2 : var d = number 4
     #func vector : print aaa
     #call vector
-    #
+    #python greenBerry_REPL.py
     #'''
-    v='''
-        var x = number 1
-    
-    print x
-    print @x 
-    print eval (2+3+10-4)
-    print string ab cd ef
-    
-    plot 1,2,3,4,5 x-time 23,34,56,78,45 y-letters
-    
-    for 5 times : print aaa
-    for 2 times : print string erger erger
-    
-        '''
-    
+
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
             S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
             S.MAKE, S.ADD, S.TO, S.SEE] #future direct conversion to list
-    g_vars = {}
-    g_fs = {}
-    g_cls = {}
-    
-    isPrintOn = 0
+    g_vars = M.g_vars
+    g_fs = M.g_fs
+    g_cls = M.g_cls
     words = lex(x, KWDs, add_eof=1)
     printd(words) 
-    a = 0
+    
     for i, elem in enumerate(words):
         #printd(elem)
         if elem == S.FOR:
-            F.bStart = i
-            times_by = int(words[i+1])
-            base = i+3
-            j = 1
-            string = ''
-            while base+j < len(words):
-                if words[base+j] == S.NL or words[base+j] == S.EOF:
-                    break
-                else:
-                    string += words[base+j] + ' '
-                    j += 1
-            wds = lex(string, KWDs)
-            printd(wds)
-            for d in range(times_by):
-                simple_parse2(g_vars, wds)
-            colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-            end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-            F.bEnd = end_i
+            try:
+                F.bStart = i
+                times_by = int(words[i+1])
+                base = i+3
+                j = 1
+                string = ''
+                while base+j < len(words):
+                    if words[base+j] == S.NL or words[base+j] == S.EOF:
+                        break
+                    else:
+                        string += words[base+j] + ' '
+                        j += 1
+                wds = lex(string, KWDs)
+                printd(wds)
+                for d in range(times_by):
+                    simple_parse2(g_vars, wds)
+                #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
+                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                F.bEnd = end_i
+            except:
+                print(E.FOR)
                 
         elif elem == S.IF: #to be rededefined
-            F.bStart = i
-            L, R = 0, 0
-            raw = search_symbol(i, 1, words, [S.EQUAL, S.LESS, S.GREATER])
-            symbol = raw[0]
-            symbol_i = raw[1]
-            to_do = search(i, 4, words, [S.NL, S.EOF])
-            wds = lex(to_do, KWDs)
-            if words[i+1] == S.VAR_REF:
-                #print('L @ detected')
-                L = g_vars[words[i+2]][0]
-            elif words[i+1].isdigit():
-                #print('L int detected')
-                L = int(words[i+1])
-            else:
-                #print('L str detected')
-                L = search(i, 0, words, [symbol, S.COLON])
-                
-            if words[symbol_i+1] == S.VAR_REF:
-                #print('R @ detected')
-                R = g_vars[words[symbol_i+2]][0]
-            elif words[symbol_i+1].isdigit():
-                #print("R", words[symbol_i+1])
-                R = int(words[symbol_i+1])
-            else:
-                #print('R str detected')
-                R = search(symbol_i, 0, words, [S.COLON])
-            #print(L, R, symbol)
-            if symbol == S.EQUAL:
-                if L == R:
-                    simple_parse2(g_vars, wds)
-            elif symbol == S.GREATER:
-                if L > R:
-                    simple_parse2(g_vars, wds)
-            if symbol == S.LESS:
-                if L < R:
-                    simple_parse2(g_vars, wds)
-            #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-            end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-            F.bEnd = end_i
+            try:
+                F.bStart = i
+                L, R = 0, 0
+                raw = search_symbol(i, 1, words, [S.EQUAL, S.LESS, S.GREATER])
+                symbol = raw[0]
+                symbol_i = raw[1]
+                to_do = search(i, 4, words, [S.NL, S.EOF])
+                wds = lex(to_do, KWDs)
+                if words[i+1] == S.VAR_REF:
+                    #print('L @ detected')
+                    L = g_vars[words[i+2]][0]
+                elif words[i+1].isdigit():
+                    #print('L int detected')
+                    L = int(words[i+1])
+                else:
+                    #print('L str detected')
+                    L = search(i, 0, words, [symbol, S.COLON])
+                    
+                if words[symbol_i+1] == S.VAR_REF:
+                    #print('R @ detected')
+                    R = g_vars[words[symbol_i+2]][0]
+                elif words[symbol_i+1].isdigit():
+                    #print("R", words[symbol_i+1])
+                    R = int(words[symbol_i+1])
+                else:
+                    #print('R str detected')
+                    R = search(symbol_i, 0, words, [S.COLON])
+                #print(L, R, symbol)
+                if symbol == S.EQUAL:
+                    if L == R:
+                        simple_parse2(g_vars, wds)
+                elif symbol == S.GREATER:
+                    if L > R:
+                        simple_parse2(g_vars, wds)
+                if symbol == S.LESS:
+                    if L < R:
+                        simple_parse2(g_vars, wds)
+                #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
+                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                F.bEnd = end_i
+            except:
+                print(E.IF)
             
             #resolve flag
         
         elif elem == S.FUNCDEF: #func vector : print aaa
-            F.bStart = i
-            
-            g_fs[words[i+1]] = search(i, 2, words, [S.NL, S.EOF])
-            
-            #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-            end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-            F.bEnd = end_i
+            try:
+                F.bStart = i
+                
+                g_fs[words[i+1]] = search(i, 2, words, [S.NL, S.EOF])
+                
+                #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
+                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                F.bEnd = end_i
+            except:
+                print(E.FUNCDEF)
             
         elif elem == S.FUNCCALL: #call vector
             wds = lex(g_fs[words[i+1]], KWDs)
