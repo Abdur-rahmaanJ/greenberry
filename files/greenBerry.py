@@ -47,6 +47,14 @@ class E:
     IF = beg + L_user + ' you made a mistake on an if statement'
     FUNCDEF = beg + L_user + ' you ill defined a function'
     FUNCCALL = beg + L_user + ' you wrongly called a function'
+    CLASSDEC = beg + L_user + ' you wrongly declared a class'
+    CLASSACT = beg + L_user + ' you wrongly called an action'
+    CLASSATT = beg + L_user + ' you wrongly specified an attribute'
+    PRINT = beg + L_user + ' you wrongly used print'
+    VARREF =  beg + L_user + ' you wrongly referenced a variable'
+    EVAL = beg + L_user + ' you wrongly used eval'
+    STRING = beg + L_user + ' you used string'
+    
     
 class M:
     g_vars = {}
@@ -54,7 +62,7 @@ class M:
     g_cls = {}
     
 
-#another lrex woulde be to identify blobks first this is a side effect
+#another lex woulde be to identify blobks first this is a side effect
 
 def greenBerry_eval(x):
     global L_user
@@ -67,7 +75,7 @@ def greenBerry_eval(x):
         bEnd = 0
         
     def printd(this):
-        a = 1
+        a = 0
         if a == 1:
             print(' '*5,'@debug->', this)
             
@@ -109,17 +117,29 @@ def greenBerry_eval(x):
         return [words[base+j], base+j]
         
     def print_handling(g_vars, i, words): #print
-        #if words[i-1] != S.COLON:
-        if F.isPrintOn:
+    #if words[i-1] != S.COLON:
+        try:
             if i+1 < len(words) and words[i+1] not in [S.STRING, S.EVAL, S.VAR_REF]:
                 print(words[i+1])
             elif i+1 < len(words) and words[i+1] == S.VAR_REF:
-                print(g_vars,words[i+2])
-                print(g_vars[words[i+2]][1])
+                try:
+                    print(g_vars,words[i+2])
+                    print(g_vars[words[i+2]][1])
+                except:
+                    print(E.VARREF)
             elif i+1 < len(words) and words[i+1] == S.EVAL:
-                print(eval(words[i+2]))
+                try:
+                    print(eval(words[i+2]))
+                except:
+                    print(E.EVAL)
             elif i+1 < len(words) and words[i+1] == S.STRING:
-                print(search(i, 1, words, [S.NL, S.EOF]))
+                try:
+                    print(search(i, 1, words, [S.NL, S.EOF]))
+                except:
+                    print(E.STRING)
+        except:
+            print(E.PRINT)    
+            
     def linear_plot(dataX, labelX, dataY, labelY):
         try:
             import matplotlib.pyplot as plt
@@ -173,7 +193,7 @@ def greenBerry_eval(x):
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
             S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
-            S.MAKE, S.ADD, S.TO, S.SEE] #future direct conversion to list
+            S.MAKE, S.ADD, S.TO, S.SEE, S.COLON] #future direct conversion to list
     g_vars = M.g_vars
     g_fs = M.g_fs
     g_cls = M.g_cls
@@ -264,50 +284,68 @@ def greenBerry_eval(x):
                 print(E.FUNCDEF)
             
         elif elem == S.FUNCCALL: #call vector
-            wds = lex(g_fs[words[i+1]], KWDs)
-            simple_parse2(g_vars, wds)
+            try:
+                print(g_fs)
+                print(words[i+1])
+                wds = lex(g_fs[words[i+1]], KWDs)
+                simple_parse2(g_vars, wds)
+            except:
+                print(E.FUNCCALL)
             
         elif elem == S.CLASS: 
             #attrs = {} future
-            F.bStart = i
-            
-            class_name = words[i+1] #subsequent changed to action for mult attribs
-            attr_name = words[i+3] #search_symbol 
-            attr_val = words[i+5] 
-            action_name = words[i+7]
-            action_body = search(i+7, 1, words, [S.NL, S.EOF])
-            g_cls[class_name] = {
-                    'attributes':{attr_name:attr_val},
-                    'actions':{action_name:action_body}
-                    }
-            
-            #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-            end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-            F.bEnd = end_i
-            """
-            class_name = {
-            name = name,
-            attributes = {
-                    x = 1,
-                    y = 2
-                    }
-            methods = {
-                    walk = string here,
-                    raise hand = string here
-                    }
-            }
-            """
+            try:
+                F.bStart = i
+                
+                class_name = words[i+1] #subsequent changed to action for mult attribs
+                attr_name = words[i+3] #search_symbol 
+                attr_val = words[i+5] 
+                action_name = words[i+7]
+                action_body = search(i+7, 1, words, [S.NL, S.EOF])
+                g_cls[class_name] = {
+                        'attributes':{attr_name:attr_val},
+                        'actions':{action_name:action_body}
+                        }
+                
+                #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
+                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                F.bEnd = end_i
+                """
+                class_name = {
+                name = name,
+                attributes = {
+                        x = 1,
+                        y = 2
+                        }
+                methods = {
+                        walk = string here,
+                        raise hand = string here
+                        }
+                }
+                """
+            except:
+                print(E.CLASSDEC)
         elif elem == S.MAKE:
-            class_name = words[i+1]
-            action_name = words[i+2]
-            raw_text = g_cls[class_name]['actions']['walk']
-            wds = lex( raw_text, KWDs)
-            simple_parse2(g_vars, wds)
+            try:
+                class_name = words[i+1]
+                try:
+                    x = g_cls[class_name]
+                except:
+                    print('wrong class name berry')
+                action_name = words[i+2]
+                raw_text = g_cls[class_name]['actions'][action_name]
+                wds = lex( raw_text, KWDs)
+                simple_parse2(g_vars, wds)
+            except:
+                print(E.CLASSACT)
             
         elif elem == S.SEE:
-            attr = words[i+1]
-            class_name = words[i+3]
-            print(g_cls[class_name]['attributes'][attr])
+            try:
+                attr = words[i+1]
+                class_name = words[i+3]
+                print(g_cls[class_name]['attributes'][attr])
+            except:
+                print(E.CLASSATT)
             
         else:
             if i < F.bStart or i > F.bEnd :
