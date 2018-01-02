@@ -13,7 +13,6 @@
 			text-align: center;
 			margin:20px;
 			font-family: Montserrat;
-			margin-right: 100px;
 		}
 		div
 		{
@@ -58,13 +57,13 @@
 		{
 			width:50px;
 			height:50px;
-			background-color: rgba(255,0,0,0.5);
+			background-color: rgba(255,0,0,0.3);
 			margin:5px;
 			border:none;
 			border-radius: 5px;
 			line-height: 50px;
 			font-weight: bold;
-			color:white;
+			color:black;
 		}
 		.nav
 		{
@@ -78,142 +77,203 @@
 		.fa{line-height: 50px; font-size: 20px; }
 		.clean{border:none;margin:0px;padding:0px;margin-right: 0px;}
 		.short-l{margin-left: 25%}
-		.flow{display:;}
+		.flow{display:inline-block;}
+		.subtile{max-width: 150px;}
+		.group{ border:1px solid gray;}
+		#intro{max-width: 250px;}
+		#syntax{}
+		#modes{max-width: 200px;}
+		#todo{max-width: 250px;}
 	</style>
 </head>
 <body>
-	<div class="title">
-		<p>greenBerry(c) programming language v 1.0.0
+	<div class="title" class="flow" style="min-width: 200px;">
+	<div class="clean">
+		<p class="">greenBerry(c) programming language v 1.0.0</p>
+		<p class="">
 		<br><br><br><span class="fork"><a href="https://github.com/Abdur-rahmaanJ/greenBerry">fork me on github</a></span><br><br><br>
 		<span class="fork"><a href="abdurrahmaanjanhangeer.wordpress.com">visit blog</a></span></p>
 	</div>
+	</div>
 	<div class="nav">
-		<div style="display:inline-block; padding:0px; margin:0px; border:none">
-			<a href="#intro">
+		<div style="padding:0px; margin:0px; border:none" class="flow">
+			<a href="#intro" class="flow">
 			<div class="tile">
 				intro
 			</div>
 			</a>
-			<a href="#syntax">
+			<a href="#syntax" class="flow">
 			<div class="tile">
 				syntax
 			</div>
 			</a>
-			<a href="#modes">
+			<a href="#modes" class="flow">
 			<div class="tile">
 				modes
 			</div>
 			</a>
-			<a href="#todo">
+			<a href="#todo" class="flow">
 			<div class="tile">
 				to do
 			</div>
 			</a>
-			<a href="#history">
+			<a href="#history" class="flow">
 			<div class="tile">
 				history
 			</div>
 			</a>
 		</div>
 	</div>
-	<div id="intro">
+	<div id="intro" class="flow">
+		<div class="clean">
 		<h3>INTRODUCTION</h3><hr>
 		<p><span class="name">greenBerry<i class="fa fa-copyright"></i></span><br> 
 		is a one-line statement programming language with extention <b>.gb</b> <br>
 		Simple and easy.<br>
 		<p>On the technical side, it is based on python and supports infinite look-ahead !<p>
 		</p>
-	</div>
-	<div id="syntax">
-		<h3>SYNTAX</h3><hr><!--#eae4e4-->
-		<div class="clean">
-		<div style="border:none;background-color:#eae4e4;" ><p></br>   
-		<h4>variable declaration</h4><hr> 
-		<span style ="color:#9a1777;">var</span> x <span style ="color:red;">=</span> 1</br>    </br>    
-
-
-		<h4>printing</h4><hr> 
-
-		<h5>one word</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">print</span> a</br>    >>>  a</br>    </br>    
-
-		<h5>eval</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">print</span> <span style ="color:orange;">eval</span> (2+3-4)</br>    >>>  1</br>    </br>    
-
-		<h5>string</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> a cat walks along the path</br>    
-		>>>  a cat walks along the path</br>    </br>
-
-		<h5>variable referencing</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">print</span> <span style ="color:orange;">@</span>x</br>    >>>  1</br>    </br>   
-
-
-
-		<h4>plotting</h4><hr>  
-		<span style ="color:#9a1777;">plot</span> 1,2,3,4,5 x-time 23,34,56,78,45 y-letters</br>    >>>  </br>    </br>    
-
-
-
-		<h4>minified for loop</h4><hr> 
-		<span style ="color:#9a1777;">for</span> 3 <span style ="color:orange;">times</span> : <span style ="color:#9a1777;">print</span> greenBerry</br>    >>>  greenBerry</br>    >>>  greenBerry</br>    >>>  greenBerry</br></br>    
-
-		<h4>conditionals</h4><hr> 
-		<h5>equality</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">if</span> 2 <span style ="color:red;">=</span> 2 : <span style ="color:#9a1777;">print</span> leaf</br>    >>>  leaf</br>    </br>    
-		<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x <span style ="color:red;">=</span> 1 : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> x is 1</br>    >>>  x is 1</br>    </br>    
-		<span style ="color:#9a1777;">if</span> gfregg 4g4tg <span style ="color:red;">=</span> g35g34554g : <span style ="color:#9a1777;">print</span> 1</br>    >>>  </br>    </br>  
-
-		<h5>greater than</h5><hr align="center" class="short-l">  
-		<span style ="color:#9a1777;">if</span> 2 > 3 : <span style ="color:#9a1777;">print</span> tree</br>    >>> </br>    </br>    
-		<span style ="color:#9a1777;">if</span> 3 > 2 : <span style ="color:#9a1777;">print</span> berrry</br>    >>>  berrry</br>    </br>    
-		<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x > 4 : <span style ="color:#9a1777;">print</span> 1</br>    >>> </br>    </br>    
-
-		<h5>less than</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">if</span> 2 < 3 : <span style ="color:#9a1777;">print</span> tree</br>    >>>  tree</br>    </br>    
-		<span style ="color:#9a1777;">if</span> 3 < 2 : <span style ="color:#9a1777;">print</span> berrry</br>    >>>  </br>    </br>    
-		<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x < 4 : <span style ="color:#9a1777;">print</span> 1</br>    >>>  1</br>    </br>    
-		
-
-		<h4>functions</h4><hr> 
-		<h5>function declaration</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">func</span> vector : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> vector is fun</br>    </br>   
-
-		<h5>function calling</h5><hr align="center" class="short-l">  
-		<span style ="color:#9a1777;">call</span> vector</br>    >>>  vector is fun</br>    </br>    
-		
-		<h4>classes</h4><hr> 
-		<h5>class declaration</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">class</span> Man : power <span style ="color:red;">=</span> 10 <span style ="color:orange;">action</span> walk : <span style ="color:#9a1777;">print</span> walking...</br>    </br>    
-		
-		<h5>method / action calling</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">make</span> Man walk</br>    >>>  walking...</br>    </br>    
-
-		<h5>check attribute</h5><hr align="center" class="short-l"> 
-		<span style ="color:#9a1777;">see</span> power <span style ="color:orange;">of</span> Man</br>    >>>  10</br>    </br></br></p></div>
 		</div>
-		<div class="clean">generated using python-html-codopaste<p><span class="fork"><a href="https://github.com/Abdur-rahmaanJ/Python-html-codopaste">fork coloriser on github</a></span></p></div>
 	</div>
-	<div id="modes">
+	
+	<div id="modes" class="flow">
+	<div class="clean">
 		<h3>MODES</h3><hr>
 		<p>Write your code in a .gb file or use the REPL</p>
 	</div>
-	<div id="todo">
+	</div>
+
+	<div id="todo" class="flow">
+	<div class="clean">
 		<h3>TO DO</h3><hr>
 		<p>Lots of goodies coming.</p>
-		<p>
-			<ol>
-				<li>refining print</li>
-				<li>adding more support for eval</li>
-				<li>adding parameters to functions and classes</li>
-				<li>allowing non-static referencing of function and classes</li>
 
-			</ol>
-		</p>
+		<ol class="clean">
+			<li>refining print</li>
+			<li>adding more support for eval</li>
+			<li>adding parameters to functions and classes</li>
+			<li>allowing non-static referencing of function and classes</li>
+
+		</ol>
+		
 	</div>
-	<div id="history">
+	</div>
+	<div id="history" class="flow" style="max-width: 200px;">
+	<div class="clean">
 		<h3>HISTORY</h3><hr>
 		<p>greenBerry was written as a fun project ! planning some tutos soon. If you know py, feel free to submit pull requests</p>
 	</div>
+	</div><br>
+
+	<div id="syntax" class="flow">
+		<div class="clean">
+		<h3>SYNTAX</h3><hr><!--#eae4e4-->
+
+		<div class="clean">
+		<div style="border:none;background-color:#eae4e4;" >
+
+		<div class="flow clean ">
+			<h4>variable declaration</h4><hr> 
+			<span style ="color:#9a1777;">var</span> x <span style ="color:red;">=</span> 1</br>    </br>    
+		</div><br>
+
+
+		<div class="flow clean ">
+			<h4>plotting</h4><hr>  
+			<span style ="color:#9a1777;">plot</span> 1,2,3,4,5 x-time 23,34,56,78,45 y-letters</br>    >>>  </br>    </br>    
+		</div><br>
+
+
+		<div class="flow clean ">
+			<h4>minified for loop</h4><hr> 
+			<span style ="color:#9a1777;">for</span> 3 <span style ="color:orange;">times</span> : <span style ="color:#9a1777;">print</span> greenBerry</br>    >>>  greenBerry</br>    >>>  greenBerry</br>    >>>  greenBerry</br></br>    
+		</div><br>
+
+		<div class="flow clean ">
+			<h4>printing</h4><hr> 
+
+			<div class="flow clean subtile group">
+			<h5>one word</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">print</span> a</br>    >>>  a</br>    </br>   
+			
+
+			<h5>eval</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">print</span> <span style ="color:orange;">eval</span> (2+3-4)</br>    >>>  1</br>    </br>    
+			</div>
+
+			<div class="flow clean subtile group">
+			<h5>string</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> a cat walks along the path</br>    
+			>>>  a cat walks along the path</br>    </br>
+
+			<h5>variable referencing</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">print</span> <span style ="color:orange;">@</span>x</br>    >>>  1</br>    </br>   
+			</div>
+		</div><br>
+
+		<div class="flow clean">
+		<h4>conditionals</h4><hr> 
+
+			<div class="flow clean subtile group">
+			<h5>equality</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">if</span> 2 <span style ="color:red;">=</span> 2 : <span style ="color:#9a1777;">print</span> leaf</br>    >>>  leaf</br>    </br>    
+			<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x <span style ="color:red;">=</span> 1 : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> x is 1</br>    >>>  x is 1</br>    </br>    
+			<span style ="color:#9a1777;">if</span> gfregg 4g4tg <span style ="color:red;">=</span> g35g34554g : <span style ="color:#9a1777;">print</span> 1</br>    >>>  </br>    </br>  
+			</div>
+			
+			<div class="flow clean subtile group">
+			<h5>greater than</h5><hr align="center" class="short-l">  
+			<span style ="color:#9a1777;">if</span> 2 > 3 : <span style ="color:#9a1777;">print</span> tree</br>    >>> </br>    </br>    
+			<span style ="color:#9a1777;">if</span> 3 > 2 : <span style ="color:#9a1777;">print</span> berrry</br>    >>>  berrry</br>    </br>    
+			<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x > 4 : <span style ="color:#9a1777;">print</span> 1</br>    >>> </br>    </br>    
+			</div>
+
+			<div class="flow clean subtile group">
+			<h5>less than</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">if</span> 2 < 3 : <span style ="color:#9a1777;">print</span> tree</br>    >>>  tree</br>    </br>    
+			<span style ="color:#9a1777;">if</span> 3 < 2 : <span style ="color:#9a1777;">print</span> berrry</br>    >>>  </br>    </br>    
+			<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x < 4 : <span style ="color:#9a1777;">print</span> 1</br>    >>>  1</br>    </br>   
+			</div> 
+		</div><br>
+		
+
+		<div class="flow clean">
+			<h4>functions</h4><hr> 
+			<div class="flow clean subtile group">
+			<h5>function declaration</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">func</span> vector : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> vector is fun</br>    </br>  
+			</div> 
+
+			<div class="flow clean subtile group">
+			<h5>function calling</h5><hr align="center" class="short-l">  
+			<span style ="color:#9a1777;">call</span> vector</br>    >>>  vector is fun</br>    </br>    
+			</div>
+		</div><br>
+
+
+		<div class="flow clean">
+			<h4>classes</h4><hr> 
+			<div class="flow clean subtile group">
+			<h5>class declaration</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">class</span> Man : power <span style ="color:red;">=</span> 10 <span style ="color:orange;">action</span> walk : <span style ="color:#9a1777;">print</span> walking...</br>    </br> 
+			</div>   
+			
+			<div class="flow clean subtile group">
+			<h5>method / action calling</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">make</span> Man walk</br>    >>>  walking...</br>    </br>    
+			</div>
+
+			<div class="flow clean subtile group">
+			<h5>check attribute</h5><hr align="center" class="short-l"> 
+			<span style ="color:#9a1777;">see</span> power <span style ="color:orange;">of</span> Man</br>    >>>  10</br>    </br></br>
+			</div>
+		</div>
+
+		</div>
+		</div>
+		<div class="clean">generated using python-html-codopaste<p><span class="fork"><a href="https://github.com/Abdur-rahmaanJ/Python-html-codopaste">fork coloriser on github</a></span></p></div>
+		</div>
+	</div>
+
 	<div style="border:none;">
 		<a href="http://www.reliablecounter.com" target="_blank"><img src="http://www.reliablecounter.com/count.php?page=abdur-rahmaanj.github.io/greenBerry/&digit=style/lcd/9/&reloads=0" alt="" title="" border="0"></a><br /><a href="http://http://reliablecounter.com/blog/best-team-names-work-event/" target="_blank" style="font-family: Geneva, Arial; font-size: 9px; color: #330010; text-decoration: none;">team</a>
 	</div>
