@@ -12,7 +12,7 @@ import pdb
 
 L_user = 'dear berry' + ' '
 
-class S: #Symbols
+class S: #Symbols keywords
     EOF = '{***end-of-file***}'
     NL = '\n'
     EQUAL = '='
@@ -39,6 +39,7 @@ class S: #Symbols
     TO = 'to'
     SEE = 'see'
     OF = 'of'
+    SET = 'set'
     
 class E:
     global L_user
@@ -55,28 +56,25 @@ class E:
     EVAL = beg + L_user + ' you wrongly used eval on line'
     STRING = beg + L_user + ' you used string wrongly  on line'
     PLOT = beg + L_user + ' you plotted wrongly on line'
+    DEBUG = beg + L_user + ' wrong set command'
     
     
-class M:
+class M: #memory
     g_vars = {}
     g_fs = {}
     g_cls = {}
     
-
+class F: #flags
+    bStart = 100 #block start
+    bEnd = 0
+    isDebugOn = 1
 #another lex woulde be to identify blobks first this is a side effect
 
 def greenBerry_eval(x):
     global L_user
-    class F:
-        isPrintOn = 1
-        isSimpleParseOn = 1
-        isSimpleParse2On = 1
-        isBlockOn = 0
-        bStart = 100
-        bEnd = 0
         
     def printd(this):
-        a = 0
+        a = F.isDebugOn
         if a == 1:
             print(' '*5,'@debug->', this)
             
@@ -164,35 +162,31 @@ def greenBerry_eval(x):
       
     def simple_parse(g_vars, i, elem, words):
         #print('--',i, elem)
-        if F.isBlockOn == 0: #not necessary
-            if elem == S.VAR:
-                #print('--   * var ass exec *')
-                string = search(i, 2, words, [S.NL, S.EOF])
-                g_vars[words[i+1]] = ['---', string]
-            elif elem == S.PRINT :
-                print_handling(g_vars, i, words)
-            elif elem == S.PLOT:
-                plot_handling(i, words)
-                #print(words[base+1], words[base+2], words[base+3])
+        if elem == S.VAR:
+            if words[i+3] == 'string':
+                var_val = search(i, 3, words, [S.NL, S.EOF])
+                g_vars[words[i+1]] = ['string', var_val]
+            elif words[i+3].isdigit():
+                g_vars[words[i+1]] = ['number', words[i+3]]
+                
+        elif elem == S.PRINT :
+            print_handling(g_vars, i, words)
+            
+        elif elem == S.PLOT:
+            plot_handling(i, words)
+                
     def simple_parse2(g_vars, words):
         for i, elem in enumerate(words):
             if elem == S.VAR:
-                g_vars[words[i+1]] = [words[i+4], words[i+3]]
+                if words[i+3] == 'string': #var x = string vetgt4geb
+                    var_val = search(i, 3, words, [S.NL, S.EOF])
+                    g_vars[words[i+1]] = ['string', var_val]
+                elif words[i+3].isdigit():
+                    g_vars[words[i+1]] = ['number', words[i+3]]
             elif elem == S.PRINT :
                 print_handling(g_vars, i, words)
             elif elem == S.PLOT:
                 plot_handling(i, words)
-                
-    #x = 'var x = number 1_print x_print @x_print eval (2+3+10-4)_print string ab cd ef' #print var x print flag
-    #x = '''
-    #print ok
-    #if 2 > 3 : var a = number 2
-    #if mango = mango : print w
-    #if 1 < 2 : var d = number 4
-    #func vector : print aaa
-    #call vector
-    #python greenBerry_REPL.py
-    #'''
 
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
@@ -353,7 +347,15 @@ def greenBerry_eval(x):
                 print(g_cls[class_name]['attributes'][attr])
             except:
                 print(E.CLASSATT, line)
-            
+        elif elem == S.SET :
+            try:
+                if words[i+1] == 'debug':
+                    if words[i+2] == 'on':
+                        F.isDebugOn = 1
+                    elif words[i+2] == 'off':
+                        F.isDebugOn = 0
+            except:
+                print(E.DEBUG, line)
         else:
             if i < F.bStart or i > F.bEnd :
                 simple_parse(g_vars, i, elem, words)  
