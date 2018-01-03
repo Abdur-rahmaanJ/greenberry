@@ -40,6 +40,7 @@ class S: #Symbols keywords
     SEE = 'see'
     OF = 'of'
     SET = 'set'
+    ATTRIB = 'attribute'
     
 class E:
     global L_user
@@ -48,6 +49,7 @@ class E:
     IF = beg + L_user + ' you made a mistake on an if statement on line'
     FUNCDEF = beg + L_user + ' you ill defined a function on line'
     FUNCCALL = beg + L_user + ' you wrongly called a function on line'
+    CLASSNAME = beg + L_user + ' you pointed to an inexistent class'
     CLASSDEC = beg + L_user + ' you wrongly declared a class on line'
     CLASSACT = beg + L_user + ' you wrongly called an action on line'
     CLASSATT = beg + L_user + ' you wrongly specified an attribute on line'
@@ -56,7 +58,11 @@ class E:
     EVAL = beg + L_user + ' you wrongly used eval on line'
     STRING = beg + L_user + ' you used string wrongly  on line'
     PLOT = beg + L_user + ' you plotted wrongly on line'
-    DEBUG = beg + L_user + ' wrong set command'
+    DEBUG = beg + L_user + ' wrong set command on line'
+    TO = beg + L_user + ' missed word to on line'
+    EQUAL = beg + L_user + ' expecting = on line on line'
+    COLON = beg + L_user + ' expected : on line'
+    ADD = beg + L_user + ' wrong add statement'
     
     
 class M: #memory
@@ -122,7 +128,7 @@ def greenBerry_eval(x):
                 print(words[i+1])
             elif i+1 < len(words) and words[i+1] == S.VAR_REF:
                 try:
-                    print(g_vars[words[i+2]][1])
+                    print(g_vars[words[i+2]][0])
                 except:
                     print(E.VARREF)
             elif i+1 < len(words) and words[i+1] == S.EVAL:
@@ -162,12 +168,9 @@ def greenBerry_eval(x):
       
     def simple_parse(g_vars, i, elem, words):
         #print('--',i, elem)
-        if elem == S.VAR:
-            if words[i+3] == 'string':
-                var_val = search(i, 3, words, [S.NL, S.EOF])
-                g_vars[words[i+1]] = ['string', var_val]
-            elif words[i+3].isdigit():
-                g_vars[words[i+1]] = ['number', words[i+3]]
+        if elem == S.VAR: #var x = 1
+            var_val = var_data(i+2, words, [S.NL, S.EOF])
+            g_vars[words[i+1]] = var_val
                 
         elif elem == S.PRINT :
             print_handling(g_vars, i, words)
@@ -178,26 +181,37 @@ def greenBerry_eval(x):
     def simple_parse2(g_vars, words):
         for i, elem in enumerate(words):
             if elem == S.VAR:
-                if words[i+3] == 'string': #var x = string vetgt4geb
-                    var_val = search(i, 3, words, [S.NL, S.EOF])
-                    g_vars[words[i+1]] = ['string', var_val]
-                elif words[i+3].isdigit():
-                    g_vars[words[i+1]] = ['number', words[i+3]]
+                var_val = var_data(i+2, words, [S.NL, S.EOF])
+                g_vars[words[i+1]] = var_val
             elif elem == S.PRINT :
                 print_handling(g_vars, i, words)
             elif elem == S.PLOT:
                 plot_handling(i, words)
+                
+    def var_data(equal_i, words, delimeters): #var x = 1
+        value = 0
+        type = None
+        if words[equal_i+1] == S.STRING:
+            value = search(equal_i+1, 0, words, delimeters)
+            type = 'string'
+        elif words[equal_i+1].isdigit():
+            value = words[equal_i+1]
+            type = 'number'
+        else:
+            value = words[equal_i+1]
+            type = 'word'
+        return [value, type]
 
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
             S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
-            S.MAKE, S.ADD, S.TO, S.SEE, S.COLON] #future direct conversion to list
+            S.MAKE, S.ADD, S.TO, S.SEE, S.COLON, S.ATTRIB] #future direct conversion to list
     g_vars = M.g_vars
     g_fs = M.g_fs
     g_cls = M.g_cls
     words = lex(x, KWDs, add_eof=1)
     printd(words) 
-    line = 0
+    line = 1
     
     for i, elem in enumerate(words):
         #printd(elem)
@@ -206,6 +220,7 @@ def greenBerry_eval(x):
         elif elem == S.FOR:
             try:
                 F.bStart = i
+                
                 times_by = int(words[i+1])
                 base = i+3
                 j = 1
@@ -293,14 +308,14 @@ def greenBerry_eval(x):
             except:
                 print(E.FUNCCALL, line)
             
-        elif elem == S.CLASS: 
+        elif elem == S.CLASS: #class Man : power = 10 action walk : print a
             #attrs = {} future
             try:
                 F.bStart = i
                 
                 class_name = words[i+1] #subsequent changed to action for mult attribs
-                attr_name = words[i+3] #search_symbol 
-                attr_val = words[i+5] 
+                attr_name = words[i+3] #search_symbol var_data(i+4, words, [S.NL, S.EOF])
+                attr_val = var_data(i+4, words, [S.ACTION]) 
                 action_name = words[i+7]
                 action_body = search(i+7, 1, words, [S.NL, S.EOF])
                 g_cls[class_name] = {
@@ -326,12 +341,11 @@ def greenBerry_eval(x):
                 """
             except:
                 print(E.CLASSDEC, line)
+                
         elif elem == S.MAKE:
             try:
                 class_name = words[i+1]
-                try:
-                    x = g_cls[class_name]
-                except:
+                if class_name not in g_cls:
                     print('wrong class name berry')
                 action_name = words[i+2]
                 raw_text = g_cls[class_name]['actions'][action_name]
@@ -340,14 +354,37 @@ def greenBerry_eval(x):
             except:
                 print(E.CLASSACT, line)
             
-        elif elem == S.SEE:
+        elif elem == S.SEE: #see power of Man
             try:
                 attr = words[i+1]
                 class_name = words[i+3]
-                print(g_cls[class_name]['attributes'][attr])
+                print(g_cls[class_name]['attributes'][attr][0])
             except:
                 print(E.CLASSATT, line)
-        elif elem == S.SET :
+                
+        elif elem == S.ADD: #add to Man attribute name = string i am me
+            try:
+                if words[i+1] == S.TO:
+                    if words[i+2] in g_cls:
+                        if words[i+3] == S.ATTRIB:
+                            if words[i+5] == S.EQUAL:
+                                value = var_data(i+5, words, [S.NL, S.EOF])
+                                g_cls[words[i+2]]['attributes'][words[i+4]] = value 
+                            else:
+                                print(E.EQUAL, line)
+                        elif words[i+3] == S.ACTION: #add to Man action run : print running...
+                            if words[i+5] == S.COLON:
+                                g_cls[words[i+2]]['actions'][words[i+4]] = search(i, 5, words, [S.NL, S.EOF])
+                            else:
+                                print(E.COLON, line)
+                            
+                    else:
+                        print(E.CLASSNAME, line)
+                else:
+                    print(E.TO, line)
+            except:
+                print(E.ADD, line)
+        elif elem == S.SET :#set debug on - set debug off
             try:
                 if words[i+1] == 'debug':
                     if words[i+2] == 'on':
