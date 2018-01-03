@@ -73,7 +73,7 @@ class M: #memory
 class F: #flags
     bStart = 100 #block start
     bEnd = 0
-    isDebugOn = 1
+    isDebugOn = 0
 #another lex woulde be to identify blobks first this is a side effect
 
 def greenBerry_eval(x):
@@ -130,17 +130,17 @@ def greenBerry_eval(x):
                 try:
                     print(g_vars[words[i+2]][0])
                 except:
-                    print(E.VARREF)
+                    print(E.VARREF,line)
             elif i+1 < len(words) and words[i+1] == S.EVAL:
                 try:
                     print(eval(words[i+2]))
                 except:
-                    print(E.EVAL)
+                    print(E.EVAL,line)
             elif i+1 < len(words) and words[i+1] == S.STRING:
                 try:
                     print(search(i, 1, words, [S.NL, S.EOF]))
                 except:
-                    print(E.STRING)
+                    print(E.STRING,line)
         except:
             print(E.PRINT)    
             
@@ -364,6 +364,7 @@ def greenBerry_eval(x):
                 
         elif elem == S.ADD: #add to Man attribute name = string i am me
             try:
+                F.bStart = i
                 if words[i+1] == S.TO:
                     if words[i+2] in g_cls:
                         if words[i+3] == S.ATTRIB:
@@ -382,6 +383,8 @@ def greenBerry_eval(x):
                         print(E.CLASSNAME, line)
                 else:
                     print(E.TO, line)
+                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                F.bEnd = end_i
             except:
                 print(E.ADD, line)
         elif elem == S.SET :#set debug on - set debug off
