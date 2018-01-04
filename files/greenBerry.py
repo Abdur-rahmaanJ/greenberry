@@ -194,9 +194,11 @@ def greenBerry_eval(x):
         if words[equal_i+1] == S.STRING:
             value = search(equal_i+1, 0, words, delimeters)
             type = 'string'
+        elif words[equal_i+1] == S.VAR_REF:
+            value = M.g_vars[words[equal_i+2]][0]
         elif words[equal_i+1].isdigit():
             value = words[equal_i+1]
-            type = 'number'
+            type = 'var_ref'#
         else:
             value = words[equal_i+1]
             type = 'word'
