@@ -11,7 +11,11 @@ print('''
       welcome to the .gb REPL
       ---greenBerry(c)---
       ''')
-while 1:
+isSessionOn = 1
+while isSessionOn == 1:
     x = input('---> ')
     greenBerry_eval(x)
+    if x == 'berry exit':
+        isSessionOn = 0
     print()
+print('greenBerry REPL exited, see you soon _ _ _')
