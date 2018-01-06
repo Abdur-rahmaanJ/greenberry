@@ -21,6 +21,9 @@ class S: #Symbols keywords
     PRINT = 'print'
     NUMBER = 'number'
     STRING = 'string'
+    BOOL = 'bool'
+    TRUE = 'true'
+    FALSE = 'false'
     EVAL = 'eval'
     VAR = 'var'
     VAR_REF = '@'
@@ -41,6 +44,7 @@ class S: #Symbols keywords
     OF = 'of'
     SET = 'set'
     ATTRIB = 'attribute'
+    TABLE = 'table'
     
 class E:
     global L_user
@@ -199,6 +203,14 @@ def greenBerry_eval(x):
         elif words[equal_i+1].isdigit():
             value = words[equal_i+1]
             type = 'var_ref'#
+        elif words[equal_i+1] == S.BOOL:
+            if words[equal_i+2] == S.TRUE or words[equal_i+2] == '1':       
+                value = words[equal_i+2]
+                type = 'bool_1'
+            if words[equal_i+2] == S.FALSE or words[equal_i+2] == '0':       
+                value = words[equal_i+2]
+                type = 'bool_0'
+            
         else:
             value = words[equal_i+1]
             type = 'word'
