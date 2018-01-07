@@ -25,6 +25,9 @@ see power of Man
 add to Man attribute name = string i am me
 add to Man action run : print running...
 
+var x = [3,2,3,4,3]
+print @x
+
 
 
 

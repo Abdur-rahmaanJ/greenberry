@@ -18,6 +18,10 @@ class S: #Symbols keywords
     EQUAL = '='
     LESS = '<'
     GREATER = '>'
+    COMMA = ','
+    SQL = '['
+    SQR = ']'
+    
     PRINT = 'print'
     NUMBER = 'number'
     STRING = 'string'
@@ -203,6 +207,9 @@ def greenBerry_eval(x):
         elif words[equal_i+1].isdigit():
             value = words[equal_i+1]
             type = 'var_ref'#
+        elif words[equal_i+1] == S.SQL:
+            value = search(equal_i, 1, words, [S.SQR])
+            type = 'array'
         elif words[equal_i+1] == S.BOOL:
             if words[equal_i+2] == S.TRUE or words[equal_i+2] == '1':       
                 value = words[equal_i+2]
@@ -219,7 +226,8 @@ def greenBerry_eval(x):
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
             S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
-            S.MAKE, S.ADD, S.TO, S.SEE, S.COLON, S.ATTRIB] #future direct conversion to list
+            S.MAKE, S.ADD, S.TO, S.SEE, S.COLON, S.ATTRIB,
+            S.SQL, S.SQR] #future direct conversion to list
     g_vars = M.g_vars
     g_fs = M.g_fs
     g_cls = M.g_cls
