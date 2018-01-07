@@ -11,7 +11,7 @@ plt.show()
 import pdb
 
 L_user = 'dear berry' + ' '
-
+#bot test
 class S: #Symbols keywords
     EOF = '{***end-of-file***}'
     NL = '\n'
