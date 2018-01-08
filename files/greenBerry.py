@@ -82,6 +82,16 @@ class F: #flags
     bStart = 100 #block start
     bEnd = 0
     isDebugOn = 0
+    
+class Debug_cp(object):
+    def __init__(self, name):
+        self.name = name
+        self.var = 1
+    
+    def run(self):
+        print(self.name,'*** entered cp',self.var)
+        self.var += 1
+        
 #another lex woulde be to identify blobks first this is a side effect
 
 def greenBerry_eval(x):
@@ -136,7 +146,7 @@ def greenBerry_eval(x):
                 print(words[i+1])
             elif i+1 < len(words) and words[i+1] == S.VAR_REF:
                 try:
-                    print(g_vars[words[i+2]][0])
+                    print(var_ref_handling(i+1, words, g_vars))
                 except:
                     print(E.VARREF,line)
             elif i+1 < len(words) and words[i+1] == S.EVAL:
@@ -206,7 +216,7 @@ def greenBerry_eval(x):
             value = M.g_vars[words[equal_i+2]][0]
         elif words[equal_i+1].isdigit():
             value = words[equal_i+1]
-            type = 'var_ref'#
+            type = 'var_ref'
         elif words[equal_i+1] == S.SQL:
             value = search(equal_i, 1, words, [S.SQR])
             type = 'array'
@@ -222,7 +232,23 @@ def greenBerry_eval(x):
             value = words[equal_i+1]
             type = 'word'
         return [value, type]
-
+    
+    def var_ref_handling(at_i, words, g_vars): #@y[1]
+        name = words[at_i+1]#class debug
+        type = g_vars[name][1]
+        value = g_vars[name][0]
+        returned_val = 0
+        if type == 'array' and words[at_i+2] != S.SQL:
+            returned_val = value
+        elif type == 'array' and words[at_i+2] == S.SQL:
+            value = value.split(S.COMMA)
+            returned_val = value[int(words[at_i+3])].strip()
+        else:
+            returned_val = value
+        
+        return returned_val
+            
+        
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
             S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
