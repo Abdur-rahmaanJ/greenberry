@@ -129,6 +129,18 @@ def greenBerry_eval(x):
                 j += 1
         return string
     
+    def search_toks(i, offset, words, delimeters):
+        base = i+offset
+        j = 1
+        string = []
+        while base+j < len(words):
+            if words[base+j] in delimeters:
+                break
+            else:
+                string.append(words[base+j])
+                j += 1
+        return string
+    
     def search_symbol(i, offset, words, delimeters): #i to be resolved
         base = i+offset
         j = 1
@@ -335,12 +347,20 @@ def greenBerry_eval(x):
             
             #resolve flag
         
-        elif elem == S.FUNCDEF: #func vector : print aaa
+        elif elem == S.FUNCDEF: #func vector : print aaa #func vector x : print @x
+            params = []
             try:
+                
                 F.bStart = i
-                
-                g_fs[words[i+1]] = search(i, 2, words, [S.NL, S.EOF])
-                
+                if words[i+2] == S.COLON:
+                    body = search(i, 2, words, [S.NL, S.EOF])
+                    g_fs[words[i+1]] = {'params':None, 'body':body}
+                else :
+                    params = search_toks(i, 1, words, [S.COLON])
+                    col_i = search_symbol(i, 1, words, [S.COLON])[1]
+                    body = search(col_i, 0, words, [S.NL, S.EOF])
+                    g_fs[words[i+1]] = {'params':params, 'body':body}
+                    
                 #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
                 end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
                 F.bEnd = end_i
