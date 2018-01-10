@@ -97,10 +97,12 @@ class Debug_cp(object):
 def greenBerry_eval(x):
     global L_user
         
-    def printd(this):
+    def printd(this, *args):
         a = F.isDebugOn
         if a == 1:
             print(' '*5,'@debug->', this)
+        for arg in args:
+            print(' '*5,'@debug->', arg)
             
     def lex(x, KWDs, **keyword_parameters):
         words = []
