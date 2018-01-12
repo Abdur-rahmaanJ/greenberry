@@ -9,6 +9,7 @@ plt.ylabel('some numbers')
 plt.show()
 """
 import pdb
+from collections import OrderedDict
 
 L_user = 'dear berry' + ' '
 #bot test
@@ -228,9 +229,10 @@ def greenBerry_eval(x):
             type = 'string'
         elif words[equal_i+1] == S.VAR_REF:
             value = M.g_vars[words[equal_i+2]][0]
+            type = 'var_ref'
         elif words[equal_i+1].isdigit():
             value = words[equal_i+1]
-            type = 'var_ref'
+            type = 'number'
         elif words[equal_i+1] == S.SQL:
             value = search(equal_i, 1, words, [S.SQR])
             type = 'array'
@@ -246,6 +248,27 @@ def greenBerry_eval(x):
             value = words[equal_i+1]
             type = 'word'
         return [value, type]
+    
+    def var_type(string): #var x = 1
+        type = None
+        words = lex(x, KWDs)
+        if words[0] == S.STRING:
+            type = 'string'
+        elif words[0] == S.VAR_REF:
+            type = 'var_ref'
+        elif words[0].isdigit():
+            type = 'number'
+        elif words[0] == S.SQL:
+            type = 'array'
+        elif words[0] == S.BOOL:
+            if words[1] == S.TRUE or words[1] == '1':  
+                type = 'bool_1'
+            if words[1] == S.FALSE or words[1] == '0':    
+                type = 'bool_0'            
+        else:
+            type = 'word'
+        return type
+        
     
     def var_ref_handling(at_i, words, g_vars): #@y[1]
         name = words[at_i+1]#class debug
@@ -354,14 +377,18 @@ def greenBerry_eval(x):
             try:
                 
                 F.bStart = i
+                func_name = words[i+1]
                 if words[i+2] == S.COLON:
                     body = search(i, 2, words, [S.NL, S.EOF])
-                    g_fs[words[i+1]] = {'params':None, 'body':body}
+                    g_fs[func_name] = {'params':None, 'body':body}
                 else :
                     params = search_toks(i, 1, words, [S.COLON])
                     col_i = search_symbol(i, 1, words, [S.COLON])[1]
                     body = search(col_i, 0, words, [S.NL, S.EOF])
-                    g_fs[words[i+1]] = {'params':params, 'body':body}
+                    registry = OrderedDict()
+                    for param in params:
+                        registry[param] = None
+                    g_fs[func_name] = {'params':registry, 'body':body}
                     
                 #colon_i = search_symbol(i, 1, words, [S.COLON])[1]
                 end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
@@ -371,10 +398,21 @@ def greenBerry_eval(x):
             
         elif elem == S.FUNCCALL: #call vector
             try:
-                print(g_fs)
-                print(words[i+1])
-                wds = lex(g_fs[words[i+1]], KWDs)
-                simple_parse2(g_vars, wds)
+                func_name = words[i+1]
+                if g_fs[func_name]['params'] == None:
+                    #print(g_fs)
+                    #print(func_name)
+                    wds = lex(g_fs[func_name]['body'], KWDs)
+                    simple_parse2(g_vars, wds)
+                else:
+                    param_vals = search_toks(i, 1, words, [S.NL, S.EOF])
+                    registry = g_fs[func_name]['params']
+                    i  = 0
+                    for key in registry:
+                        registry[key] = [param_vals[i], var_type(param_vals[i])] #data
+                        i += 1
+                    wds = lex(g_fs[func_name]['body'], KWDs)
+                    simple_parse2(registry, wds)
             except:
                 print(E.FUNCCALL, line)
             
