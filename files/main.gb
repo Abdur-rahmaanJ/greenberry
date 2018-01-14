@@ -1,21 +1,32 @@
 
 var x = 1
+var y = string abcd
 
 print eval (2+3-4+11)
+print a
+print @x
+print @y
 
 if arj = greenBerry : print ok
 if 3 > 2 : print apple
 if 2 > 3 : print orange
+if @y = abcd : print pear
+if @y = ab : print 6
 
 for 5 times : print greenBerry
 
-print @x
 
-class Man : power = 10 action walk : print a
+
+class Man : power = 10 action walk : print walking...
 
 make Man walk
 see power of Man
 
+add to Man attribute name = string i am me
+add to Man action run : print running...
+
+var x = [3,2,3,4,3]
+print @x
 
 
 
