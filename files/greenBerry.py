@@ -97,6 +97,11 @@ class Debug_cp(object):
         
 #another lex woulde be to identify blobks first this is a side effect
 
+class Token:
+    def __init__(self, value, type=None):
+        self.value = value
+        self.type = type
+
 def greenBerry_eval(x):
     global L_user
         
@@ -120,6 +125,7 @@ def greenBerry_eval(x):
         if('add_eof' in keyword_parameters):
             if keyword_parameters['add_eof'] == 1:
                 words.append(S.EOF)
+        ha = words
         return words
     
     def search(i, offset, words, delimeters):
@@ -171,7 +177,7 @@ def greenBerry_eval(x):
                     print(eval(words[i+2]))
                 except:
                     print(E.EVAL,line)
-            elif i+1 < len(words) and words[i+1] == S.STRING:
+            elif i+1 < len(words) and words[i+1].type == S.STRING:
                 try:
                     print(search(i, 1, words, [S.NL, S.EOF]))
                 except:
@@ -204,9 +210,8 @@ def greenBerry_eval(x):
     def simple_parse(g_vars, i, elem, words):
         #print('--',i, elem)
         if elem == S.VAR: #var x = 1
-            var_val = var_data(i+2, words, [S.NL, S.EOF])
+            var_val = Token(var_data(i+2, words, [S.NL, S.EOF]), S.VAR)#var_data(i+2, words, [S.NL, S.EOF])
             g_vars[words[i+1]] = var_val
-                
         elif elem == S.PRINT :
             print_handling(g_vars, i, words)
             
@@ -216,7 +221,7 @@ def greenBerry_eval(x):
     def simple_parse2(g_vars, words):
         for i, elem in enumerate(words):
             if elem == S.VAR:
-                var_val = var_data(i+2, words, [S.NL, S.EOF])
+                var_val = Token(var_data(i+2, words, [S.NL, S.EOF]), S.VAR)#var_data(i+2, words, [S.NL, S.EOF])
                 g_vars[words[i+1]] = var_val
             elif elem == S.PRINT :
                 print_handling(g_vars, i, words)
@@ -227,23 +232,23 @@ def greenBerry_eval(x):
         value = 0
         type = None
         if words[equal_i+1] == S.STRING:
-            value = search(equal_i+1, 0, words, delimeters)
+            value = Token(search(equal_i+1, 0, words, delimeters)).value
             type = 'string'
         elif words[equal_i+1] == S.VAR_REF:
-            value = M.g_vars[words[equal_i+2]][0]
+            value = Token(M.g_vars[words[equal_i+2]][0]).value
             type = 'var_ref'
         elif words[equal_i+1].isdigit():
-            value = words[equal_i+1]
+            value = Token(words[equal_i+1]).value
             type = 'number'
         elif words[equal_i+1] == S.SQL:
-            value = search(equal_i, 1, words, [S.SQR])
+            value = Token(search(equal_i, 1, words, [S.SQR])).value
             type = 'array'
         elif words[equal_i+1] == S.BOOL:
             if words[equal_i+2] == S.TRUE or words[equal_i+2] == '1':       
-                value = words[equal_i+2]
+                value = Token(words[equal_i+2]).value
                 type = 'bool_1'
             if words[equal_i+2] == S.FALSE or words[equal_i+2] == '0':       
-                value = words[equal_i+2]
+                value = Token(words[equal_i+2]).value
                 type = 'bool_0'
             
         else:
@@ -271,11 +276,10 @@ def greenBerry_eval(x):
             type = 'word'
         return type
         
-    
     def var_ref_handling(at_i, words, g_vars): #@y[1]
         name = words[at_i+1]#class debug
-        type = g_vars[name][1]
-        value = g_vars[name][0]
+        type = g_vars[name].type
+        value = g_vars[name].value[0]
         returned_val = 0
         if type == 'array' and words[at_i+2] != S.SQL:
             returned_val = value
@@ -339,7 +343,7 @@ def greenBerry_eval(x):
                 wds = lex(to_do, KWDs)
                 if words[i+1] == S.VAR_REF:
                     #print('L @ detected')
-                    L = g_vars[words[i+2]][0]
+                    L = g_vars[words[i+2]].value[0]
                 elif words[i+1].isdigit():
                     #print('L int detected')
                     L = int(words[i+1])
@@ -510,11 +514,12 @@ def greenBerry_eval(x):
             if i < F.bStart or i > F.bEnd :
                 simple_parse(g_vars, i, elem, words)  
                 
-        
+    
     printd(g_vars)
     printd(g_fs)
     printd(g_cls)
-
+    printd(words)
+    
 # python greenBerry_REPL.py
 
 
