@@ -97,6 +97,11 @@ class Debug_cp(object):
         
 #another lex woulde be to identify blobks first this is a side effect
 
+class Token:
+    def __init__(self, value, type=None):
+        self.value = value
+        self.type = type
+
 def greenBerry_eval(x):
     global L_user
         
