@@ -18,4 +18,8 @@ while isSessionOn == 1:
     if x == 'berry exit':
         isSessionOn = 0
     print()
-print('greenBerry REPL exited, see you soon _ _ _')
+print('''
+      ---greenBerry(c)---
+      .gb REPL exited. see you soon _ _
+      ---greenBerry(c)---
+      ''')
