@@ -1,5 +1,5 @@
-# greenBerry 🇲🇺
-A one-line statement language
+# greenBerry
+A one-line statement language 🇲🇺
 
 ## Run files
 
