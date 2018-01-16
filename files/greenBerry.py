@@ -98,9 +98,11 @@ class Debug_cp(object):
 #another lex woulde be to identify blobks first this is a side effect
 
 class Token:
-    def __init__(self, value, type=None):
+    def __init__(self, value, type, status, line):
         self.value = value
         self.type = type
+        self.status = status
+        self.line = line
 
 def greenBerry_eval(x):
     global L_user
@@ -304,7 +306,10 @@ def greenBerry_eval(x):
     words = lex(x, KWDs, add_eof=1)
     printd(words) 
     line = 1
-    
+    '''
+    if elem.value == S.NL
+    error : elem.line
+    '''
     for i, elem in enumerate(words):
         #printd(elem)
         if elem == S.NL:
