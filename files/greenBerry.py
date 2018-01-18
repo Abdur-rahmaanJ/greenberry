@@ -3,11 +3,80 @@
 Created on Tue Dec 26 21:53:56 2017
 
 @author: ARJ
-import matplotlib.pyplot as plt
-plt.plot([1,2,3,4])
-plt.ylabel('some numbers')
-plt.show()
+
+(id) identifiers must be declared before they are used
+litteral  -> fixed values : 11, 'w'
+constants -> change-once values : once declared / set cannot be altered
+variables -> multiple changes allowed
+
+case :
+x = 1 + y * 5
+
+symbol table : contains symbol, type and scope (psst + - * don't have scope, refeering to id)
+
+_______________________________________________________________________________
+ANALYSIS
+_________
+STEP 1 : Lexical Analysis -> output tokens
+info : tool known as Lexer or Scanner
+
+x     -> identifier (id)
+=     -> assignment operator
+1 + y -> expression
+        1     -> litteral, type : number
+        +     -> add operator
+        y     -> identifier (id)
+*     -> mult operator
+5     -> litteral, type : number
+
+transformed into tokens where 
+<id, 1> means first id
+<=> for eqal sign as it is a litteral :
+tokens :
+<id, 1> <=> <num, 1> <+> <id, 2> <*> <num, 5>
+
+Normally : Skips whitespace (new line, space, tabs ...), 
+ignore comments (single line, multiline)
+_________
+STEP 2 : Syntax analysis -> checks order of tokens
+info : tool known as Parser
+
+<id, 1> <=> <num, 1> (verified)
+<id, 1> <=> <*> (unverified)
+
+also generates parse trees
+                        ASSIGN
+                          |
+               id         =          expression
+                |                        |
+                x         expression     +     expression
+                              |                   |
+                            number   expression   *   expression
+                              1          |                |
+                                     identifier         number        
+                                         y                5
+ syntax tree as 
+ 
+                                  =
+                    <id, 1>                +
+                                <num, 1>           *
+                                           <id, 2>    <num, 5>
+_________
+STEP 3 : Semantical Analysis (semantics means meaning)
+generates extended syntax tree
+handles type corecion for the parse tree above (given y was float)
+                                  =
+                    <id, 1>                +
+                                <num, 1>           *
+                                           <id, 2>    int_to_float
+                                                      <num, 10>
+_______________________________________________________________________________
+SYNTHESIS
+
+useful demos :
+    http://effbot.org/zone/simple-top-down-parsing.htm
 """
+
 import pdb
 from collections import OrderedDict
 
@@ -26,12 +95,16 @@ class S: #Symbols keywords
     SQR = ']'
     
     PRINT = 'print'
+    
     NUMBER = 'number'
     STRING = 'string'
     BOOL = 'bool'
+    
     TRUE = 'true'
     FALSE = 'false'
+    
     EVAL = 'eval'
+    
     VAR = 'var'
     VAR_REF = '@'
     PLOT = 'plot'
@@ -52,6 +125,16 @@ class S: #Symbols keywords
     SET = 'set'
     ATTRIB = 'attribute'
     TABLE = 'table'
+    
+class T: #type
+    ES = 'ending statement'
+    BO = 'bool operator'
+    EO = 'equal operator'
+    VI = 'var type identifier'
+    VD = 'values delimiter'
+    AS = 'array symbol'
+    
+
     
 class E:
     global L_user
