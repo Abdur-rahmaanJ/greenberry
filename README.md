@@ -1,5 +1,5 @@
 # greenBerry 🇲🇺
-A one-line statement language
+A one-line statement language, complete with classes, cli and file compatible
 
 ## Run files
 
