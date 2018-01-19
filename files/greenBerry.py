@@ -2,21 +2,84 @@
 """
 Created on Tue Dec 26 21:53:56 2017
 
-@author: ARJ
+@author: ARJ 
+Notes : All Rights Reserved
 
-(id) identifiers must be declared before they are used
-litteral  -> fixed values : 11, 'w'
-constants -> change-once values : once declared / set cannot be altered
-variables -> multiple changes allowed
+_______________________________________________________________________________
+COMMON COMPILER THEORY SYNTAX P1
 
-case :
+- grammar -> set of rules that describe a language
+- context-free grammar -> rules that define a language independent of syntax
+- Context-Free Grammar (CFG) in our case -> a set of rules that 
+    describe all possible strings in a given formal language
+*** 
+it is to be noted that source code are of type strings and as such the word 
+'string' is used
+***
+
+- production -> production rules specify replacement or substitutions. e.g.
+    A → a means that A can be replaced by a. A → a is a production
+- start symbol -> In the example below, S is the start symbol
+    S → Av
+    A → x
+    
+- terminal   -> does not appear on the left side of a production
+- non-terminal -> that which can be broken down further
+***
+terminal symbol is one thing in grammar and another in syntax analysis. 
+see tokens below
+***
+- term       -> what you add e.g. 1+2+3 i.e. 1 2 3
+- factor     -> what you multiply e.g. 3*4*5 i.e 3 4 5
+- expression -> combination of term and expression etc
+______________________________________________________________________
+FORMAL GRAMMAR REPRESENTATIONS
+
+Chomsky Normal Form (CNF)
+{coming soon}
+_______________________________________________________________________________
+COMMON COMPILER THEORY SYNTAX P2
+- identifiers(id) -> must be declared before they are used
+- litteral        -> fixed values : 11, 'w'
+- constants       -> change-once values : once declared / set cannot be altered
+- variables       -> multiple changes allowed
+
+- CBC lexer -> CBC means Char/character by Char/character, a program that goes 
+    over the source text character by character
+    
+- keyword   -> word having a special meaning to the compiler
+
+- lexeme    -> set of characters identified by the lexer
+    e.g x = 5 + pencils
+    lexemes : x,=,5,+,pencils
+    
+- pattern   -> set of rules that specifies when the sequence of characters from 
+    an input makes a token
+    
+- token     -> typically a mapping of value and type. common cases :
+    1) identifiers
+    2) keywords
+    3) operators
+    4) special symbols
+    5) constant e.g. PI 
+    
+    for more info see STEP 1 in analysis
+    token and terminal symbol are in essence the same
+
+- front-end : from high-level language to some intermediate language
+- back-end : from some intermediary language to binary code
+    in each steps below, front-end and back-end has been labelled in ()
+__________ __ __ 
+CASE :
 x = 1 + y * 5
 
-symbol table : contains symbol, type and scope (psst + - * don't have scope, refeering to id)
+symbol table : contains symbol, type and scope (psst + - * don't have scope, 
+    referring to id)
 
 _______________________________________________________________________________
 ANALYSIS
 _________
+(front-end)
 STEP 1 : Lexical Analysis -> output tokens
 info : tool known as Lexer or Scanner
 
@@ -35,9 +98,14 @@ transformed into tokens where
 tokens :
 <id, 1> <=> <num, 1> <+> <id, 2> <*> <num, 5>
 
+starting here and in subsequent steps, symbol table :
+    1. x
+    2. y
+
 Normally : Skips whitespace (new line, space, tabs ...), 
 ignore comments (single line, multiline)
 _________
+(front-end)
 STEP 2 : Syntax analysis -> checks order of tokens
 info : tool known as Parser
 
@@ -61,7 +129,27 @@ also generates parse trees
                     <id, 1>                +
                                 <num, 1>           *
                                            <id, 2>    <num, 5>
+                                           
+trees are often generated in JSON format or XML format
+
+JSON
+{
+        'some_id':
+        {
+                'type':....,
+                'another_property':....,
+                'etc':....,
+        }
+}
+        
+XML
+<function>
+    <keyword> func </keyword>
+</function>
+
+etc ... just a good enough to represent and handle format
 _________
+(front-end)
 STEP 3 : Semantical Analysis (semantics means meaning)
 generates extended syntax tree
 handles type corecion for the parse tree above (given y was float)
@@ -69,18 +157,67 @@ handles type corecion for the parse tree above (given y was float)
                     <id, 1>                +
                                 <num, 1>           *
                                            <id, 2>    int_to_float
-                                                      <num, 10>
+                                                      <num, 5>
 _______________________________________________________________________________
 SYNTHESIS
+
+_________
+(front-end)
+STEP 1: intermediate code generation
+the farthest nodes are reduced like
+t1 = tofloat(5)
+t2 = t1 * id_2
+t3 = 1  + t2
+id_1 = t3
+
+_________
+(front-end)
+STEP 2: optimisation
+t1 = 5.0 * id_2
+id_1 = 1 + t1
+
+high-level to high-level stops here
+
+_________
+(back-end)
+STEP 3: code generation
+the above in assembly or VM (Virtual Machine) code (psst worth a try)
+
+_________
+(back-end)
+STEP 4: target specific optimisation
+
+
+
+
+
+
+
+
+Bibliography :
+    - wikipaedia.com
+    - dragon book
+    - tiger book
+    - mdh.se lectures 07/04, compiler-intro
+    - Compiler Basics, James Alan Farrell (1995)
+    - Elements of Computing Systems, MIT Press, Nisan & Schocken
+    - Basics of Compiler Design, Torben Ægidius Mogensen
+    - stackoverflow.com
+    - tutorialspoint.com
 
 useful demos :
     http://effbot.org/zone/simple-top-down-parsing.htm
 """
 
-import pdb
+#import pdb
 from collections import OrderedDict
 
-
+"""
+HACK VERSION
+- unstructured _ unethical _ coded to run
+- structuration in process
+- you don't need the above knowledge to build something but knowing it helps
+"""
 
 L_user = 'dear berry' + ' '
 #bot test
