@@ -551,8 +551,7 @@ stmts	::= stmts stmt | e
 stmt	::= id = bool;
 	 |  decls
 	 |  IF ( bool ) stmt |  IF ( bool ) stmt ELSE stmt
-	 |  WHILE ( bool ) stmt
-	 |  DO stmt WHILE ( bool );
+	 |  WHILE ( bool ) stmt	 |  DO stmt WHILE ( bool );
 	 |  BREAK;
 	 |  PRINT lit;
 	 |  READ id;
@@ -568,8 +567,7 @@ term	::= term * unary | term / unary | unary
 unary	::= NOT unary | - unary | factor
 factor	::= ( bool ) | id | num | real | true | false
 
-4)
-yet another
+
 ____________________________________________________________________________
 COMMON COMPILER THEORY SYNTAX P2
 - identifiers(id) -> must be declared before they are used
