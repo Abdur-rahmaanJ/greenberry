@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="greenberry.css"/>
+		<script type="text/javascript" src="greenberry.js"></script>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<title>GreenBerry - syntax</title>
+	
+		<script>
+			$(function(){
+				$("#nav").load("navBar.html"); 
+				$("#nav2").load("navBar2.html");
+			});
+		</script>
+	</head>
+<body>
+	
+	<!--navigation-->
+	<div id="nav">
+		
+	</div>
+	
+	
+	
+	<div id="nav2"></div>
+	
+	<div id="syntax">
+	<div class="clean">
+	<h3>SYNTAX</h3><hr><!--#eae4e4-->
+	
+	<div class="clean">
+	<div id="syntaxContent">
+	
+	<div class="clean">
+	<h4>variable declaration</h4><hr> 
+	<div class="flow clean">
+	<h5>number</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> x <span style ="color:red;">=</span> 1</br>    </br>    
+	
+	<h5>string</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> y <span style ="color:red;">=</span> <span style ="color:orange;">string</span> squashed berry 3</br>    </br>  
+	
+	<h5>one word</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> y <span style ="color:red;">=</span> juice</br>    </br>
+	
+	<h5>variable</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> y <span style ="color:red;">=</span><span style ="color:orange;">@</span>x</br>    </br>
+	
+	<h5>bool true</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> z <span style ="color:red;">=</span><span style ="color:orange;">bool</span>true</br>    </br>
+	<span style ="color:#9a1777;">var</span> z <span style ="color:red;">=</span><span style ="color:orange;">bool</span>1</br>    </br>
+	
+	<h5>bool false</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> z <span style ="color:red;">=</span><span style ="color:orange;">bool</span>false</br>    </br>
+	<span style ="color:#9a1777;">var</span> z <span style ="color:red;">=</span><span style ="color:orange;">bool</span>0</br>    </br>
+	
+	<h5>array</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">var</span> num_arr <span style ="color:red;">=</span>[1,54,54,543,5345,35435,36565]</br>    </br>
+	</div>      
+	</div><br>
+	
+	
+	<div class="clean ">
+	<h4>plotting</h4><hr>  
+	<h5>linear graph</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">plot</span> 1,2,3,4,5 x-time 23,34,56,78,45 y-letters</br>    >>>  </br>    </br>    
+	</div><br>
+	
+	
+	<div class="clean ">
+	<h4>minified for loop</h4><hr> 
+	<span style ="color:#9a1777;">for</span> 3 <span style ="color:orange;">times</span> : <span style ="color:#9a1777;">print</span> greenBerry</br>    >>>  greenBerry</br>    >>>  greenBerry</br>    >>>  greenBerry</br></br>    
+	</div><br>
+	
+	<div class="clean ">
+	<h4>printing</h4><hr> 
+	
+	<h5>one word</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">print</span> a</br>    >>>  a</br>    </br>   
+	
+	
+	<h5>eval</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">print</span> <span style ="color:orange;">eval</span> (2+3-4)</br>    >>>  1</br>    </br>    
+	
+	<h5>string</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> a cat walks along the path</br>    
+	>>>  a cat walks along the path</br>    </br>
+	
+	<h5>variable referencing</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">print</span> <span style ="color:orange;">@</span>x</br>    >>>  1</br>    </br>   
+	
+	<h5>array</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">print</span> <span style ="color:orange;">@</span>num_arr</br>    >>>  [1,54,54,543,5345,35435,36565]</br>    </br>
+	
+	<h5>array indexing</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">print</span> <span style ="color:orange;">@</span>num_arr[3]</br>    >>>  543</br>    </br>
+	
+	</div><br>    
+	
+	<div class="clean">
+	<h4>conditionals</h4><hr> 
+	
+	
+	<h5>equality</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">if</span> 2 <span style ="color:red;">=</span> 2 : <span style ="color:#9a1777;">print</span> leaf</br>    >>>  leaf</br>    </br>    
+	<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x <span style ="color:red;">=</span> 1 : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> x is 1</br>    >>>  x is 1</br>    </br>    
+	<span style ="color:#9a1777;">if</span> gfregg 4g4tg <span style ="color:red;">=</span> g35g34554g : <span style ="color:#9a1777;">print</span> 1</br>    >>>  </br>    </br>  
+	
+	
+	<h5>greater than</h5><hr align="center" class="short-l">  
+	<span style ="color:#9a1777;">if</span> 2 > 3 : <span style ="color:#9a1777;">print</span> tree</br>    >>> </br>    </br>    
+	<span style ="color:#9a1777;">if</span> 3 > 2 : <span style ="color:#9a1777;">print</span> berrry</br>    >>>  berrry</br>    </br>    
+	<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x > 4 : <span style ="color:#9a1777;">print</span> 1</br>    >>> </br>    </br>    
+	
+	<h5>less than</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">if</span> 2 < 3 : <span style ="color:#9a1777;">print</span> tree</br>    >>>  tree</br>    </br>    
+	<span style ="color:#9a1777;">if</span> 3 < 2 : <span style ="color:#9a1777;">print</span> berrry</br>    >>>  </br>    </br>    
+	<span style ="color:#9a1777;">if</span> <span style ="color:orange;">@</span>x < 4 : <span style ="color:#9a1777;">print</span> 1</br>    >>>  1</br>    </br>   
+	
+	</div><br>
+	
+	
+	<div class="clean">
+	<h4>functions</h4><hr> 
+	<h5>function declaration</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">func</span> vector : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">string</span> vector is fun</br>    </br>  
+	
+	<h5>function declaration with parameters</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">func</span> p x : <span style ="color:#9a1777;">print</span> <span style ="color:orange;">@</span> x</br>    </br>  
+	
+	<h5>function calling</h5><hr align="center" class="short-l">  
+	<span style ="color:#9a1777;">call</span> vector</br>    >>>  vector is fun</br>    </br>    
+	</div><br>
+	
+	
+	<div class="clean">
+	<h4>classes</h4><hr> 
+	<h5>class declaration</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">class</span> Man : power <span style ="color:red;">=</span> 10 <span style ="color:orange;">action</span> walk : <span style ="color:#9a1777;">print</span> walking...</br>    </br> 
+	
+	<h5>method / action calling</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">make</span> Man walk</br>    >>>  walking...</br>    </br>    
+	
+	<h5>check attribute</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">see</span> power <span style ="color:orange;">of</span> Man</br>    >>>  10</br>    </br></br>
+	
+	<h5>add attribute</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">add</span> <span style ="color:orange;">to</span> Man <span style ="color:orange;">attribute</span> me <span style ="color:red;">=</span> <span style ="color:orange;">string</span> i am me</br>    >>>  </br>    </br></br>
+	
+	<h5>add action</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">add</span> <span style ="color:orange;">to</span> Man <span style ="color:orange;">action</span>run : <span style ="color:#9a1777;">print</span> running...</br>    >>>  </br>    </br></br>
+	</div><br>
+	
+	<div class="clean">
+	<h4>debugging</h4><hr>
+	<h5>internal</h5><hr align="center" class="short-l"> 
+	<span style ="color:#9a1777;">set</span> <span style ="color:#9a1777;">debug</span> on</br>    >>>  *var contents here*</br>    </br>  
+	</div>
+	
+	
+	</div>
+	</div>
+	<br><div id="promo" class="clean">Generated using <br><a style="color:orange;font-size:150%;" href="https://github.com/Abdur-rahmaanJ/Python-html-codopaste">python-html-codopaste</a><p>
+	</div>
+	</div>
+</body>
+</html>
