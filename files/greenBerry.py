@@ -109,367 +109,7 @@ GRAMMAR.TXT
 in many languages you have a file defining the grammar in a file called 
 grammar.txt (which greenBerry's author has not yet included upto now). 
 
-1) psst you can skip to 470
-    
-Here is a grammar.txt for the C lanaguage, which reveals quite a few 
-tricks you might not know about 
-
-primary-expression
-    identifier
-    constant
-    string-literal
-    ( expression )
-
-postfix-expression
-    primary-expression
-    postfix-expression [ expression ]
-    postfix-expression ( )
-    postfix-expression ( argument-expression-list )
-    postfix-expression . identifier
-    postfix-expression -> identifier
-    postfix-expression ++
-    postfix-expression --
-
-argument-expression-list
-    assignment-expression
-    argument-expression-list , assignment-expression
-
-unary-expression
-    postfix-expression
-    ++ unary-expression
-    -- unary-expression
-    unary-operator cast-expression
-    sizeof unary-expression
-    sizeof ( type-name )
-
-unary-operator
-    &
-    *
-    +
-    -
-    ~
-    !
-
-cast-expression
-    unary-expression
-    ( type-name ) cast-expression
-
-multiplicative-expression
-    cast-expression
-    multiplicative-expression * cast-expression
-    multiplicative-expression / cast-expression
-    multiplicative-expression % cast-expression
-
-additive-expression
-    multiplicative-expression
-    additive-expression + multiplicative-expression
-    additive-expression - multiplicative-expression
-
-shift-expression
-    additive-expression
-    shift-expression << additive-expression
-    shift-expression >> additive-expression
-
-relational-expression
-    shift-expression
-    relational-expression < shift-expression
-    relational-expression > shift-expression
-    relational-expression <= shift-expression
-    relational-expression >= shift-expression
-
-equality-expression
-    relational-expression
-    equality-expression == relational-expression
-    equality-expression != relational-expression
-
-AND-expression
-    equality-expression
-    AND-expression & equality-expression
-
-exclusive-OR-expression
-    AND-expression
-    exclusive-OR-expression ^ AND-expression
-
-inclusive-OR-expression
-    exclusive-OR-expression
-    inclusive-OR-expression | exclusive-OR-expression
-
-logical-AND-expression
-    inclusive-OR-expression
-    logical-AND-expression && inclusive-OR-expression
-
-logical-OR-expression
-    logical-AND-expression
-    logical-OR-expression || logical-AND-expression
-
-conditional-expression
-    logical-OR-expression
-    logical-OR-expression ? expression : conditional-expression
-
-assignment-expression
-    conditional-expression
-    unary-expression assignment-operator assignment-expression
-
-assignment-operator
-    =
-    *=
-    /=
-    %=
-    +=
-    -=
-    <<=
-    >>=
-    &=
-    ^=
-    |=
-
-expression
-    assignment-expression
-    expression , assignment-expression
-
-constant-expression
-    conditional-expression
-
-#
-# C declaration rules
-#
-
-declaration
-    declaration-specifiers ;
-    declaration-specifiers init-declarator-list ;
-
-declaration-specifiers
-    storage-class-specifier
-    type-specifier
-    type-qualifier
-    storage-class-specifier declaration-specifiers
-    type-specifier          declaration-specifiers
-    type-qualifier          declaration-specifiers
-
-init-declarator-list
-    init-declarator
-    init-declarator-list , init-declarator
-
-init-declarator
-    declarator
-    declarator = initializer
-
-storage-class-specifier
-    typedef
-    extern
-    static
-    auto
-    register
-
-type-specifier
-    void
-    char
-    short
-    int
-    long
-    float
-    double
-    signed
-    unsigned
-    struct-or-union-specifier
-    enum-specifier
-    typedef-name
-
-struct-or-union-specifier
-    struct-or-union { struct-declaration-list }
-    struct-or-union identifier { struct-declaration-list }
-    struct-or-union identifier
-
-struct-or-union
-    struct
-    union
-
-struct-declaration-list
-    struct-declaration
-    struct-declaration-list struct-declaration
-
-struct-declaration
-    specifier-qualifier-list struct-declarator-list ;
-
-specifier-qualifier-list
-    type-specifier
-    type-qualifier
-    type-specifier specifier-qualifier-list 
-    type-qualifier specifier-qualifier-list 
-
-struct-declarator-list
-    struct-declarator
-    struct-declarator-list , struct-declarator
-
-struct-declarator
-    declarator
-     constant-expression
-    declarator  constant-expression
-
-enum-specifier
-    enum { enumerator-list }
-    enum identifier { enumerator-list }
-    enum identifier
-
-enumerator-list
-    enumerator
-    enumerator-list , enumerator
-
-enumerator
-    enumeration-constant
-    enumeration-constant = constant-expression
-
-enumeration-constant
-    identifier
-
-type-qualifier
-    const
-    volatile
-
-declarator
-    direct-declarator
-    pointer direct-declarator
-
-direct-declarator
-    identifier
-    ( declarator )
-    direct-declarator [ ]
-    direct-declarator [ constant-expression ]
-    direct-declarator ( )
-    direct-declarator ( parameter-type-list )
-    direct-declarator ( identifier-list )
-
-pointer
-     *
-     * pointer
-     * type-qualifier-list
-     * type-qualifier-list pointer
-
-type-qualifier-list
-    type-qualifier
-    type-qualifier-list type-qualifier
-
-parameter-type-list
-    parameter-list
-    parameter-list , ...
-
-parameter-list
-    parameter-declaration
-    parameter-list , parameter-declaration
-
-parameter-declaration
-    declaration-specifiers declarator
-    declaration-specifiers
-    declaration-specifiers abstract-declarator
-
-identifier-list
-    identifier
-    identifier-list , identifier
-
-type-name
-    specifier-qualifier-list
-    specifier-qualifier-list abstract-declarator
-
-abstract-declarator
-    pointer
-    direct-abstract-declarator
-    pointer direct-abstract-declarator
-
-direct-abstract-declarator
-    ( abstract-declarator )
-    [ ]
-    [ constant-expression ]
-    ( )
-    ( parameter-type-list )
-    direct-abstract-declarator [ ]
-    direct-abstract-declarator [ constant-expression ]
-    direct-abstract-declarator ( )
-    direct-abstract-declarator ( parameter-type-list )
-
-typedef-name
-    identifier
-
-initializer
-    assignment-expression
-    { initializer-list }
-    { initializer-list , }
-
-initializer-list
-    initializer
-    initializer-list , initializer
-
-#
-# C statement rules
-#
-
-statement
-    labeled-statement
-    compound-statement
-    expression-statement
-    selection-statement
-    iteration-statement
-    jump-statement
-
-labeled-statement
-    identifier : statement
-    case constant-expression : statement
-    default : statement
-
-compound-statement
-    { }
-    { declaration-list }
-    { statement-list }
-    { declaration-list statement-list }
-
-declaration-list
-    declaration
-    declaration-list declaration
-
-statement-list
-    statement
-    statement-list statement
-
-expression-statement
-    ;
-    expression ;
-
-selection-statement
-    if ( expression ) statement
-    if ( expression ) statement else statement
-    switch ( expression ) statement
-
-iteration-statement
-    while ( expression ) statement
-    do statement while ( expression ) ;
-    for (            ;            ;            ) statement
-    for (            ;            ; expression ) statement
-    for (            ; expression ;            ) statement
-    for (            ; expression ; expression ) statement
-    for ( expression ;            ;            ) statement
-    for ( expression ;            ; expression ) statement
-    for ( expression ; expression ;            ) statement
-    for ( expression ; expression ; expression ) statement
-
-jump-statement
-    goto identifier ;
-    continue ;
-    break ;
-    return ;
-    return expression ;
-
-translation-unit
-    external-declaration
-    translation-unit external-declaration
-
-external-declaration
-    function-definition
-    declaration
-
-function-definition
-                           declarator                  compound-statement
-    declaration-specifiers declarator                  compound-statement
-                           declarator declaration-list compound-statement
-    declaration-specifiers declarator declaration-list compound-statement
+1) C lang : see end of file
     
 2)
 Here is a more common example :
@@ -1281,6 +921,368 @@ def greenBerry_eval(x):
 
 # python greenBerry_REPL.py
     #psst coding only <600 lines
+    
+"""
+Here is a grammar.txt for the C lanaguage, which reveals quite a few 
+tricks you might not know about 
+
+primary-expression
+    identifier
+    constant
+    string-literal
+    ( expression )
+
+postfix-expression
+    primary-expression
+    postfix-expression [ expression ]
+    postfix-expression ( )
+    postfix-expression ( argument-expression-list )
+    postfix-expression . identifier
+    postfix-expression -> identifier
+    postfix-expression ++
+    postfix-expression --
+
+argument-expression-list
+    assignment-expression
+    argument-expression-list , assignment-expression
+
+unary-expression
+    postfix-expression
+    ++ unary-expression
+    -- unary-expression
+    unary-operator cast-expression
+    sizeof unary-expression
+    sizeof ( type-name )
+
+unary-operator
+    &
+    *
+    +
+    -
+    ~
+    !
+
+cast-expression
+    unary-expression
+    ( type-name ) cast-expression
+
+multiplicative-expression
+    cast-expression
+    multiplicative-expression * cast-expression
+    multiplicative-expression / cast-expression
+    multiplicative-expression % cast-expression
+
+additive-expression
+    multiplicative-expression
+    additive-expression + multiplicative-expression
+    additive-expression - multiplicative-expression
+
+shift-expression
+    additive-expression
+    shift-expression << additive-expression
+    shift-expression >> additive-expression
+
+relational-expression
+    shift-expression
+    relational-expression < shift-expression
+    relational-expression > shift-expression
+    relational-expression <= shift-expression
+    relational-expression >= shift-expression
+
+equality-expression
+    relational-expression
+    equality-expression == relational-expression
+    equality-expression != relational-expression
+
+AND-expression
+    equality-expression
+    AND-expression & equality-expression
+
+exclusive-OR-expression
+    AND-expression
+    exclusive-OR-expression ^ AND-expression
+
+inclusive-OR-expression
+    exclusive-OR-expression
+    inclusive-OR-expression | exclusive-OR-expression
+
+logical-AND-expression
+    inclusive-OR-expression
+    logical-AND-expression && inclusive-OR-expression
+
+logical-OR-expression
+    logical-AND-expression
+    logical-OR-expression || logical-AND-expression
+
+conditional-expression
+    logical-OR-expression
+    logical-OR-expression ? expression : conditional-expression
+
+assignment-expression
+    conditional-expression
+    unary-expression assignment-operator assignment-expression
+
+assignment-operator
+    =
+    *=
+    /=
+    %=
+    +=
+    -=
+    <<=
+    >>=
+    &=
+    ^=
+    |=
+
+expression
+    assignment-expression
+    expression , assignment-expression
+
+constant-expression
+    conditional-expression
+
+#
+# C declaration rules
+#
+
+declaration
+    declaration-specifiers ;
+    declaration-specifiers init-declarator-list ;
+
+declaration-specifiers
+    storage-class-specifier
+    type-specifier
+    type-qualifier
+    storage-class-specifier declaration-specifiers
+    type-specifier          declaration-specifiers
+    type-qualifier          declaration-specifiers
+
+init-declarator-list
+    init-declarator
+    init-declarator-list , init-declarator
+
+init-declarator
+    declarator
+    declarator = initializer
+
+storage-class-specifier
+    typedef
+    extern
+    static
+    auto
+    register
+
+type-specifier
+    void
+    char
+    short
+    int
+    long
+    float
+    double
+    signed
+    unsigned
+    struct-or-union-specifier
+    enum-specifier
+    typedef-name
+
+struct-or-union-specifier
+    struct-or-union { struct-declaration-list }
+    struct-or-union identifier { struct-declaration-list }
+    struct-or-union identifier
+
+struct-or-union
+    struct
+    union
+
+struct-declaration-list
+    struct-declaration
+    struct-declaration-list struct-declaration
+
+struct-declaration
+    specifier-qualifier-list struct-declarator-list ;
+
+specifier-qualifier-list
+    type-specifier
+    type-qualifier
+    type-specifier specifier-qualifier-list 
+    type-qualifier specifier-qualifier-list 
+
+struct-declarator-list
+    struct-declarator
+    struct-declarator-list , struct-declarator
+
+struct-declarator
+    declarator
+     constant-expression
+    declarator  constant-expression
+
+enum-specifier
+    enum { enumerator-list }
+    enum identifier { enumerator-list }
+    enum identifier
+
+enumerator-list
+    enumerator
+    enumerator-list , enumerator
+
+enumerator
+    enumeration-constant
+    enumeration-constant = constant-expression
+
+enumeration-constant
+    identifier
+
+type-qualifier
+    const
+    volatile
+
+declarator
+    direct-declarator
+    pointer direct-declarator
+
+direct-declarator
+    identifier
+    ( declarator )
+    direct-declarator [ ]
+    direct-declarator [ constant-expression ]
+    direct-declarator ( )
+    direct-declarator ( parameter-type-list )
+    direct-declarator ( identifier-list )
+
+pointer
+     *
+     * pointer
+     * type-qualifier-list
+     * type-qualifier-list pointer
+
+type-qualifier-list
+    type-qualifier
+    type-qualifier-list type-qualifier
+
+parameter-type-list
+    parameter-list
+    parameter-list , ...
+
+parameter-list
+    parameter-declaration
+    parameter-list , parameter-declaration
+
+parameter-declaration
+    declaration-specifiers declarator
+    declaration-specifiers
+    declaration-specifiers abstract-declarator
+
+identifier-list
+    identifier
+    identifier-list , identifier
+
+type-name
+    specifier-qualifier-list
+    specifier-qualifier-list abstract-declarator
+
+abstract-declarator
+    pointer
+    direct-abstract-declarator
+    pointer direct-abstract-declarator
+
+direct-abstract-declarator
+    ( abstract-declarator )
+    [ ]
+    [ constant-expression ]
+    ( )
+    ( parameter-type-list )
+    direct-abstract-declarator [ ]
+    direct-abstract-declarator [ constant-expression ]
+    direct-abstract-declarator ( )
+    direct-abstract-declarator ( parameter-type-list )
+
+typedef-name
+    identifier
+
+initializer
+    assignment-expression
+    { initializer-list }
+    { initializer-list , }
+
+initializer-list
+    initializer
+    initializer-list , initializer
+
+#
+# C statement rules
+#
+
+statement
+    labeled-statement
+    compound-statement
+    expression-statement
+    selection-statement
+    iteration-statement
+    jump-statement
+
+labeled-statement
+    identifier : statement
+    case constant-expression : statement
+    default : statement
+
+compound-statement
+    { }
+    { declaration-list }
+    { statement-list }
+    { declaration-list statement-list }
+
+declaration-list
+    declaration
+    declaration-list declaration
+
+statement-list
+    statement
+    statement-list statement
+
+expression-statement
+    ;
+    expression ;
+
+selection-statement
+    if ( expression ) statement
+    if ( expression ) statement else statement
+    switch ( expression ) statement
+
+iteration-statement
+    while ( expression ) statement
+    do statement while ( expression ) ;
+    for (            ;            ;            ) statement
+    for (            ;            ; expression ) statement
+    for (            ; expression ;            ) statement
+    for (            ; expression ; expression ) statement
+    for ( expression ;            ;            ) statement
+    for ( expression ;            ; expression ) statement
+    for ( expression ; expression ;            ) statement
+    for ( expression ; expression ; expression ) statement
+
+jump-statement
+    goto identifier ;
+    continue ;
+    break ;
+    return ;
+    return expression ;
+
+translation-unit
+    external-declaration
+    translation-unit external-declaration
+
+external-declaration
+    function-definition
+    declaration
+
+function-definition
+                           declarator                  compound-statement
+    declaration-specifiers declarator                  compound-statement
+                           declarator declaration-list compound-statement
+    declaration-specifiers declarator declaration-list compound-statement
+"""
 
 
 

@@ -1,0 +1,66 @@
+
+ws  -> white space
+nl  -> new line
+eof -> end of file symbol
+
+statements : basic | simple | compound
+	basic :
+		assign
+
+	simple : 
+		  print 
+		| plot
+		| if 
+		| for 
+
+	compound :
+		  func
+		| class
+
+assign :
+	  'var' (ws*1+) word '=' (ws*0+) (    number 
+										| word
+										| identifier word
+										| var_ref ) (ws*1+) (nl | eof)
+
+print :
+	  'print' (ws*1+) word (ws*1+) (nl | eof)
+	| 'print' (ws*1+) '@' (ws*0+) var_ref (ws*1+) (nl | eof)
+	| 'print' (ws*1+) 'string' (word*1+) (ws*1+) (nl | eof)
+	| 'print' (ws*1+) 'eval' mexpr (ws*1+) (nl | eof)
+
+if :
+	'if' (ws*1+) statement (ws*1+) ('=' | '>' | '<') (ws*0+) statement (nl | eof)
+
+for :
+	'for' (ws*1+) number (ws*1+) 'times' (ws*1+) ':' (ws*1+) print (nl | eof)
+
+plot :
+	'plot' (ws*1+) (number (ws*0+) ',' (ws*0+) number) (ws*1+) 'x-' (ws*1+) word (ws*1+) 
+	(number (ws*0+) ',' (ws*0+) number) (ws*1+) 'y-' (ws*1+) word 
+
+func :
+	declaration
+	'func' (ws*1+) word (ws*1+) ':' (ws*1+) print
+
+	with parameters
+	'func' (ws*1+) 'p' (ws*1+) (word*1+) (ws*1+) ':' (ws*1+) print
+		'func' (ws*1+) 'p' (ws*1+) word (ws*1+) ':' (ws*1+) print
+		'func' (ws*1+) 'p' (ws*1+) word (ws*1+) word (ws*1+) ':' (ws*1+) print
+
+	call
+	'call' (ws*1+) id
+
+statement :
+	(var_ref | number)
+
+identifier :
+	('bool' ('true' | 'false') 
+	| 'string' (word*0+) 
+	| '@' var_ref)
+
+var_ref :
+	('@' id
+	| '@' id '[' number ']'
+	| '@' id '[' number ',' number ]')
+
