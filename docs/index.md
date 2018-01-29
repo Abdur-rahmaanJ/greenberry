@@ -41,7 +41,7 @@
 			<p><span class="name">greenBerry<i class="fa fa-copyright"></i></span><br> 
 				is a one-line statement programming language with extention <b>.gb</b> <br>
 				Simple and easy.<br>
-				<p>On the technical side, it is based on python and supports infinite look-ahead !<p>
+				<p>On the technical side, it is based on python and supports infinite look-ahead !</p>
 			</p>
 		</div>
 	</div>
