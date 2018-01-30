@@ -398,6 +398,9 @@ L_user = 'dear berry' + ' '
 class S: #Symbols keywords
     EOF = '{***end-of-file***}'
     NL = '\n'
+    WS = ' '
+    E = ''
+    
     EQUAL = '='
     LESS = '<'
     GREATER = '>'
@@ -497,6 +500,43 @@ class Token:
         self.type = type
         self.status = status
         self.line = line
+
+class Lexeme:
+    def __init__(self, value, line):
+        self.value = value
+        self.line = line
+        
+class Lexer:
+    def __init__(self, source, KWDs):
+        #parameters
+        self.source = source #text-file or string
+        self.KWDs = KWDs
+        
+        #data containers
+        self.cup = ''
+        self.lexemes = []
+        self.tokens = []
+        
+        #info
+        self.line = 1
+        self.status = ''
+        
+    
+    def get_lexemes(self):
+        for i, elem in enumerate(self.source):
+            if elem == S.NL:
+                self.line += 1
+            if elem != S.WS:
+                self.cup += elem
+            if i+1 >= len(self.source) or self.source[i+1] == S.WS or \
+                         self.source[i+1] in self.KWDs or elem in self.KWDs:
+                if self.cup != S.E:
+                    self.lexemes.append(Lexeme(self.cup, self.line))
+                    self.cup = S.E
+        return self.lexemes
+    
+    def get_tokens(self, lexemes):
+        pass
 
 def greenBerry_eval(x):
     global L_user
