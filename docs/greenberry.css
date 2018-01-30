@@ -76,7 +76,7 @@ img{}
 	margin:0px;
 	margin-right: 0px;
 	text-align:center;
-	word-wrap: break-word
+	word-wrap: break-word;
 }
 
 .title {
@@ -185,6 +185,17 @@ a:link {
 	font-size:120%;
 	margin-left:10%;
 	text-align:left;
+}
+
+#todo ol li{
+	font-family: cursive;
+	text-shadow: 4px 4px 4px #aaa;
+}
+
+#bdbg p {
+	font-family: cursive;
+	text-shadow: 4px 4px 4px #aaa;
+	font-size:120%;
 }
 
 .fa{
@@ -386,10 +397,22 @@ img {
 }
 
 #todo li{
-	font-family:san-serif;
-	font-size:120%;
 	margin-left:10%;
 	text-align:left;
+}
+
+#todo ol li{
+	font-family: cursive;
+	text-shadow: 4px 4px 4px #aaa;
+	font-size: 22px;
+
+}
+
+#bdbg p {
+	font-family: cursive;
+	text-shadow: 4px 4px 4px #aaa;
+	font-size: 22px;
+
 }
 
 .fa{
@@ -437,6 +460,12 @@ img {
 		
 .fa{
 	line-height: 0px;
+}
+
+.name {
+	color:green;
+	font-family:Times New Roman;
+	font-size:120%;
 }
 	
 #fans{
@@ -502,7 +531,7 @@ img {
 
 #counter {
 	position:relative;
-	top:1000px;
+	top:1300px;
 	left:80px;
 }
 
