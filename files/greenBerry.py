@@ -506,7 +506,9 @@ class Lexeme:
         self.value = value
         self.line = line
         
+ops = ['+','-','*','/']
 class Lexer:
+    global ops
     def __init__(self, source, KWDs):
         #parameters
         self.source = source #text-file or string
@@ -536,7 +538,10 @@ class Lexer:
         return self.lexemes
     
     def get_tokens(self, lexemes):
-        pass
+        for lexeme in lexemes:
+            if lexeme.value in ops:
+                self.tokens.append(Token(lexeme.value, 'operator', None, lexeme.line))
+        return self.tokens
 
 def greenBerry_eval(x):
     global L_user
