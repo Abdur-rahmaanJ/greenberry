@@ -384,6 +384,9 @@ useful demos :
 """
 
 #import pdb
+
+from gbtools.lexer import Lexer
+
 from collections import OrderedDict
 
 """
@@ -393,7 +396,9 @@ HACK VERSION
 - you don't need the above knowledge to build something but knowing it helps
 """
 
-L_user = 'dear berry' + ' '
+
+
+L_user = 'dear berry'
 #bot test
 class S: #Symbols keywords
     EOF = '{***end-of-file***}'
@@ -493,55 +498,10 @@ class Debug_cp(object):
         self.var += 1
         
 #another lex woulde be to identify blobks first this is a side effect
-
-class Token:
-    def __init__(self, value, type, status, line):
-        self.value = value
-        self.type = type
-        self.status = status
-        self.line = line
-
-class Lexeme:
-    def __init__(self, value, line):
-        self.value = value
-        self.line = line
-        
-ops = ['+','-','*','/']
-class Lexer:
-    global ops
-    def __init__(self, source, KWDs):
-        #parameters
-        self.source = source #text-file or string
-        self.KWDs = KWDs
-        
-        #data containers
-        self.cup = ''
-        self.lexemes = []
-        self.tokens = []
-        
-        #info
-        self.line = 1
-        self.status = ''
-        
-    
-    def get_lexemes(self):
-        for i, elem in enumerate(self.source):
-            if elem == S.NL:
-                self.line += 1
-            if elem != S.WS:
-                self.cup += elem
-            if i+1 >= len(self.source) or self.source[i+1] == S.WS or \
-                         self.source[i+1] in self.KWDs or elem in self.KWDs:
-                if self.cup != S.E:
-                    self.lexemes.append(Lexeme(self.cup, self.line))
-                    self.cup = S.E
-        return self.lexemes
-    
-    def get_tokens(self, lexemes):
-        for lexeme in lexemes:
-            if lexeme.value in ops:
-                self.tokens.append(Token(lexeme.value, 'operator', None, lexeme.line))
-        return self.tokens
+MATH_OPS = ['+','-','*','/']
+BOOLS = [S.TRUE, S.FALSE]
+BOOL_OPS = [S.GREATER, S.LESS]
+EOS = [S.NL, S.EOF]
 
 def greenBerry_eval(x):
     global L_user
