@@ -1,0 +1,66 @@
+
+ws  -> white space
+nl  -> new line
+eof -> end of file symbol
+
+statements : basic | simple | compound
+	basic :
+		assign
+
+	simple : 
+		  print 
+		| plot
+		| if 
+		| for 
+
+	compound :
+		  func
+		| class
+
+assign :
+	  'var'  word '='  (    number 
+										| word
+										| identifier word
+										| var_ref )  (nl | eof)
+
+print :
+	  'print'  word  (nl | eof)
+	| 'print'  '@'  var_ref  (nl | eof)
+	| 'print'  'string' (word*1+)  (nl | eof)
+	| 'print'  'eval' mexpr  (nl | eof)
+
+if :
+	'if'  statement  ('=' | '>' | '<')  statement (nl | eof)
+
+for :
+	'for'  number  'times'  ':'  print (nl | eof)
+
+plot :
+	'plot'  (number  ','  number)  'x-'  word  
+	(number  ','  number)  'y-'  word 
+
+func :
+	declaration
+	'func'  word  ':'  print
+
+	with parameters
+	'func'  'p'  (word*1+)  ':'  print
+		'func'  'p'  word  ':'  print
+		'func'  'p'  word  word  ':'  print
+
+	call
+	'call'  id
+
+statement :
+	(var_ref | number)
+
+identifier :
+	('bool' ('true' | 'false') 
+	| 'string' (word*0+) 
+	| '@' var_ref)
+
+var_ref :
+	('@' id
+	| '@' id '[' number ']'
+	| '@' id '[' number ',' number ]')
+

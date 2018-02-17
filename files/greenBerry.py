@@ -2,22 +2,35 @@
 """
 Created on Tue Dec 26 21:53:56 2017
 
-@author: ARJ
-import matplotlib.pyplot as plt
-plt.plot([1,2,3,4])
-plt.ylabel('some numbers')
-plt.show()
+@author: ARJ 
+Notes : All Rights Reserved
+see theory_notes_simple.py
 """
-import pdb
+
+#import pdb
+
+# from gbtools.lexer import Lexer
+# from gbsymbols import S
+
 from collections import OrderedDict
 
+"""
+HACK VERSION
+- unstructured _ unethical _ coded to run
+- structuration in process
+- you don't need the above knowledge to build something but knowing it helps
+"""
 
 
-L_user = 'dear berry' + ' '
+
+L_user = 'dear berry'
 #bot test
 class S: #Symbols keywords
     EOF = '{***end-of-file***}'
     NL = '\n'
+    WS = ' '
+    E = ''
+    
     EQUAL = '='
     LESS = '<'
     GREATER = '>'
@@ -26,12 +39,16 @@ class S: #Symbols keywords
     SQR = ']'
     
     PRINT = 'print'
+    
     NUMBER = 'number'
     STRING = 'string'
     BOOL = 'bool'
+    
     TRUE = 'true'
     FALSE = 'false'
+    
     EVAL = 'eval'
+    
     VAR = 'var'
     VAR_REF = '@'
     PLOT = 'plot'
@@ -52,6 +69,16 @@ class S: #Symbols keywords
     SET = 'set'
     ATTRIB = 'attribute'
     TABLE = 'table'
+    
+class T: #type
+    ES = 'ending statement'
+    BO = 'bool operator'
+    EO = 'equal operator'
+    VI = 'var type identifier'
+    VD = 'values delimiter'
+    AS = 'array symbol'
+    
+
     
 class E:
     global L_user
@@ -96,11 +123,10 @@ class Debug_cp(object):
         self.var += 1
         
 #another lex woulde be to identify blobks first this is a side effect
-
-class Token:
-    def __init__(self, value, type=None):
-        self.value = value
-        self.type = type
+MATH_OPS = ['+','-','*','/']
+BOOLS = [S.TRUE, S.FALSE]
+BOOL_OPS = [S.GREATER, S.LESS]
+EOS = [S.NL, S.EOF]
 
 def greenBerry_eval(x):
     global L_user
@@ -304,7 +330,10 @@ def greenBerry_eval(x):
     words = lex(x, KWDs, add_eof=1)
     printd(words) 
     line = 1
-    
+    '''
+    if elem.value == S.NL
+    error : elem.line
+    '''
     for i, elem in enumerate(words):
         #printd(elem)
         if elem == S.NL:
@@ -521,6 +550,8 @@ def greenBerry_eval(x):
     printd(g_cls)
 
 # python greenBerry_REPL.py
+    
+
 
 
 
