@@ -11,4 +11,8 @@ just run greenBerry_REPL.py
 
 write in main.gb and then save and run greenBerry_main.py
 
+### IDE
+
+run greenBerry_IDE.py write and run or load a .gb file !
+
 _from mauritius_
