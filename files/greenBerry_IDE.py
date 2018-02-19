@@ -35,6 +35,7 @@ class Files(Frame):
         ftypes = [('greenBerry files', '*.gb'), ('All files', '*')]
         dlg = filedialog.Open(self, filetypes = ftypes)
         fl = dlg.show()
+        
         if fl != '':
             self.txt.delete('1.0', END)
             text = self.readFile(fl)
