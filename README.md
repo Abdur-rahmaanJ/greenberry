@@ -1,7 +1,7 @@
 # greenBerry 
 A one-line statement language, complete with classes, cli and file compatible
 
-##Contributing Countries
+## Contributing Countries
 🇲🇺 | 🇲🇾 🇸🇮
 
 ## Run files
