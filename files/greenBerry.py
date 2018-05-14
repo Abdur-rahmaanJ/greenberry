@@ -98,7 +98,7 @@ class E:  # error
     PLOT = beg + L_user + ' you plotted wrongly on line'
     DEBUG = beg + L_user + ' wrong set command on line'
     TO = beg + L_user + ' missed word to on line'
-    EQUAL = beg + L_user + ' expecting = on line on line'
+    EQUAL = beg + L_user + ' expecting = on line'
     COLON = beg + L_user + ' expected : on line'
     ADD = beg + L_user + ' wrong add statement'
     
@@ -239,8 +239,11 @@ def greenBerry_eval(x):
     def simple_parse(g_vars, i, elem, words):
         #print('--',i, elem)
         if elem == S.VAR: #var x = 1
-            var_val = var_data(i+2, words, [S.NL, S.EOF])
-            g_vars[words[i+1]] = var_val
+            if words[i+2] == S.EQUAL:
+                var_val = var_data(i+2, words, [S.NL, S.EOF])
+                g_vars[words[i+1]] = var_val
+            else:
+                print(E.EQUAL, line)
                 
         elif elem == S.PRINT :
             print_handling(g_vars, i, words)
