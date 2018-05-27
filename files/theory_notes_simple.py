@@ -1,5 +1,7 @@
 """
 ALL RIGHTS RESERVED ABDUR_RAHMAAN JANHANGEER
+PRIMARY SOURCE MOVED TO
+https://bbs.hackers.mu/viewtopic.php?f=4&t=80
 _______________________________________________________________________________
 COMMON COMPILER THEORY SYNTAX P1
 
