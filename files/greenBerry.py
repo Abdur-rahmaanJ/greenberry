@@ -226,11 +226,11 @@ def greenBerry_eval(x):
             
     def plot_handling(i, words):
         try:
-            dataX = list(map(int, words[i+1].split(",")))
-            labelX = words[i+2].split('-')[1]
-            dataY = list(map(int, words[i+3].split(",")))
-            labelY = words[i+4].split('-')[1]
-            printd(labelY)
+            dataX = list(map(float, words[i+1].split('-')))
+            labelX = search(i, 1, words, S.COMMA)
+            comma_i = search_symbol(i, 1, words, S.COMMA)[1]
+            dataY = list(map(float, words[comma_i+1].split('-')))
+            labelY = search(comma_i, 1, words, [S.NL, S.EOF])
             linear_plot(dataX, labelX, dataY, labelY) 
         except:
             print(E.PLOT)
