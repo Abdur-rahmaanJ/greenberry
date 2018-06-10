@@ -314,13 +314,11 @@ def greenBerry_eval(x):
         type = g_vars[name][1]
         value = g_vars[name][0]
         returned_val = 0
-        if type == 'array' and words[at_i+2] != S.SQL:
+        if len(words) < 4:
             returned_val = value
         elif type == 'array' and words[at_i+2] == S.SQL:
             value = value.split(S.COMMA)
             returned_val = value[int(words[at_i+3])].strip()
-        else:
-            returned_val = value
         
         return returned_val
 
