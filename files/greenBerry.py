@@ -499,7 +499,7 @@ def greenBerry_eval(x):
         elif elem == S.SEE:  # see power of Man
             try:
                 attr = words[i+1]
-                class_name = words[i+3]
+                class_name = words[i+2]
                 print(g_cls[class_name]['attributes'][attr][0])
             except:
                 print(E.CLASSATT, line)
@@ -507,24 +507,21 @@ def greenBerry_eval(x):
         elif elem == S.ADD:  # add to Man attribute name = string i am me
             try:
                 F.bStart = i
-                if words[i+1] == S.TO:
-                    if words[i+2] in g_cls:
-                        if words[i+3] == S.ATTRIB:
-                            if words[i+5] == S.EQUAL:
-                                value = var_data(i+5, words, [S.NL, S.EOF])
-                                g_cls[words[i+2]]['attributes'][words[i+4]] = value 
-                            else:
-                                print(E.EQUAL, line)
-                        elif words[i+3] == S.ACTION:  # add to Man action run : print running...
-                            if words[i+5] == S.COLON:
-                                g_cls[words[i+2]]['actions'][words[i+4]] = search(i, 5, words, [S.NL, S.EOF])
-                            else:
-                                print(E.COLON, line)
+                if words[i+1] in g_cls:
+                    if words[i+2] == S.ATTRIB:
+                        if words[i+4] == S.EQUAL:
+                            value = var_data(i+4, words, [S.NL, S.EOF])
+                            g_cls[words[i+1]]['attributes'][words[i+3]] = value 
+                        else:
+                            print(E.EQUAL, line)
+                    elif words[i+2] == S.ACTION: #add to Man action run : print running...
+                        if words[i+4] == S.COLON:
+                            g_cls[words[i+1]]['actions'][words[i+3]] = search(i, 4, words, [S.NL, S.EOF])
+                        else:
+                            print(E.COLON, line)
                             
-                    else:
-                        print(E.CLASSNAME, line)
                 else:
-                    print(E.TO, line)
+                    print(E.CLASSNAME, line)
                 end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
                 F.bEnd = end_i
             except:
