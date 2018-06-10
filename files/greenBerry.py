@@ -291,7 +291,7 @@ def greenBerry_eval(x):
     
     def var_type(string):  # var x = 1
         type = None
-        words = lex(x, KWDs)
+        words = lex(string, KWDs)
         if words[0] == S.STRING:
             type = 'string'
         elif words[0] == S.VAR_REF:
