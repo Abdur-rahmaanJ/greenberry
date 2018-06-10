@@ -89,7 +89,6 @@ class Files(Frame):
         global file_dir, old_text
         
         try:
-            
             self.read_file(file_dir)
             
             with open(file_dir, "w") as file:
@@ -97,7 +96,6 @@ class Files(Frame):
                 file.close()
                 old_text = self.txt.get("1.0", END+"-1c")
                 self.key_pressed()
-
         except:
             self.save_as_command()
 
