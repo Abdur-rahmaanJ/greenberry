@@ -374,7 +374,8 @@ def greenBerry_eval(x):
                 raw = search_symbol(i, 1, words, [S.EQUAL, S.LESS, S.GREATER])
                 symbol = raw[0]
                 symbol_i = raw[1]
-                to_do = search(i, 4, words, [S.NL, S.EOF])
+                colon_i = search_symbol(i, 1, words, S.COLON)[1]
+                to_do = search(colon_i, 0, words, [S.NL, S.EOF])
                 wds = lex(to_do, KWDs)
                 if words[i+1] == S.VAR_REF:
                     # print('L @ detected')
