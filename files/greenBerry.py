@@ -348,15 +348,7 @@ def greenBerry_eval(x):
                 F.bStart = i
                 
                 times_by = int(words[i+1])
-                base = i+3
-                j = 1
-                string = ''
-                while base+j < len(words):
-                    if words[base+j] == S.NL or words[base+j] == S.EOF:
-                        break
-                    else:
-                        string += words[base+j] + ' '
-                        j += 1
+                string = search(i, 3, words, [S.NL, S.EOF])
                 wds = lex(string, KWDs)
                 printd(wds)
                 for d in range(times_by):
