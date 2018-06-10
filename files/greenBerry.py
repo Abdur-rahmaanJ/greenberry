@@ -233,7 +233,7 @@ def greenBerry_eval(x):
             labelY = search(comma_i, 1, words, [S.NL, S.EOF])
             linear_plot(dataX, labelX, dataY, labelY) 
         except:
-            print(E.PLOT)
+            print(E.PLOT, line)
     
       
     def simple_parse(g_vars, i, elem, words):
