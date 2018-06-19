@@ -226,14 +226,14 @@ def greenBerry_eval(x):
             
     def plot_handling(i, words):
         try:
-            dataX = list(map(int, words[i+1].split(",")))
-            labelX = words[i+2].split('-')[1]
-            dataY = list(map(int, words[i+3].split(",")))
-            labelY = words[i+4].split('-')[1]
-            printd(labelY)
+            dataX = list(map(float, words[i+1].split('-')))
+            labelX = search(i, 1, words, S.COMMA)
+            comma_i = search_symbol(i, 1, words, S.COMMA)[1]
+            dataY = list(map(float, words[comma_i+1].split('-')))
+            labelY = search(comma_i, 1, words, [S.NL, S.EOF])
             linear_plot(dataX, labelX, dataY, labelY) 
         except:
-            print(E.PLOT)
+            print(E.PLOT, line)
     
       
     def simple_parse(g_vars, i, elem, words):
@@ -291,7 +291,7 @@ def greenBerry_eval(x):
     
     def var_type(string):  # var x = 1
         type = None
-        words = lex(x, KWDs)
+        words = lex(string, KWDs)
         if words[0] == S.STRING:
             type = 'string'
         elif words[0] == S.VAR_REF:
@@ -314,9 +314,7 @@ def greenBerry_eval(x):
         type = g_vars[name][1]
         value = g_vars[name][0]
         returned_val = 0
-        if type == 'array' and words[at_i+2] != S.SQL:
-            returned_val = value
-        elif type == 'array' and words[at_i+2] == S.SQL:
+        if type == 'array' and len(words) > 3:
             value = value.split(S.COMMA)
             returned_val = value[int(words[at_i+3])].strip()
         else:
@@ -348,15 +346,7 @@ def greenBerry_eval(x):
                 F.bStart = i
                 
                 times_by = int(words[i+1])
-                base = i+3
-                j = 1
-                string = ''
-                while base+j < len(words):
-                    if words[base+j] == S.NL or words[base+j] == S.EOF:
-                        break
-                    else:
-                        string += words[base+j] + ' '
-                        j += 1
+                string = search(i, 3, words, [S.NL, S.EOF])
                 wds = lex(string, KWDs)
                 printd(wds)
                 for d in range(times_by):
@@ -374,7 +364,8 @@ def greenBerry_eval(x):
                 raw = search_symbol(i, 1, words, [S.EQUAL, S.LESS, S.GREATER])
                 symbol = raw[0]
                 symbol_i = raw[1]
-                to_do = search(i, 4, words, [S.NL, S.EOF])
+                colon_i = search_symbol(i, 1, words, S.COLON)[1]
+                to_do = search(colon_i, 0, words, [S.NL, S.EOF])
                 wds = lex(to_do, KWDs)
                 if words[i+1] == S.VAR_REF:
                     # print('L @ detected')
@@ -506,7 +497,7 @@ def greenBerry_eval(x):
         elif elem == S.SEE:  # see power of Man
             try:
                 attr = words[i+1]
-                class_name = words[i+3]
+                class_name = words[i+2]
                 print(g_cls[class_name]['attributes'][attr][0])
             except:
                 print(E.CLASSATT, line)
@@ -514,24 +505,21 @@ def greenBerry_eval(x):
         elif elem == S.ADD:  # add to Man attribute name = string i am me
             try:
                 F.bStart = i
-                if words[i+1] == S.TO:
-                    if words[i+2] in g_cls:
-                        if words[i+3] == S.ATTRIB:
-                            if words[i+5] == S.EQUAL:
-                                value = var_data(i+5, words, [S.NL, S.EOF])
-                                g_cls[words[i+2]]['attributes'][words[i+4]] = value 
-                            else:
-                                print(E.EQUAL, line)
-                        elif words[i+3] == S.ACTION:  # add to Man action run : print running...
-                            if words[i+5] == S.COLON:
-                                g_cls[words[i+2]]['actions'][words[i+4]] = search(i, 5, words, [S.NL, S.EOF])
-                            else:
-                                print(E.COLON, line)
+                if words[i+1] in g_cls:
+                    if words[i+2] == S.ATTRIB:
+                        if words[i+4] == S.EQUAL:
+                            value = var_data(i+4, words, [S.NL, S.EOF])
+                            g_cls[words[i+1]]['attributes'][words[i+3]] = value 
+                        else:
+                            print(E.EQUAL, line)
+                    elif words[i+2] == S.ACTION: #add to Man action run : print running...
+                        if words[i+4] == S.COLON:
+                            g_cls[words[i+1]]['actions'][words[i+3]] = search(i, 4, words, [S.NL, S.EOF])
+                        else:
+                            print(E.COLON, line)
                             
-                    else:
-                        print(E.CLASSNAME, line)
                 else:
-                    print(E.TO, line)
+                    print(E.CLASSNAME, line)
                 end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
                 F.bEnd = end_i
             except:
