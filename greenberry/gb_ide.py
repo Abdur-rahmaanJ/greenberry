@@ -206,4 +206,5 @@ ex = Files(root)
 ex.pack(side="bottom")
 
 root.geometry("600x500-600-150")
+root.iconbitmap(default='../docs/favicon.ico')
 root.mainloop()

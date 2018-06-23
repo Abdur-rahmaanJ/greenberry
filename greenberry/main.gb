@@ -16,6 +16,7 @@ if @y = ab : print 6
 for 5 times : print greenBerry
 
 
+set debug on
 
 class Man : power = 10 action walk : print walking...
 
