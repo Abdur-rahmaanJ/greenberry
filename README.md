@@ -2,7 +2,7 @@
 A new one-line statement programming language, complete with classes, cli and file compatible
 
 ## 🚩 contributing countries
-🇲🇺 | 🇲🇾 🇸🇮 🇰🇪
+🇲🇺 🇲🇾 🇸🇮 🇰🇪
 
 ## 🔗 website
 https://abdur-rahmaanj.github.io/greenBerry/
