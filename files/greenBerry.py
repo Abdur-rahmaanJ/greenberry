@@ -2,30 +2,19 @@
 """
 Created on Tue Dec 26 21:53:56 2017
 
-@author: ARJ 
-Notes : All Rights Reserved
+Notes : see
 see theory_notes_simple.py
 """
 
-# import pdb
-# from gbtools.lexer import Lexer
-# from gbsymbols import S
 
 from collections import OrderedDict
 
-"""
-HACK VERSION
-- unstructured _ unethical _ coded to run
-- structuration in process
-- you don't need the above knowledge to build something but knowing it helps
-"""
-
-
 L_user = 'dear berry'
-# bot test
 
-
-class S:  # Symbols keywords
+class S:
+    '''
+    contains symbols used in lang
+    '''
     EOF = '{***end-of-file***}'
     NL = '\n'
     WS = ' '
@@ -71,7 +60,10 @@ class S:  # Symbols keywords
     TABLE = 'table'
 
 
-class T:  # type
+class T:
+    '''
+    type of symbols
+    '''
     ES = 'ending statement'
     BO = 'bool operator'
     EO = 'equal operator'
@@ -80,8 +72,11 @@ class T:  # type
     AS = 'array symbol'
 
     
-class E:  # error
+class E:
     global L_user
+    '''
+    contains error messages
+    '''
     beg = ''
     FOR = beg + L_user + ' you made a mistake on a for loop on line'
     IF = beg + L_user + ' you made a mistake on an if statement on line'
@@ -104,18 +99,27 @@ class E:  # error
     
     
 class M:  # memory
+    '''
+    global memory
+    '''
     g_vars = {}
     g_fs = {}
     g_cls = {}
 
 
-class F:  # flags
+class F:
+    '''
+    flags
+    '''
     bStart = 100  # block start
     bEnd = 0
     isDebugOn = 0
 
 
 class Debug_cp(object):
+    '''
+    controled debugger logging module better
+    '''
     def __init__(self, name):
         self.name = name
         self.var = 1
@@ -135,14 +139,23 @@ EOS = [S.NL, S.EOF]
 def greenBerry_eval(x):
     global L_user
         
-    def printd(this, *args):
-        a = F.isDebugOn
-        if a == 1:
-            print(' '*5,'@debug->', this)
-        for arg in args:
-            print(' '*5,'@debug->', arg)
+    def printd(*args):
+        '''
+        custom debugger print
+        no return
+        '''
+        if F.isDebugOn:
+            for arg in args:
+                print(' '*5,'@debug->', arg)
             
-    def lex(x, KWDs, **keyword_parameters):
+    def lex(x, KWDs, add_eof=''):
+        '''
+        breaks string into symbols and ids
+        returns list
+        
+        x - source string
+        KWDs - keywords/symbols
+        '''
         words = []
         cup = ''
         for i, elem in enumerate(x):
@@ -152,12 +165,24 @@ def greenBerry_eval(x):
                 if cup != '':
                     words.append(cup)
                     cup = ''
-        if('add_eof' in keyword_parameters):
-            if keyword_parameters['add_eof'] == 1:
-                words.append(S.EOF)
+                    
+        if add_eof == 1:
+            words.append(S.EOF)
+            
         return words
     
     def search(i, offset, words, delimeters):
+        '''
+        searches for symbols and returns string in between specified index
+        and symbol
+        
+        i - current index
+        offset - offset from index
+        words - current list of symbol/keyword being searched in
+        delimiters - list of delimiting symbols
+        
+        return string
+        '''
         base = i+offset
         j = 1
         string = ''
@@ -170,18 +195,43 @@ def greenBerry_eval(x):
         return string
     
     def search_toks(i, offset, words, delimeters):
+        '''
+        searches for symbols and returns all found sybols in between 
+        specified index and symbol as list
+        
+        i - current index
+        offset - offset from index
+        words - current list of symbol/keyword being searched in
+        delimiters - list of delimiting symbols
+        
+        return list
+        '''
         base = i+offset
         j = 1
-        string = []
+        list = []
         while base+j < len(words):
             if words[base+j] in delimeters:
                 break
             else:
-                string.append(words[base+j])
+                list.append(words[base+j])
                 j += 1
-        return string
+        return list
     
     def search_symbol(i, offset, words, delimeters): #i to be resolved
+        '''
+        finds the index as well as the delimiting symbol (in case there are
+        many) we are searching for
+        
+        i - current index
+        offset - offset from index
+        words - current list of symbol/keyword being searched in
+        delimiters - list of delimiting symbols
+        
+        return list
+        
+        list[0] - symbol
+        list[1] - index
+        '''
         base = i+offset
         j = 1
         while base+j < len(words):
@@ -191,8 +241,8 @@ def greenBerry_eval(x):
                 j += 1
         return [words[base+j], base+j]
         
-    def print_handling(g_vars, i, words): #print
-    # if words[i-1] != S.COLON:
+    def print_handling(g_vars, i, words): 
+        '''parses print command'''
         try:
             if i+1 < len(words) and words[i+1] not in [S.STRING, S.EVAL, S.VAR_REF]:
                 print(words[i+1])
@@ -215,6 +265,7 @@ def greenBerry_eval(x):
             print(E.PRINT)    
             
     def linear_plot(dataX, labelX, dataY, labelY):
+        '''simple line plot'''
         try:
             import matplotlib.pyplot as plt
             plt.plot(dataX, dataY)
@@ -225,6 +276,9 @@ def greenBerry_eval(x):
             print('matplotlib unimported')
             
     def plot_handling(i, words):
+        '''
+        handles plotting of points
+        '''
         try:
             dataX = list(map(float, words[i+1].split('-')))
             labelX = search(i, 1, words, S.COMMA)
@@ -237,8 +291,16 @@ def greenBerry_eval(x):
     
       
     def simple_parse(g_vars, i, elem, words):
-        #print('--',i, elem)
-        if elem == S.VAR: #var x = 1
+        '''
+        parses simple statements
+        
+        variable assignment
+        print statement
+        ploting
+        
+        g_vars is a registry / dictionary storing variables
+        '''
+        if elem == S.VAR: # var x = 1
             if words[i+2] == S.EQUAL:
                 var_val = var_data(i+2, words, [S.NL, S.EOF])
                 g_vars[words[i+1]] = var_val
@@ -252,6 +314,15 @@ def greenBerry_eval(x):
             plot_handling(i, words)
                 
     def simple_parse2(g_vars, words):
+        '''
+        parses simple statements
+        
+        variable assignment
+        print statement
+        ploting
+        
+        g_vars is a registry / dictionary storing variables
+        '''
         for i, elem in enumerate(words):
             if elem == S.VAR:
                 var_val = var_data(i+2, words, [S.NL, S.EOF])
@@ -262,6 +333,7 @@ def greenBerry_eval(x):
                 plot_handling(i, words)
                 
     def var_data(equal_i, words, delimeters): #var x = 1
+        '''recognises data type'''
         value = 0
         type = None
         if words[equal_i+1] == S.STRING:
@@ -310,6 +382,7 @@ def greenBerry_eval(x):
         return type
 
     def var_ref_handling(at_i, words, g_vars):  # @y[1]
+        '''recognises references to variables'''
         name = words[at_i+1]  # class debug
         type = g_vars[name][1]
         value = g_vars[name][0]
@@ -321,7 +394,10 @@ def greenBerry_eval(x):
             returned_val = value
         
         return returned_val
-
+    ###
+    # program starts here
+    ###
+    
     KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
             S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
             S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
@@ -333,14 +409,23 @@ def greenBerry_eval(x):
     words = lex(x, KWDs, add_eof=1)
     printd(words) 
     line = 1
+    
     '''
     if elem.value == S.NL
     error : elem.line
     '''
-    for i, elem in enumerate(words):
+    for i, elem in enumerate(words): # mainloop for complex parsing
         # printd(elem)
+        
+        #
+        # newline
+        #
         if elem == S.NL:
             line += 1
+            
+        #
+        # minified for loop
+        #
         elif elem == S.FOR:
             try:
                 F.bStart = i
@@ -357,6 +442,9 @@ def greenBerry_eval(x):
             except:
                 print(E.FOR, line)
                 
+        #
+        # if statement
+        #
         elif elem == S.IF: # to be rededefined
             try:
                 F.bStart = i
@@ -403,7 +491,9 @@ def greenBerry_eval(x):
                 print(E.IF, line)
             
             # resolve flag
-        
+        #
+        # function definition
+        #
         elif elem == S.FUNCDEF:  # func vector : print aaa #func vector x : print @x
             params = []
             try:
@@ -427,7 +517,9 @@ def greenBerry_eval(x):
                 F.bEnd = end_i
             except:
                 print(E.FUNCDEF, line)
-            
+        #
+        # function call
+        #
         elif elem == S.FUNCCALL: # call vector
             try:
                 func_name = words[i+1]
@@ -447,7 +539,10 @@ def greenBerry_eval(x):
                     simple_parse2(registry, wds)
             except:
                 print(E.FUNCCALL, line)
-            
+
+        #
+        # class definition
+        #
         elif elem == S.CLASS:  # class Man : power = 10 action walk : print a
             # attrs = {} future
             try:
@@ -482,7 +577,10 @@ def greenBerry_eval(x):
             except:
                 print(E.CLASSDEC, line)
                 
-        elif elem == S.MAKE:
+        #
+        # call class method. 
+        #      
+        elif elem == S.MAKE: # make Man walk
             try:
                 class_name = words[i+1]
                 if class_name not in g_cls:
@@ -493,7 +591,10 @@ def greenBerry_eval(x):
                 simple_parse2(g_vars, wds)
             except:
                 print(E.CLASSACT, line)
-            
+                
+        #
+        # attribute viewing
+        #  
         elif elem == S.SEE:  # see power of Man
             try:
                 attr = words[i+1]
@@ -501,7 +602,10 @@ def greenBerry_eval(x):
                 print(g_cls[class_name]['attributes'][attr][0])
             except:
                 print(E.CLASSATT, line)
-                
+
+        #
+        # add attribute to class
+        #        
         elif elem == S.ADD:  # add to Man attribute name = string i am me
             try:
                 F.bStart = i
@@ -524,6 +628,10 @@ def greenBerry_eval(x):
                 F.bEnd = end_i
             except:
                 print(E.ADD, line)
+                
+        #
+        # debug on or off
+        #
         elif elem == S.SET:  # set debug on - set debug off
             try:
                 if words[i+1] == 'debug':
