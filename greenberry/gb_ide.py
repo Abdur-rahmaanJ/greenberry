@@ -1,10 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
+import tkinter.scrolledtext as tkst
 from greenBerry import greenBerry_eval
+import subprocess
+import sys
 
-file_dir = ""
-old_text = ""
 color1 = ["var", "print", "set", "debug", "plot"]
 color2 = ["string", "eval", "times", "action", "of", "to", "attribute",
           "bool"]
@@ -22,8 +23,6 @@ class Files(Frame):
         parent.protocol("WM_DELETE_WINDOW", self.wclose)
 
     def initUI(self):
-        global old_text
-
         self.parent.title("greenBerry IDE - Untitlted")
         self.pack(fill=BOTH, expand=1)
 
@@ -46,38 +45,38 @@ class Files(Frame):
         self.bind_all("<Control-S>", self.save_as_command)
         self.bind_all("<Key>", self.key_pressed)
 
-        self.txt = Text(self)
+        self.txt = tkst.ScrolledText(self)
         self.txt.pack(fill=BOTH, expand=1)
-        old_text = self.txt.get("1.0", END+"-1c")
+        
+        self.old_text = self.txt.get("1.0", END+"-1c")
+        self.file_dir = ""
+
+        self.first = True
 
     def key_pressed(self, event=0):
         self.color_text() #run syntax highlighting
         
-        global old_text
-
         a = self.parent.title()
 
-        if self.txt.get("1.0", END+"-1c") != old_text and a[0] != "*":
+        if self.txt.get("1.0", END+"-1c") != self.old_text and a[0] != "*":
             self.parent.title("*" + self.parent.title())
             
-        elif self.txt.get("1.0", END+"-1c") == old_text and a[0] == "*":
+        elif self.txt.get("1.0", END+"-1c") == self.old_text and a[0] == "*":
             self.parent.title(self.parent.title()[1:])
                     
     def open_file(self, event=0):
-        global file_dir, old_text
-
         self.txt.delete(INSERT) #Ctrl+o causes a new line so we need to delete it
         
         ftypes = [("greenBerry files", "*.gb"), ("All files", "*")]
         file = filedialog.askopenfile(filetypes = ftypes)
 
         if file != None:
-            file_dir = file.name
+            self.file_dir = file.name
             self.parent.title("greenBerry IDE" + " - " + file.name.replace("/", "\\"))
             self.txt.delete("1.0", END+"-1c")
             text = self.read_file(file.name)
             self.txt.insert(END, text)
-            old_text = self.txt.get("1.0", END+"-1c")
+            self.old_text = self.txt.get("1.0", END+"-1c")
             self.key_pressed()
 
     def read_file(self, filename):
@@ -85,46 +84,82 @@ class Files(Frame):
         text = f.read()
         return text
 
-    def save_file(self, event=0):
-        global file_dir, old_text
-        
+    def save_file(self, event=0):        
         try:
-            self.read_file(file_dir)
+            self.read_file(self.file_dir)
             
-            with open(file_dir, "w") as file:
+            with open(self.file_dir, "w") as file:
                 file.write(self.txt.get("1.0", END+"-1c"))
                 file.close()
-                old_text = self.txt.get("1.0", END+"-1c")
+                self.old_text = self.txt.get("1.0", END+"-1c")
                 self.key_pressed()
         except:
             self.save_as_command()
 
     def save_as_command(self, event=0):
-        global file_dir, old_text
-        
         file = filedialog.asksaveasfile(mode="w", defaultextension=".gb", filetypes=(("greenBerry files", "*.gb"), ("All files", "*")))
         if file != None:
             self.parent.title("greenBerry IDE" + " - " + file.name.replace("/", "\\"))
-            file_dir = file.name
+            self.file_dir = file.name
             data = self.txt.get("1.0", END+"-1c")
             file.write(data)
             file.close()
-            old_text = self.txt.get("1.0", END+"-1c")
+            self.old_text = self.txt.get("1.0", END+"-1c")
     
     def run_command(self, event=0):
-        global file_dir, old_text
-        
         x = self.txt.get("1.0", END+"-1c")
 
-        if x == old_text:
-            greenBerry_eval(self.read_file(file_dir))
-            print("="*30)
+        if x == self.old_text:
+            if self.first == True:
+                self.first = False
+                self.outwin = Toplevel(root)
+                self.outwin.title("greenBerry IDE - output")
+                self.outwin.geometry("600x640")
+                
+                self.txtout = tkst.ScrolledText(self.outwin)
+                self.txtout.pack(fill=BOTH, expand=1)
+
+            proc = subprocess.Popen(["python", "-c", "import greenBerry; greenBerry.greenBerry_eval(\"\"\"{0}\"\"\")".format(self.read_file(self.file_dir))], stdout=subprocess.PIPE)
+            out = proc.communicate()[0]
+            
+            self.txtout.config(state=NORMAL)
+            self.txtout.insert(END, out)
+            self.txtout.insert(END, "="*50+"\n")
+            self.txtout.pack(fill=BOTH, expand=1)
+            self.txtout.config(state=DISABLED)
+
+            self.txtout.tag_add("colorout", "1.0", END)
+            self.txtout.tag_config("colorout", foreground="blue")
+
+            self.txtout.yview_pickplace(END)
+            
             
         elif messagebox.askokcancel("Save before run", "Your file must be saved before running.\nPress OK to save.") == True:
             self.save_file()
             try:
-                greenBerry_eval(self.read_file(file_dir))
-                print("="*30)
+                if self.first == True:
+                    self.first = False
+                    self.outwin = Toplevel(root)
+                    self.outwin.title("greenBerry IDE - output")
+                    self.outwin.geometry("600x640")
+                    
+                    self.txtout = tkst.ScrolledText(self.outwin)
+                    self.txtout.pack(fill=BOTH, expand=1)
+
+                proc = subprocess.Popen(["python", "-c", "import greenBerry; greenBerry.greenBerry_eval(\"\"\"{0}\"\"\")".format(self.read_file(self.file_dir))], stdout=subprocess.PIPE)
+                out = proc.communicate()[0]
+                
+                self.txtout.config(state=NORMAL)
+                self.txtout.insert(END, out)
+                self.txtout.insert(END, "="*50+"\n")
+                self.txtout.pack(fill=BOTH, expand=1)
+                self.txtout.config(state=DISABLED)
+
+                self.txtout.tag_add("colorout", "1.0", END)
+                self.txtout.tag_config("colorout", foreground="blue")
+
+                self.txtout.yview_pickplace(END)
+            
             except:
                 self.run_command()
 
@@ -205,6 +240,7 @@ bottom.pack()
 ex = Files(root)
 ex.pack(side="bottom")
 
-root.geometry("600x500-600-150")
+root.geometry("600x640")
 root.iconbitmap(default='../docs/favicon.ico')
+
 root.mainloop()
