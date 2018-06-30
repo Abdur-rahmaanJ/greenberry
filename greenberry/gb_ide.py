@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 import tkinter.scrolledtext as tkst
@@ -7,30 +7,80 @@ import subprocess
 import sys
 
 color1 = ["var", "print", "set", "debug", "plot"]
-color2 = ["string", "eval", "times", "action", "of", "to", "attribute",
+color2 = ["string", "eval", "times", "action", "attribute",
           "bool"]
 color3 = ["=", "<", "<=", ">", ">=", "if", "for"]
 color4 = ["@"]
 color5 = ["make", "see", "add", "class", "func", "call"]
 
-class Files(Frame):
+
+###### needed for line numbers ######
+class TextLineNumbers(tk.Canvas):
+    def __init__(self, *args, **kwargs):
+        tk.Canvas.__init__(self, *args, **kwargs)
+        self.textwidget = None
+
+    def attach(self, text_widget):
+        self.textwidget = text_widget
+
+    def redraw(self, *args):
+        self.delete("all")
+
+        i = self.textwidget.index("@0,0")
+
+        while True :
+            dline= self.textwidget.dlineinfo(i)
+            if dline is None: break
+            y = dline[1]
+            linenum = str(i).split(".")[0]
+            self.create_text(2,y,anchor="nw", text=linenum)
+            i = self.textwidget.index("%s+1line" % i)
+
+class CustomText(tk.Text):
+    def __init__(self, *args, **kwargs):
+        tkst.ScrolledText.__init__(self, *args, **kwargs)
+
+        self._orig = self._w + "_orig"
+        self.tk.call("rename", self._w, self._orig)
+        self.tk.createcommand(self._w, self._proxy)
+
+    def _proxy(self, *args):
+        try:
+            cmd = (self._orig,) + args
+            result = self.tk.call(cmd)
+
+            if (args[0] in ("insert", "replace", "delete") or 
+                args[0:3] == ("mark", "set", "insert") or
+                args[0:2] == ("xview", "moveto") or
+                args[0:2] == ("xview", "scroll") or
+                args[0:2] == ("yview", "moveto") or
+                args[0:2] == ("yview", "scroll")
+            ):
+                self.event_generate("<<Change>>", when="tail")
+
+            return result
+        
+        except: # this prevents error '_tkinter.TclError: text doesn't contain any characters tagged with "sel"'
+            pass
+###### needed for line numbers ######
+
+
+class Files(tk.Frame):
 
     def __init__(self, parent):
-        Frame.__init__(self, parent)   
+        tk.Frame.__init__(self, parent)   
 
         self.parent = parent        
-        self.initUI()
         parent.protocol("WM_DELETE_WINDOW", self.wclose)
 
-    def initUI(self):
         self.parent.title("greenBerry IDE - Untitlted")
-        self.pack(fill=BOTH, expand=1)
+        self.pack(fill="both", expand=True)
 
-        menubar = Menu(self.parent)
+        menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
 
-        fileMenu = Menu(menubar)
-        runMenu = Menu(menubar)
+        fileMenu = tk.Menu(menubar)
+        runMenu = tk.Menu(menubar)
         fileMenu.add_command(label="Save", command = self.save_file, accelerator="Ctrl+S")
         fileMenu.add_command(label="Save As", command = self.save_as_command, accelerator="Ctrl+Shift+S")
         fileMenu.add_command(label="Open", command = self.open_file, accelerator="Ctrl+O")
@@ -45,27 +95,42 @@ class Files(Frame):
         self.bind_all("<Control-S>", self.save_as_command)
         self.bind_all("<Key>", self.key_pressed)
 
-        self.txt = tkst.ScrolledText(self)
-        self.txt.pack(fill=BOTH, expand=1)
-        
-        self.old_text = self.txt.get("1.0", END+"-1c")
+        self.txt = CustomText(self)
+        self.linenumbers = TextLineNumbers(self, width=30)
+        self.linenumbers.attach(self.txt)
+
+        self.linenumbers.pack(side="left", fill="y")
+        self.txt.pack(side="right", fill="both", expand=True)
+
+        self.txt.bind("<<Change>>", self._on_change)
+        self.txt.bind("<Configure>", self._on_change)
+
+        self.old_text = self.txt.get("1.0", "end"+"-1c")
         self.file_dir = ""
 
         self.first = True
 
+    def _on_change(self, event):
+        self.linenumbers.redraw()
+        
+    def _on_change2(self, event):
+            self.linenumbers2.redraw()
+        
     def key_pressed(self, event=0):
         self.color_text() #run syntax highlighting
         
         a = self.parent.title()
 
-        if self.txt.get("1.0", END+"-1c") != self.old_text and a[0] != "*":
+        if self.txt.get("1.0", "end"+"-1c") != self.old_text and a[0] != "*":
             self.parent.title("*" + self.parent.title())
             
-        elif self.txt.get("1.0", END+"-1c") == self.old_text and a[0] == "*":
+        elif self.txt.get("1.0", "end"+"-1c") == self.old_text and a[0] == "*":
             self.parent.title(self.parent.title()[1:])
+
+        self.txt.yview_pickplace("insert")
                     
     def open_file(self, event=0):
-        self.txt.delete(INSERT) #Ctrl+o causes a new line so we need to delete it
+        self.txt.delete("insert") #Ctrl+o causes a new line so we need to delete it
         
         ftypes = [("greenBerry files", "*.gb"), ("All files", "*")]
         file = filedialog.askopenfile(filetypes = ftypes)
@@ -73,10 +138,10 @@ class Files(Frame):
         if file != None:
             self.file_dir = file.name
             self.parent.title("greenBerry IDE" + " - " + file.name.replace("/", "\\"))
-            self.txt.delete("1.0", END+"-1c")
+            self.txt.delete("1.0", "end"+"-1c")
             text = self.read_file(file.name)
-            self.txt.insert(END, text)
-            self.old_text = self.txt.get("1.0", END+"-1c")
+            self.txt.insert("end", text)
+            self.old_text = self.txt.get("1.0", "end"+"-1c")
             self.key_pressed()
 
     def read_file(self, filename):
@@ -89,9 +154,9 @@ class Files(Frame):
             self.read_file(self.file_dir)
             
             with open(self.file_dir, "w") as file:
-                file.write(self.txt.get("1.0", END+"-1c"))
+                file.write(self.txt.get("1.0", "end"+"-1c"))
                 file.close()
-                self.old_text = self.txt.get("1.0", END+"-1c")
+                self.old_text = self.txt.get("1.0", "end"+"-1c")
                 self.key_pressed()
         except:
             self.save_as_command()
@@ -101,64 +166,82 @@ class Files(Frame):
         if file != None:
             self.parent.title("greenBerry IDE" + " - " + file.name.replace("/", "\\"))
             self.file_dir = file.name
-            data = self.txt.get("1.0", END+"-1c")
+            data = self.txt.get("1.0", "end"+"-1c")
             file.write(data)
             file.close()
-            self.old_text = self.txt.get("1.0", END+"-1c")
+            self.old_text = self.txt.get("1.0", "end"+"-1c")
     
     def run_command(self, event=0):
-        x = self.txt.get("1.0", END+"-1c")
+        x = self.txt.get("1.0", "end"+"-1c")
 
         if x == self.old_text:
             if self.first == True:
-                self.first = False
-                self.outwin = Toplevel(root)
+                self.outwin = tk.Toplevel(root)
                 self.outwin.title("greenBerry IDE - output")
                 self.outwin.geometry("600x640")
                 
-                self.txtout = tkst.ScrolledText(self.outwin)
-                self.txtout.pack(fill=BOTH, expand=1)
+                self.txtout = CustomText(self.outwin)
+                
+                self.linenumbers2 = TextLineNumbers(self.outwin, width=30)
+                self.linenumbers2.attach(self.txtout)
 
-            proc = subprocess.Popen(["python", "-c", "import greenBerry; greenBerry.greenBerry_eval(\"\"\"{0}\"\"\")".format(self.read_file(self.file_dir))], stdout=subprocess.PIPE)
-            out = proc.communicate()[0]
+                self.linenumbers2.pack(side="left", fill="y")
+                self.txtout.pack(fill="both", expand=True)
+
+                self.txtout.bind("<<Change>>", self._on_change2)
+                self.txtout.bind("<Configure>", self._on_change2)
             
-            self.txtout.config(state=NORMAL)
-            self.txtout.insert(END, out)
-            self.txtout.insert(END, "="*50+"\n")
-            self.txtout.pack(fill=BOTH, expand=1)
-            self.txtout.config(state=DISABLED)
+            proc = subprocess.Popen(["python", "-c", "import greenBerry; greenBerry.greenBerry_eval(\"\"\"{0}\"\"\")".format(self.read_file(self.file_dir))], stdout=subprocess.PIPE)
+            out = proc.communicate()[0][:-2]
+            
+            self.txtout.config(state="normal")
+            if self.first != True:
+                self.txtout.insert("end", "\n"+"="*25+"NEW RUN"+"="*25+"\n")
+            else:
+                self.first = False
+            self.txtout.insert("end", out)
+            self.txtout.config(state="disabled")
 
-            self.txtout.tag_add("colorout", "1.0", END)
+            self.txtout.tag_add("colorout", "1.0", "end")
             self.txtout.tag_config("colorout", foreground="blue")
 
-            self.txtout.yview_pickplace(END)
+            self.txtout.yview_pickplace("end")
             
             
         elif messagebox.askokcancel("Save before run", "Your file must be saved before running.\nPress OK to save.") == True:
             self.save_file()
             try:
                 if self.first == True:
-                    self.first = False
-                    self.outwin = Toplevel(root)
+                    self.outwin = tk.Toplevel(root)
                     self.outwin.title("greenBerry IDE - output")
                     self.outwin.geometry("600x640")
                     
-                    self.txtout = tkst.ScrolledText(self.outwin)
-                    self.txtout.pack(fill=BOTH, expand=1)
+                    self.txtout = CustomText(self.outwin)
+                    
+                    self.linenumbers2 = TextLineNumbers(self.outwin, width=30)
+                    self.linenumbers2.attach(self.txtout)
 
-                proc = subprocess.Popen(["python", "-c", "import greenBerry; greenBerry.greenBerry_eval(\"\"\"{0}\"\"\")".format(self.read_file(self.file_dir))], stdout=subprocess.PIPE)
-                out = proc.communicate()[0]
+                    self.linenumbers2.pack(side="left", fill="y")
+                    self.txtout.pack(fill="both", expand=True)
+
+                    self.txtout.bind("<<Change>>", self._on_change2)
+                    self.txtout.bind("<Configure>", self._on_change2)
                 
-                self.txtout.config(state=NORMAL)
-                self.txtout.insert(END, out)
-                self.txtout.insert(END, "="*50+"\n")
-                self.txtout.pack(fill=BOTH, expand=1)
-                self.txtout.config(state=DISABLED)
+                proc = subprocess.Popen(["python", "-c", "import greenBerry; greenBerry.greenBerry_eval(\"\"\"{0}\"\"\")".format(self.read_file(self.file_dir))], stdout=subprocess.PIPE)
+                out = proc.communicate()[0][:-2]
+                
+                self.txtout.config(state="normal")
+                if self.first != True:
+                    self.txtout.insert("end", "\n"+"="*25+"NEW RUN"+"="*25+"\n")
+                else:
+                    self.first = False
+                self.txtout.insert("end", out)
+                self.txtout.config(state="disabled")
 
-                self.txtout.tag_add("colorout", "1.0", END)
+                self.txtout.tag_add("colorout", "1.0", "end")
                 self.txtout.tag_config("colorout", foreground="blue")
 
-                self.txtout.yview_pickplace(END)
+                self.txtout.yview_pickplace("end")
             
             except:
                 self.run_command()
@@ -181,7 +264,7 @@ class Files(Frame):
         
 
     def color_text(self, event=0):         
-        file_text = self.txt.get("1.0", END+"-1c") + " "
+        file_text = self.txt.get("1.0", "end"+"-1c") + " "
         words = []
         line = 1
         column = -1
@@ -229,13 +312,8 @@ class Files(Frame):
             elif i[0] in color5:
                 self.txt.tag_add("color5", str(i[2].split(".")[0]) + "." + str(int(i[2].split(".")[1])-len(i[0])), i[2])
                 self.txt.tag_config("color5", foreground="#00cc00")
-                
-root = Tk()
-top = Frame(root)
-top.pack(fill=BOTH, expand=0)
 
-bottom = Frame(root)
-bottom.pack()
+root = tk.Tk()
 
 ex = Files(root)
 ex.pack(side="bottom")
