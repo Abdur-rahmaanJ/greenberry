@@ -6,6 +6,7 @@ print eval (2+3-4+11)
 print a
 print @x
 print @y
+print string Hello world!
 
 if arj = greenBerry : print ok
 if 3 > 2 : print apple
@@ -15,20 +16,24 @@ if @y = ab : print 6
 
 for 5 times : print greenBerry
 
-
 set debug on
 
 class Man : power = 10 action walk : print walking...
 
 make Man walk
-see power of Man
+see power Man
 
-add to Man attribute name = string i am me
-add to Man action run : print running...
+add Man attribute name = string i am me
+add Man action run : print running...
 
 var x = [3,2,3,4,3]
 print @x
+print @x[0]
 
+func vector: print string vector is fun
+func p x y: print @x
 
+call vector
+call p hello hi
 
-
+plot 1-2.5-6 time[s], 30-60-75.75 path[m]
