@@ -1,6 +1,8 @@
 # greenBerry 
 A new one-line statement programming language, complete with classes, cli and file compatible
 
+![logo](docs/favicon.ico?raw=true "greenBerry")
+
 ## 🚩 contributing countries
 🇲🇺 🇲🇾 🇸🇮 🇰🇪
 
