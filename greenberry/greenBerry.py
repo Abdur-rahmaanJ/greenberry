@@ -8,6 +8,7 @@ see theory_notes_simple.py
 
 
 from collections import OrderedDict
+import inspect
 
 L_user = 'dear berry'
 
@@ -52,9 +53,7 @@ class S:
     IS = 'is'
     MAKE = 'make'
     ADD = 'add'
-    TO = 'to'
     SEE = 'see'
-    OF = 'of'
     SET = 'set'
     ATTRIB = 'attribute'
     TABLE = 'table'
@@ -92,7 +91,6 @@ class E:
     STRING = beg + L_user + ' you used string wrongly  on line'
     PLOT = beg + L_user + ' you plotted wrongly on line'
     DEBUG = beg + L_user + ' wrong set command on line'
-    TO = beg + L_user + ' missed word to on line'
     EQUAL = beg + L_user + ' expecting = on line'
     COLON = beg + L_user + ' expected : on line'
     ADD = beg + L_user + ' wrong add statement'
@@ -290,30 +288,7 @@ def greenBerry_eval(x):
             print(E.PLOT, line)
     
       
-    def simple_parse(g_vars, i, elem, words):
-        '''
-        parses simple statements
-        
-        variable assignment
-        print statement
-        ploting
-        
-        g_vars is a registry / dictionary storing variables
-        '''
-        if elem == S.VAR: # var x = 1
-            if words[i+2] == S.EQUAL:
-                var_val = var_data(i+2, words, [S.NL, S.EOF])
-                g_vars[words[i+1]] = var_val
-            else:
-                print(E.EQUAL, line)
-                
-        elif elem == S.PRINT :
-            print_handling(g_vars, i, words)
-            
-        elif elem == S.PLOT:
-            plot_handling(i, words)
-                
-    def simple_parse2(g_vars, words):
+    def simple_parse(g_vars, words):
         '''
         parses simple statements
         
@@ -398,11 +373,14 @@ def greenBerry_eval(x):
     # program starts here
     ###
     
-    KWDs = [S.VAR, S.EQUAL, S.PRINT, S.NL, S.NUMBER, 
-            S.STRING, S.EVAL, S.VAR_REF, S.PLOT, S.FOR,
-            S.IF,S.CLASS, S.ACTION, S.COMMA, S.MAKE, S.IS,
-            S.MAKE, S.ADD, S.TO, S.SEE, S.COLON, S.ATTRIB,
-            S.SQL, S.SQR]  # future direct conversion to list
+    M.g_vars = {}
+    M.g_fs = {}
+    M.g_cls = {}
+    F.bStart = 100
+    F.bEnd = 0
+    F.isDebugOn = 0 # this is a reset needed for gb_ide
+    
+    KWDs = [getattr(S, i) for i in [b[0] for b in [a for a in inspect.getmembers(S, lambda a:not(inspect.isroutine(a))) if not(a[0].startswith('__') and a[0].endswith('__'))]]]
     g_vars = M.g_vars
     g_fs = M.g_fs
     g_cls = M.g_cls
@@ -435,10 +413,9 @@ def greenBerry_eval(x):
                 wds = lex(string, KWDs)
                 printd(wds)
                 for d in range(times_by):
-                    simple_parse2(g_vars, wds)
+                    simple_parse(g_vars, wds)
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-                F.bEnd = end_i
+                F.bEnd = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
             except:
                 print(E.FOR, line)
                 
@@ -477,16 +454,15 @@ def greenBerry_eval(x):
                 # print(L, R, symbol)
                 if symbol == S.EQUAL:
                     if L == R:
-                        simple_parse2(g_vars, wds)
+                        simple_parse(g_vars, wds)
                 elif symbol == S.GREATER:
                     if L > R:
-                        simple_parse2(g_vars, wds)
+                        simple_parse(g_vars, wds)
                 if symbol == S.LESS:
                     if L < R:
-                        simple_parse2(g_vars, wds)
+                        simple_parse(g_vars, wds)
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-                F.bEnd = end_i
+                F.bEnd = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
             except:
                 print(E.IF, line)
             
@@ -513,8 +489,7 @@ def greenBerry_eval(x):
                     g_fs[func_name] = {'params':registry, 'body':body}
                     
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-                F.bEnd = end_i
+                F.bEnd = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
             except:
                 print(E.FUNCDEF, line)
         #
@@ -527,7 +502,7 @@ def greenBerry_eval(x):
                     # print(g_fs)
                     # print(func_name)
                     wds = lex(g_fs[func_name]['body'], KWDs)
-                    simple_parse2(g_vars, wds)
+                    simple_parse(g_vars, wds)
                 else:
                     param_vals = search_toks(i, 1, words, [S.NL, S.EOF])
                     registry = g_fs[func_name]['params']
@@ -536,7 +511,7 @@ def greenBerry_eval(x):
                         registry[key] = [param_vals[i], var_type(param_vals[i])]  # data
                         i += 1
                     wds = lex(g_fs[func_name]['body'], KWDs)
-                    simple_parse2(registry, wds)
+                    simple_parse(registry, wds)
             except:
                 print(E.FUNCCALL, line)
 
@@ -559,8 +534,7 @@ def greenBerry_eval(x):
                         }
                 
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-                F.bEnd = end_i
+                F.bEnd = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
                 """
                 class_name = {
                 name = name,
@@ -588,7 +562,7 @@ def greenBerry_eval(x):
                 action_name = words[i+2]
                 raw_text = g_cls[class_name]['actions'][action_name]
                 wds = lex( raw_text, KWDs)
-                simple_parse2(g_vars, wds)
+                simple_parse(g_vars, wds)
             except:
                 print(E.CLASSACT, line)
                 
@@ -624,8 +598,7 @@ def greenBerry_eval(x):
                             
                 else:
                     print(E.CLASSNAME, line)
-                end_i = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
-                F.bEnd = end_i
+                F.bEnd = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
             except:
                 print(E.ADD, line)
                 
@@ -642,9 +615,13 @@ def greenBerry_eval(x):
             except:
                 print(E.DEBUG, line)
         else:
-            if i < F.bStart or i > F.bEnd :
-                simple_parse(g_vars, i, elem, words)  
-
+            if i < F.bStart or i > F.bEnd and elem != S.EOF:
+                F.bStart = i
+                F.bEnd = search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                to_do = search(i-1, 0, words, [S.NL, S.EOF])
+                wds = lex(to_do, KWDs)
+                simple_parse(g_vars, wds)
+        
     printd(g_vars)
     printd(g_fs)
     printd(g_cls)
