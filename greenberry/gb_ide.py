@@ -2,9 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 import tkinter.scrolledtext as tkst
-from greenBerry import greenBerry_eval
 import subprocess
-import sys
 
 color1 = ["var", "print", "set", "debug", "plot"]
 color2 = ["string", "eval", "times", "action", "attribute",
@@ -95,6 +93,11 @@ class Files(tk.Frame):
         self.bind_all("<Control-S>", self.save_as_command)
         self.bind_all("<Key>", self.key_pressed)
 
+        self.run_button = tk.Button(root, command=self.run_command)
+        self.run_photo = tk.PhotoImage(file="../docs/run_button.png")
+        self.run_button.config(image=self.run_photo, height=20, width=20)
+        self.run_button.pack()
+
         self.txt = CustomText(self)
         self.linenumbers = TextLineNumbers(self, width=30)
         self.linenumbers.attach(self.txt)
@@ -149,10 +152,8 @@ class Files(tk.Frame):
         text = f.read()
         return text
 
-    def save_file(self, event=0):        
-        try:
-            self.read_file(self.file_dir)
-            
+    def save_file(self, event=0):
+        try:            
             with open(self.file_dir, "w") as file:
                 file.write(self.txt.get("1.0", "end"+"-1c"))
                 file.close()
@@ -174,7 +175,7 @@ class Files(tk.Frame):
     def run_command(self, event=0):
         x = self.txt.get("1.0", "end"+"-1c")
 
-        if x == self.old_text:
+        if x == self.old_text and x != "":
             if self.first == True:
                 self.outwin = tk.Toplevel(root)
                 self.outwin.title("greenBerry IDE - output")
