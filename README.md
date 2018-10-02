@@ -20,6 +20,12 @@ Read this first if you are not at ease with compiler theory : [greenberry/theory
 - gui : either ide or others, add new functionalities or improve UX
 - cli : improve cli experience, add new features
 - compiling engine : improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
+- website : improve website, update changelog (or implement changes to do this automatically)
+
+## structure notes
+
+- engine : [greenberry/greenBerry.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/greenBerry.py)
+- website : [docs/](https://github.com/Abdur-rahmaanJ/greenBerry/tree/master/docs)
 
 ## Run files
 
