@@ -26,6 +26,6 @@ Run `python gb_ide.py` write and run or load a *.gb* file !
 ### 📋 TODO
 - [ ] Refining print
 - [ ] Add more support for eval
-- [ ] Add parameters to functions and classes
-- [ ] Allow non-static referenceing of function and classes
+- [x] Add parameters to functions and classes
+- [ ] Allow non-static referencing of function and classes
 
