@@ -19,7 +19,7 @@ This project is about compiler theory. If you are not at ease, this: [greenberry
 - language: in the way python code is written so as to be more clear, efficient for example
 - gui: either ide or others, add new functionalities or improve UX
 - cli: improve cli experience, add new features
-- compiling engine: improve parser, add new areas of usage
+- compiling engine: improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
 
 ## Run files
 
