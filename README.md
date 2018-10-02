@@ -6,8 +6,9 @@ A one-line statement programming language, complete with classes, cli and file c
 ## contributing countries
 🇲🇺 🇲🇾 🇸🇮 🇰🇪 🇺🇸
 
-## 🔗 website
-https://abdur-rahmaanj.github.io/greenBerry/
+## 🔗 links
+- [website](https://abdur-rahmaanj.github.io/greenBerry/)
+- [lang reference](https://abdur-rahmaanj.github.io/greenBerry/syntax.html)
 
 ## 📖 contributing guidelines
 
@@ -21,6 +22,10 @@ Read this first if you are not at ease with compiler theory : [greenberry/theory
 - cli : improve cli experience, add new features
 - compiling engine : improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
 - website : improve website, update changelog (or implement changes to do this automatically)
+
+## 🍂 python version
+
+3.4 (moving to 3.7 if you PR a change using a 3.7 feature)
 
 ## 🏢 structure notes
 
