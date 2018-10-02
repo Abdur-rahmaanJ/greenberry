@@ -11,15 +11,15 @@ https://abdur-rahmaanj.github.io/greenBerry/
 
 ## 📖 contributing guidelines
 
-This project is about compiler theory. If you are not at ease, this: [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/theory_notes_simple.py) is a concise guide. Any question, shoot a mail or open an issue
+Read this first if you are not at ease with compiler theory : [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/theory_notes_simple.py). Any question, shoot a mail or open an issue
 
 ## 🌄 contribution areas
 
-- syntax: propose new syntax or suggest improvements for existing one
-- language: in the way python code is written so as to be more clear, efficient for example
-- gui: either ide or others, add new functionalities or improve UX
-- cli: improve cli experience, add new features
-- compiling engine: improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
+- syntax : propose new syntax or suggest improvements for existing one
+- language : in the way python code is written so as to be more clear, efficient for example
+- gui : either ide or others, add new functionalities or improve UX
+- cli : improve cli experience, add new features
+- compiling engine : improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
 
 ## Run files
 
