@@ -22,26 +22,26 @@ Read this first if you are not at ease with compiler theory : [greenberry/theory
 - compiling engine : improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
 - website : improve website, update changelog (or implement changes to do this automatically)
 
-## structure notes
+## 🏢 structure notes
 
 - engine : [greenberry/greenBerry.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/greenBerry.py)
 - website : [docs/](https://github.com/Abdur-rahmaanJ/greenBerry/tree/master/docs)
 
-## Run files
+## 🌊 run files
 
-### 🔧 REPL 
+### REPL 🔧 
 
 Just run `python gb_repl.py`
 
-### 📁 .gb file
+### .gb file 📁 
 
 Write in *main.gb* and then save and run `python gb_main.py`
 
-### 🖥️ IDE
+### IDE 🖥️ 
 
 Run `python gb_ide.py` write and run or load a *.gb* file !
 
-### 📋 TODO
+## 📋 TODO 
 - [ ] Refining print
 - [ ] Add more support for eval
 - [x] Add parameters to functions and classes
