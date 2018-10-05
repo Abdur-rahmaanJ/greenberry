@@ -4,7 +4,7 @@ A one-line statement programming language, complete with classes, cli and file c
 ![logo](docs/favicon.ico?raw=true "greenBerry")
 
 ## contributing countries
-🇲🇺 🇲🇾 🇸🇮 🇰🇪 🇺🇸
+🇲🇺 🇲🇾 🇸🇮 🇰🇪 🇺🇸 🇨🇦
 
 ## 🔗 links
 - [website](https://abdur-rahmaanj.github.io/greenBerry/)
