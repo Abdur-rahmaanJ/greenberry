@@ -16,17 +16,17 @@ class Lexer:
         #parameters
         self.source = source #text-file or string
         self.KWDs = KWDs
-        
+
         #data containers
         self.cup = ''
         self.lexemes = []
         self.tokens = []
-        
+
         #info
         self.line = 1
         self.status = ''
-        
-    
+
+
     def get_lexemes(self):
         for i, elem in enumerate(self.source):
             if elem == S.NL:
@@ -39,14 +39,14 @@ class Lexer:
                     self.lexemes.append(Lexeme(self.cup, self.line))
                     self.cup = S.E
         return self.lexemes
-    
+
     def get_tokens(self, lexemes):
         for lexeme in lexemes:
             type = ''
             status = ''
             isStringOn = 0
             isIfOn = 0
-            
+
             if lexeme.value in MATH_OPS:
                 type = 'math operator'
             elif lexeme.value in BOOL_OPS:
@@ -64,9 +64,9 @@ class Lexer:
             elif lexeme.value in EOS: # newline
                 isStringOn = 0
                 isIfOn = 0
-                
+
             if isStringOn == 1:
                 type = 'string'
                 self.tokens.append(Token(lexeme.value, type, status, lexeme.line))
-        
+
         return self.tokens
