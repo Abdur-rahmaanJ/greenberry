@@ -1,5 +1,7 @@
+import sys
+sys.path.append("..")
 import unittest
-from files.greenBerry import greenBerry_eval
+from greenBerry import greenBerry_eval
 
 
 class TestGreenBerryFunctions(unittest.TestCase):
@@ -15,3 +17,6 @@ class TestGreenBerryFunctions(unittest.TestCase):
         except:
             error = True
         self.assertTrue(error)
+
+if __name__ == '__main__':
+    unittest.main(exit=False)
