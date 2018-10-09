@@ -1,5 +1,9 @@
+import sys
+sys.path.append("..")
+import contextlib
+from io import StringIO
 import unittest
-from files.greenBerry import greenBerry_eval
+from greenBerry import greenBerry_eval
 
 
 class TestGreenBerryFunctions(unittest.TestCase):
@@ -16,6 +20,7 @@ class TestGreenBerryFunctions(unittest.TestCase):
             error = True
         self.assertTrue(error)
 
+
     def test_eval_add(self):
         x = 'print eval 1+2'
         temp_stdout = StringIO()
@@ -24,3 +29,7 @@ class TestGreenBerryFunctions(unittest.TestCase):
             greenBerry_eval(x)
         output = temp_stdout.getvalue().strip()
         self.assertEqual(output, '3')
+
+
+if __name__ == '__main__':
+    unittest.main(exit=False)
