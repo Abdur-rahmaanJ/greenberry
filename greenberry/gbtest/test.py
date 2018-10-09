@@ -19,15 +19,7 @@ class TestGreenBerryFunctions(unittest.TestCase):
         except:
             error = True
         self.assertTrue(error)
-        
-    def test_eval_add(self):
-        x = 'print eval 1+2'
-        temp_stdout = StringIO()
-        # redirect stdout to catch print statement from eval function
-        with contextlib.redirect_stdout(temp_stdout):
-            greenBerry_eval(x)
-        output = temp_stdout.getvalue().strip()
-        self.assertEqual(output, '3')
+
 
 if __name__ == '__main__':
     unittest.main(exit=False)
