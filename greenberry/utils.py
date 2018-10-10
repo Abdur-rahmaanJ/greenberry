@@ -1,3 +1,7 @@
+from io import StringIO
+from greenBerry import greenBerry_eval
+import contextlib
+
 def eval(str):         #Function to evaluate postfix expression
     exp=list(str)
     S=[]
@@ -17,15 +21,17 @@ def eval(str):         #Function to evaluate postfix expression
             elif(exp[i]=='*'):
                 S.append(x*y)
             elif(exp[i]=='/'):
-                S.append(x/y)
+                S.append(x//y)
+            elif(exp[i]=='^'):
+                S.append(x**y)
             else:
                 pass
         i=i+1
     print(S[0])
 
-def InfixCon(string):
+def maths_eval(string): # previous InfixCon
     res=''                                                              #Converting Infix expression to postfix
-    exp=string                                                      #Enter the expression to evaluate but mind the brackets in case
+    exp=string                                                          #Enter the expression to evaluate but mind the brackets in case
     exp=list(exp)                                                       #Multiply and divide
     S=[]
     L=[]
@@ -73,3 +79,20 @@ def InfixCon(string):
         res=res+S[-1]
         S.pop()
     eval(res)
+
+
+def capture_gb_eval_print(code):
+    temp_stdout = StringIO()
+    # redirect stdout to catch print statement from eval function
+    with contextlib.redirect_stdout(temp_stdout):
+        greenBerry_eval(code)
+    output = temp_stdout.getvalue().strip()
+    return output
+
+def capture_maths_eval_print(code):
+    temp_stdout = StringIO()
+    # redirect stdout to catch print statement from eval function
+    with contextlib.redirect_stdout(temp_stdout):
+        maths_eval(code)
+    output = temp_stdout.getvalue().strip()
+    return output
