@@ -23,9 +23,9 @@ def eval(str):         #Function to evaluate postfix expression
         i=i+1
     print(S[0])
 
-def InfixCon():
+def InfixCon(string):
     res=''                                                              #Converting Infix expression to postfix
-    exp=input("Enter the expression=")                                  #Enter the expression to evaluate but mind the brackets in case
+    exp=string                                                      #Enter the expression to evaluate but mind the brackets in case
     exp=list(exp)                                                       #Multiply and divide
     S=[]
     L=[]
