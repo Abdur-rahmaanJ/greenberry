@@ -1,21 +1,14 @@
 
-ws  -> white space
-nl  -> new line
-eof -> end of file symbol
+ws  = white space
+nl  = new line
+eof = end of file symbol
 
 statements : basic | simple | compound
-	basic :
-		assign
+basic : assign
 
-	simple : 
-		  print 
-		| plot
-		| if 
-		| for 
+simple : print, plot, if, for 
 
-	compound :
-		  func
-		| class
+compound : func, class
 
 assign :
 	  'var'  word '='  (    number 
