@@ -56,16 +56,15 @@ check attribute: see strength of Dinosaur
 add attribute: add to Dinosaur attribute age = string very ancient
 add method: add to Dinosaur action chomp : print string om nom nom
 
-statement :
+>statement:
 	(var_ref | number)
 
-identifier :
+>identifier:
 	('bool' ('true' | 'false') 
 	| 'string' (word*0+) 
 	| '@' var_ref)
 
-var_ref :
+>var_ref:
 	('@' id
 	| '@' id '[' number ']'
 	| '@' id '[' number ',' number ]')
-
