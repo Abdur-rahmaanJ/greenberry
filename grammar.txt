@@ -1,22 +1,23 @@
-
 ws  = white space
 nl  = new line
 eof = end of file symbol
 
-statements : basic | simple | compound
-basic : assign
+statements: basic | simple | compound
 
-simple : print, plot, if, for 
+basic: assign
+simple: print, plot, if, for 
+compound: func, class
 
-compound : func, class
+assign...
 
-assign :
-	  'var'  word '='  (    number 
-										| word
-										| identifier word
-										| var_ref )  (nl | eof)
+numbers: var x = 1
+strings: var y = string this is a string
+words: var y = juice
+variables: var y = @ x
+booleans: var z = bool true/false/1/0
+arrays: var num_arr = [1,2,3,4,5]
 
-print :
+print...
 	  'print'  word  (nl | eof)
 	| 'print'  '@'  var_ref  (nl | eof)
 	| 'print'  'string' (word*1+)  (nl | eof)
