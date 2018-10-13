@@ -1,8 +1,8 @@
 statements: basic | simple | compound
 
 basic: assign
-simple: print, conditionals, for, plot 
-compound: func, class
+simple: print, condition, for, plot 
+compound: function, class
 
 (basic)
 
@@ -24,7 +24,7 @@ var_refs: print @ x/@ num_arr/@ num_arr[1]
 strings: print string now printing a string
 and evaluate: print eval (1+2+3)
 
-conditionals:
+condition:
 
 equality: if word = word print yes
 greater: if @ x > 1 print string x is greater than 1
@@ -42,12 +42,19 @@ linear graph: plot 1,2,3,4,5 x-time 4,8,15,16,23,42 y-numbers
 
 (compound)
 
-functions:
+function:
 
 declaration: func name : print string functions are easy
 with parameters: func p x : print @ x
 call: call name
 
+class:
+
+declaration: class Dinosaur : strength = 100 action roar : print roarrrrr
+method call: make Dinosaur roar
+check attribute: see strength of Dinosaur
+add attribute: add to Dinosaur attribute age = string very ancient
+add method: add to Dinosaur action chomp : print string om nom nom
 
 statement :
 	(var_ref | number)
