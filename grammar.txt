@@ -20,9 +20,9 @@ arrays: var num_arr = [1,2,3,4,5]
 print:
 
 words: print word
-var_refs: print @ x/@ num_arr/ @num_arr[3]
+var_refs: print @ x/@ num_arr/@ num_arr[1]
 strings: print string now printing a string
-& eval: print eval (1+2+3)
+and evaluate: print eval (1+2+3)
 
 conditionals:
 
@@ -30,12 +30,15 @@ equality: if word = word print yes
 greater: if @ x > 1 print string x is greater than 1
 less: if 2 < @ y print num_arr[1] 
 
-for :
-	'for'  number  'times'  ':'  print (nl | eof)
+for:
+
+words: for 1 times : print greenBerry
+strings: for 2 times : print string greenBerry is great
+var_refs: for 3 times : print @ x/@ num_arr/@ num_arr[1]
 
 plot :
-	'plot'  (number  ','  number)  'x-'  word  
-	(number  ','  number)  'y-'  word 
+
+plot 1,2,3,4,5 x-time 6,7,8,9,10 y-words
 
 func :
 	declaration
