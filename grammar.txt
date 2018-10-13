@@ -36,21 +36,18 @@ words: for 1 times : print greenBerry
 strings: for 2 times : print string greenBerry is great
 var_refs: for 3 times : print @ x/@ num_arr/@ num_arr[1]
 
-plot :
+plot:
 
-plot 1,2,3,4,5 x-time 6,7,8,9,10 y-words
+linear graph: plot 1,2,3,4,5 x-time 4,8,15,16,23,42 y-numbers
 
-func :
-	declaration
-	'func'  word  ':'  print
+(compound)
 
-	with parameters
-	'func'  'p'  (word*1+)  ':'  print
-		'func'  'p'  word  ':'  print
-		'func'  'p'  word  word  ':'  print
+functions:
 
-	call
-	'call'  id
+declaration: func name : print string functions are easy
+with parameters: func p x : print @ x
+call: call name
+
 
 statement :
 	(var_ref | number)
