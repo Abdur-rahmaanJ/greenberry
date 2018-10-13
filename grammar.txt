@@ -1,31 +1,34 @@
 statements: basic | simple | compound
 
 basic: assign
-simple: print, plot, if, for 
+simple: print, conditionals, for, plot 
 compound: func, class
 
 (basic)
 
-assign...
+assign:
 
-...numbers: var x = 1
-...strings: var y = string this is a string
-...words: var z = juice
-...var_refs: var a = @ b
-...booleans: var c = bool true/false/1/0
-...arrays: var num_arr = [1,2,3,4,5]
+numbers: var x = 1
+strings: var y = string this is a string
+words: var z = berry
+var_refs: var a = @ b
+booleans: var c = bool true/false/1/0
+arrays: var num_arr = [1,2,3,4,5]
 
 (simple)
 
-print...
+print:
 
-...words: print word
-...var_refs: print @ x/@ num_arr/ @num_arr[3]
-...strings: print string now printing a string
-...& eval: print eval (1+2+3)
+words: print word
+var_refs: print @ x/@ num_arr/ @num_arr[3]
+strings: print string now printing a string
+& eval: print eval (1+2+3)
 
-if :
-	'if'  statement  ('=' | '>' | '<')  statement (nl | eof)
+conditionals:
+
+equality: if word = word print yes
+greater: if @ x > 1 print string x is greater than 1
+less: if 2 < @ y print num_arr[1] 
 
 for :
 	'for'  number  'times'  ':'  print (nl | eof)
