@@ -1,66 +1,70 @@
+statements: basic | simple | compound
 
-ws  -> white space
-nl  -> new line
-eof -> end of file symbol
+basic: assign
+simple: print, condition, for, plot 
+compound: function, class
 
-statements : basic | simple | compound
-	basic :
-		assign
+(basic)
 
-	simple : 
-		  print 
-		| plot
-		| if 
-		| for 
+assign:
 
-	compound :
-		  func
-		| class
+numbers: var x = 1
+strings: var y = string this is a string
+words: var z = berry
+var_refs: var a = @ b
+booleans: var c = bool true/false/1/0
+arrays: var num_arr = [1,2,3,4,5]
 
-assign :
-	  'var'  word '='  (    number 
-										| word
-										| identifier word
-										| var_ref )  (nl | eof)
+(simple)
 
-print :
-	  'print'  word  (nl | eof)
-	| 'print'  '@'  var_ref  (nl | eof)
-	| 'print'  'string' (word*1+)  (nl | eof)
-	| 'print'  'eval' mexpr  (nl | eof)
+print:
 
-if :
-	'if'  statement  ('=' | '>' | '<')  statement (nl | eof)
+words: print word
+var_refs: print @ x/@ num_arr/@ num_arr[1]
+strings: print string now printing a string
+and evaluate: print eval (1+2+3)
 
-for :
-	'for'  number  'times'  ':'  print (nl | eof)
+condition:
 
-plot :
-	'plot'  (number  ','  number)  'x-'  word  
-	(number  ','  number)  'y-'  word 
+equality: if word = word print yes
+greater: if @ x > 1 print string x is greater than 1
+less: if 2 < @ y print num_arr[1] 
 
-func :
-	declaration
-	'func'  word  ':'  print
+for:
 
-	with parameters
-	'func'  'p'  (word*1+)  ':'  print
-		'func'  'p'  word  ':'  print
-		'func'  'p'  word  word  ':'  print
+words: for 1 times : print greenBerry
+strings: for 2 times : print string greenBerry is great
+var_refs: for 3 times : print @ x/@ num_arr/@ num_arr[1]
 
-	call
-	'call'  id
+plot:
 
-statement :
+linear graph: plot 1,2,3,4,5 x-time 4,8,15,16,23,42 y-numbers
+
+(compound)
+
+function:
+
+declaration: func name : print string functions are easy
+with parameters: func p x : print @ x
+call: call name
+
+class:
+
+declaration: class Dinosaur : strength = 100 action roar : print roarrrrr
+method call: make Dinosaur roar
+check attribute: see strength of Dinosaur
+add attribute: add to Dinosaur attribute age = string very ancient
+add method: add to Dinosaur action chomp : print string om nom nom
+
+>statement:
 	(var_ref | number)
 
-identifier :
+>identifier:
 	('bool' ('true' | 'false') 
 	| 'string' (word*0+) 
 	| '@' var_ref)
 
-var_ref :
+>var_ref:
 	('@' id
 	| '@' id '[' number ']'
 	| '@' id '[' number ',' number ]')
-
