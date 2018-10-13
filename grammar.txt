@@ -1,27 +1,28 @@
-ws  = white space
-nl  = new line
-eof = end of file symbol
-
 statements: basic | simple | compound
 
 basic: assign
 simple: print, plot, if, for 
 compound: func, class
 
+(basic)
+
 assign...
 
-numbers: var x = 1
-strings: var y = string this is a string
-words: var y = juice
-variables: var y = @ x
-booleans: var z = bool true/false/1/0
-arrays: var num_arr = [1,2,3,4,5]
+...numbers: var x = 1
+...strings: var y = string this is a string
+...words: var z = juice
+...var_refs: var a = @ b
+...booleans: var c = bool true/false/1/0
+...arrays: var num_arr = [1,2,3,4,5]
+
+(simple)
 
 print...
-	  'print'  word  (nl | eof)
-	| 'print'  '@'  var_ref  (nl | eof)
-	| 'print'  'string' (word*1+)  (nl | eof)
-	| 'print'  'eval' mexpr  (nl | eof)
+
+...words: print word
+...var_refs: print @ x/@ num_arr/ @num_arr[3]
+...strings: print string now printing a string
+...& eval: print eval (1+2+3)
 
 if :
 	'if'  statement  ('=' | '>' | '<')  statement (nl | eof)
