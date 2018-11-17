@@ -1,3 +1,32 @@
+.slogan {
+    font-size: 30px;
+}
+
+section {
+    margin: 100px 0;
+}
+
+.feature-icon {
+    font-size: 48px;
+}
+
+#feature p {
+    text-align: justify;
+}
+
+span.code {
+    background-color: #DCDCDC;
+    padding: 2px 6px;
+}
+
+#syntax-button {
+    margin-top: 40px;
+}
+
+footer {
+    padding-bottom: 30px;
+}
+
 @media screen and (min-width: 993px) {
     .brand-logo {
         margin-left: 20px;

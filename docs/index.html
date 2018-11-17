@@ -14,20 +14,22 @@
 </head>
 
 <body>
-    <nav class="green accent-4">
-        <div class="nav-wrapper">
-            <a href="./" class="brand-logo">GreenBerry</a>
-            <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li class="active"><a href="./">Home</a></li>
-                <li><a href="syntax.html">Syntax</a></li>
-                <li><a href="changelog.html">Changelog</a></li>
-                <li><a href="fans.html">Fans</a></li>
-                <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
-                <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
-            </ul>
-        </div>
-    </nav>
+    <div class="navbar-fixed">
+        <nav class="green accent-4">
+            <div class="nav-wrapper">
+                <a href="./" class="brand-logo">GreenBerry</a>
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="./">Home</a></li>
+                    <li><a href="syntax.html">Syntax</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
+                    <li><a href="fans.html">Fans</a></li>
+                    <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
+                    <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
     <ul class="sidenav" id="mobile-nav">
         <li class="active"><a href="./">Home</a></li>
         <li><a href="syntax.html">Syntax</a></li>
@@ -36,6 +38,87 @@
         <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
         <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
     </ul>
+    <div class="container">
+        <section id="header">
+            <div class="center-align">
+                <h1 class="green-text text-accent-4">GreenBerry</h1>
+                <p class="slogan">A simple one-line statement programming language made with Python!</p>
+                <a href="https://github.com/Abdur-rahmaanJ/greenBerry" class="waves-effect waves-light btn-large green accent-4">
+                    Download
+                </a>
+            </div>
+        </section>
+        <section id="feature">
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="center-align">
+                        <i class="material-icons feature-icon">
+                            code
+                        </i>
+                        <h5>Flexible</h5>
+                    </div>
+                    <p>Write your code in a .gb file using your favorite code edit or the built-in IDE, or you can even
+                        use REPL.</p>
+                </div>
+                <div class="col s12 m4">
+                    <div class="center-align">
+                        <i class="material-icons feature-icon">
+                            check
+                        </i>
+                        <h5>Open Source</h5>
+                    </div>
+                    <p>Source code openly available and supported by the community contributions.</p>
+                </div>
+                <div class="col s12 m4">
+                    <div class="center-align">
+                        <i class="material-icons feature-icon">
+                            extension
+                        </i>
+                        <h5>Open to New Ideas</h5>
+                    </div>
+                    <p>Think the syntax could be better? Documentation could be improved? Contribute and help improve
+                        GreenBerry!</p>
+                </div>
+            </div>
+        </section>
+        <section id="instructions">
+            <h3 class="center-align green-text text-accent-4">
+                Instructions - 3 ways
+            </h3>
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="center-align">
+                        <h5>REPL</h5>
+                    </div>
+                    <p>Run <span class="code">python gb_repl.py</span> in the command line.</p>
+                </div>
+                <div class="col s12 m4">
+                    <div class="center-align">
+                        <h5>.gb file</h5>
+                    </div>
+                    <p>Write in a <em>main.gb</em> file, then save and run <span class="code">python gb_main.py</span></p>
+                </div>
+                <div class="col s12 m4">
+                    <div class="center-align">
+                        <h5>IDE</h5>
+                    </div>
+                    <p>Run <span class="code">python gb_ide.py</span>, and load a .gb file.</p>
+                </div>
+            </div>
+            <h4 class="center-align green-text text-accent-4">That's it to get started!</h4>
+            <div class="center-align">
+                <a id="syntax-button" href="./syntax.html" class="waves-effect waves-light btn-large green accent-4">
+                    Learn the syntax
+                </a>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <hr>
+        <div class="center-align">
+            All code used is open source.
+        </div>
+    </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
