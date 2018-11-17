@@ -55,6 +55,20 @@ p.code {
     margin-bottom: 50px;
 }
 
+#changelog-content h5 {
+    margin-top: 30px;
+}
+
+#changelog-content ul>li {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 16px;
+}
+
+#changelog-content ol>li {
+    font-size: 16px;
+}
+
 footer {
     margin-top: 180px;
     padding-bottom: 30px;
