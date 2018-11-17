@@ -1,0 +1,293 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="A simple one-line statement programming language made with Python!">
+    <meta name="keywords" content="python,programming,language,open,source,github">
+    <title>GreenBerry</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="navbar-fixed">
+        <nav class="green accent-4">
+            <div class="nav-wrapper">
+                <a href="./" class="brand-logo">GreenBerry</a>
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="./">Home</a></li>
+                    <li class="active"><a href="syntax.html">Syntax</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
+                    <li><a href="fans.html">Fans</a></li>
+                    <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
+                    <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <ul class="sidenav" id="mobile-nav">
+        <li><a href="./">Home</a></li>
+        <li class="active"><a href="syntax.html">Syntax</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="fans.html">Fans</a></li>
+        <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
+        <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
+    </ul>
+    <div id="syntax-content" class="container">
+        <h3 class="green-text text-accent-4">Syntax</h3>
+        <div class="syntax-section">
+            <h4>Variable Declaration</h4>
+            <hr>
+            <h5>Number</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">x</span> = <span class="code-number">1</span>
+            </p>
+            <h5>String</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">y</span> = <span class="code-keyword">string</span>
+                <span class="code-string">squashed berry 3</span>
+            </p>
+            <h5>One Word</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">y</span> = <span class="code-string">juice</span>
+            </p>
+            <h5>Variable</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">y</span> = <span class="code-keyword">@</span>
+                <span class="code-variable">x</span>
+            </p>
+            <h5>Boolean True</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">z</span> = <span class="code-keyword">bool</span>
+                <span class="code-bool">true</span>
+                <br>
+                <span class="code-keyword">var</span> <span class="code-variable">z</span> = <span class="code-keyword">bool</span>
+                <span class="code-number">1</span>
+            </p>
+            <h5>Boolean False</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">z</span> = <span class="code-keyword">bool</span>
+                <span class="code-bool">false</span>
+                <br>
+                <span class="code-keyword">var</span> <span class="code-variable">z</span> = <span class="code-keyword">bool</span>
+                <span class="code-number">0</span>
+            </p>
+            <h5>Array</h5>
+            <p class="code">
+                <span class="code-keyword">var</span> <span class="code-variable">num_arr</span> = <span class="code-number">[1,
+                    54, 54, 543, 5345, 35435, 36565]</span>
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Plotting</h4>
+            <hr>
+            <h5>Linear Graph</h5>
+            <p class="code">
+                <span class="code-keyword">plot</span> 1,2,3,4,5 x-time 24,34,56,78,45 y-letters
+                <br>
+                >>>
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Minified FOR Loop</h4>
+            <hr>
+            <h5>For Loop</h5>
+            <p class="code">
+                <span class="code-keyword">for</span> <span class="code-number">3</span> <span class="code-keyword">times</span>
+                : <span class="code-keyword">print</span> <span class="code-string">greenBerry</span>
+                <br>
+                >>> greenBerry <br>
+                >>> greenBerry <br>
+                >>> greenBerry
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Printing</h4>
+            <hr>
+            <h5>One Word</h5>
+            <p class="code">
+                <span class="code-keyword">print</span> <span class="code-variable">a</span>
+                <br>
+                >>> a
+            </p>
+            <h5>Eval</h5>
+            <p class="code">
+                <span class="code-keyword">print</span> <span class="code-variable">eval</span> <span class="code-number">(2
+                    + 3 - 4)</span>
+                <br>
+                >>> 1
+            </p>
+            <h5>String</h5>
+            <p class="code">
+                <span class="code-keyword">print</span> <span class="code-variable">string</span> <span class="code-string">a
+                    cat walks along the path</span>
+                <br>
+                >>> a cat walks along the path
+            </p>
+            <h5>Variable Referencing</h5>
+            <p class="code">
+                <span class="code-keyword">print</span> <span class="code-keyword">@</span> <span class="code-variable">x</span>
+                <br>
+                >>> 1
+            </p>
+            <h5>Array</h5>
+            <p class="code">
+                <span class="code-keyword">print</span> <span class="code-keyword">@</span> <span class="code-variable">num_arr</span>
+                <br>
+                >>> [1, 54, 54, 543, 5345, 35435, 36565]]
+            </p>
+            <h5>Array Indexing</h5>
+            <p class="code">
+                <span class="code-keyword">print</span> <span class="code-keyword">@</span> <span class="code-variable">num_arr</span><span
+                    class="code-number">[3]</span>
+                <br>
+                >>> 543
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Conditionals</h4>
+            <hr>
+            <h5>Equality</h5>
+            <p class="code">
+                <span class="code-keyword">if</span> <span class="code-number">2</span> = <span class="code-number">2</span>:
+                <span class="code-keyword">print</span> <span class="code-string">leaf</span>
+                <br>
+                >>> leaf
+                <br>
+                <span class="code-keyword">if</span> <span class="code-keyword">@</span> <span class="code-variable">x</span>
+                = <span class="code-number">1</span>: <span class="code-keyword">print</span> <span class="code-variable">string</span>
+                <span class="code-string">x is 1</span>
+                <br>
+                >>> x is 1
+                <br>
+                <span class="code-keyword">if</span> <span class="code-string">fdasfdsre</span> = <span class="code-string">gfdgras</span>:
+                <span class="code-keyword">print</span> <span class="code-number">1</span>
+                <br>
+                >>>
+            </p>
+            <h5>Greater Than</h5>
+            <p class="code">
+                <span class="code-keyword">if</span> <span class="code-number">2</span> > <span class="code-number">3</span>:
+                <span class="code-keyword">print</span> <span class="code-string">tree</span>
+                <br>
+                >>>
+                <br>
+                <span class="code-keyword">if</span> <span class="code-number">3</span> > <span class="code-number">2</span>:
+                <span class="code-keyword">print</span> <span class="code-string">berrry</span>
+                <br>
+                >>> berrry
+                <br>
+                <span class="code-keyword">if</span> <span class="code-keyword">@</span> <span class="code-variable">x</span>
+                > <span class="code-number">4</span>:
+                <span class="code-keyword">print</span> <span class="code-number">1</span>
+                <br>
+                >>>
+            </p>
+            <h5>Less Than</h5>
+            <p class="code">
+                <span class="code-keyword">if</span> <span class="code-number">2</span>
+                &lt; <span class="code-number">3</span>:
+                <span class="code-keyword">print</span> <span class="code-string">tree</span>
+                <br>
+                >>> tree
+                <br>
+                <span class="code-keyword">if</span> <span class="code-number">3</span>
+                &lt; <span class="code-number">2</span>:
+                <span class="code-keyword">print</span> <span class="code-string">berrry</span>
+                <br>
+                >>>
+                <br>
+                <span class="code-keyword">if</span> <span class="code-keyword">@</span> <span class="code-variable">x</span>
+                &lt; <span class="code-number">4</span>:
+                <span class="code-keyword">print</span> <span class="code-number">1</span>
+                <br>
+                >>> 1
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Functions</h4>
+            <hr>
+            <h5>Function Declaration</h5>
+            <p class="code">
+                <span class="code-keyword">func</span> <span class="code-variable">vector</span>: <span class="code-keyword">print</span>
+                <span class="code-variable">string</span> <span class="code-string">vector is fun</span>
+            </p>
+            <h5>Function Declaration with Parameters</h5>
+            <p class="code">
+                <span class="code-keyword">func</span> <span class="code-variable">p x</span>: <span class="code-keyword">print</span>
+                <span class="code-keyword">@</span> <span class="code-variable">x</span>
+            </p>
+            <h5>Function Calling</h5>
+            <p class="code">
+                <span class="code-keyword">call</span> <span class="code-variable">vector</span>
+                <br>
+                >>> vector is fun
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Classes</h4>
+            <hr>
+            <h5>Class Declaration</h5>
+            <p class="code">
+                <span class="code-keyword">class</span> <span class="code-variable">Man</span>:<span class="code-variable">power</span>
+                = <span class="code-number">10</span> <span class="code-keyword">action</span> <span class="code-variable">walk</span>:
+                <span class="code-keyword">print</span> <span class="code-string">walking...</span>
+            </p>
+            <h5>Method / Action Calling</h5>
+            <p class="code">
+                <span class="code-keyword">make</span> <span class="code-variable">Man walk</span>
+                <br>
+                >>> walking...
+            </p>
+            <h5>Check Attribute</h5>
+            <p class="code">
+                <span class="code-keyword">see</span> <span class="code-variable">power</span> <span class="code-keyword">of</span>
+                <span class="code-variable">Man</span>
+                <br>
+                >>> 10
+            </p>
+            <h5>Add Attribute</h5>
+            <p class="code">
+                <span class="code-keyword">add to</span> <span class="code-variable">Man</span> <span class="code-keyword">attribute</span>
+                <span class="code-variable">me</span> = <span class="code-keyword">string</span> <span class="code-string">i
+                    am me</span>
+                <br>
+                >>>
+            </p>
+            <h5>Add Action</h5>
+            <p class="code">
+                <span class="code-keyword">add to</span> <span class="code-variable">Man</span> <span class="code-keyword">action</span>
+                <span class="code-variable">run</span>: <span class="code-keyword">print</span> <span class="code-string">running...</span>
+                <br>
+                >>>
+            </p>
+        </div>
+        <div class="syntax-section">
+            <h4>Debugging</h4>
+            <hr>
+            <h5>Internal</h5>
+            <p class="code">
+                <span class="code-keyword">set debug</span> <span class="code-bool">on</span>
+                <br>
+                >>> *var contents here*
+            </p>
+        </div>
+    </div>
+    <footer>
+        <hr>
+        <div class="center-align">
+            All code for this website is open source.
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
