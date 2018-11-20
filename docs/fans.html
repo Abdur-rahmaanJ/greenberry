@@ -1,90 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="greenberry.css"/>
-	<script type="text/javascript" src="greenberry.js"></script>
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link rel="icon" href="favicon.ico" type="image/x-icon">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
-	
-	<script>
-			$(function(){
-				$("#nav").load("navBar.html"); 
-				$("#nav2").load("navBar2.html");
-			});
-	</script>
-
-	<title>GreenBerry - fans</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="A simple one-line statement programming language made with Python!">
+    <meta name="keywords" content="python,programming,language,open,source,github">
+    <title>GreenBerry - Fans</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-	
-	<!--navigation-->
-	<div id="nav">
-		
-	</div>
-	
-	
-	
-	<div id="nav2"></div>
-	
-    <img id="logo" src="logo2.png"/>
 
-	<div id="fans">
-	<h3>fans</h3><hr>
-	
-	<div class="clean group fans">
-	<img class="i" width="50%" height="50%" src="https://i.ytimg.com/vi/uBePISIFlps/maxresdefault.jpg">
-	<div class="clean">
-	The ultimate online bookmark manager and organizer. Try it !
-	</div>
-	<div class="clean">
-	<a href="https://www.bookmarkninja.com/">
-	<div class="clean button">
-	check it out <i class="fa fa-share"></i>
-	</div>
-	</a>
-	</div>
-	</div>
-	
-	<div class="clean group fans">
-	<img class="i" width="60%" height="50%" src="https://tomassetti.me/wp-content/uploads/2017/07/federico-tomassetti-software-architect-300.png">
-	<div class="clean">
-	Software Engineer (Phd) - Language Making specialisation
-	</div>
-	<div class="clean">
-	<a href="https://tomassetti.me/about-me/">
-	<div class="clean button">
-	check it out <i class="fa fa-share"></i>
-	</div>
-	</a>
-	</div>
-	</div>
-	
-	<div class="clean group fans">
-	<img class="i" width="50%" height="50%" src="https://i.ytimg.com/vi/G0_j9yHDsBs/maxresdefault.jpg">
-	<div class="clean">
-	Epic city simulation and building game
-	</div>
-	<div class="clean">
-	<a href="https://theotown.com/forum/app.php">
-	<div class="clean button">
-	check it out <i class="fa fa-share"></i>
-	</div>
-	</a>
-	</div>
-	<div class="clean">
-	<a href="https://play.google.com/store/apps/details?id=info.flowersoft.theotown.theotown&hl=en">
-	<div class="clean button">
-	download <i class="fa fa-download"></i>
-	</div>
-	</a>
-	</div>
-	</div>
-	
-	</div><br>
-	
+<body>
+    <div class="navbar-fixed">
+        <nav class="green accent-4">
+            <div class="nav-wrapper">
+                <a href="./" class="brand-logo">GreenBerry</a>
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="./">Home</a></li>
+                    <li><a href="syntax.html">Syntax</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
+                    <li class="active"><a href="fans.html">Fans</a></li>
+                    <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
+                    <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <ul class="sidenav" id="mobile-nav">
+        <li><a href="./">Home</a></li>
+        <li><a href="syntax.html">Syntax</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li class="active"><a href="fans.html">Fans</a></li>
+        <li><a href="https://github.com/Abdur-rahmaanJ/greenBerry">Github</a></li>
+        <li><a href="http://abdurrahmaanjanhangeer.wordpress.com/">Blog</a></li>
+    </ul>
+    <div id="fans-content" class="container">
+        <h3 class="green-text text-accent-4">Fans</h3>
+        <div class="row">
+            <div class="col s12 m6 xl4 center-align">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="./images/bookmark-ninja.jpg" alt="Bookmark Ninja">
+                    </div>
+                    <div class="card-content">
+                        <p>The ultimate online bookmark manager and organizer. Try it!</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://www.bookmarkninja.com/" class="waves-effect waves-light btn green accent-4">
+                            Check it out!
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 xl4 center-align">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="./images/federico-tomassetti.png" alt="Federico Tomassetti">
+                    </div>
+                    <div class="card-content">
+                        <p>Software Engineer (Phd) - Language Making specialisation</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://tomassetti.me/about-me/" class="waves-effect waves-light btn green accent-4">
+                            Check it out!
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 xl4 center-align">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="./images/theo-town.jpg" alt="Theo Town">
+                    </div>
+                    <div class="card-content">
+                        <p>Epic city simulation and building game</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://theotown.com/forum/app.php" class="waves-effect waves-light btn green accent-4">
+                            Check it out!
+                        </a>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://play.google.com/store/apps/details?id=info.flowersoft.theotown.theotown&hl=en"
+                            class="waves-effect waves-light btn green accent-4">
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <hr>
+        <div class="center-align">
+            All code for this website is open source.
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="./js/script.js"></script>
 </body>
+
 </html>
