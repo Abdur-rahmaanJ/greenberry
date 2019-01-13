@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+from tkinter import simpledialog
 import tkinter.scrolledtext as tkst
 import subprocess
 
@@ -63,6 +64,72 @@ class CustomText(tk.Text):
 ###### needed for line numbers ######
 
 
+class SearchDialog(tk.simpledialog.Dialog):
+    """Modal dialog for text find and replace"""
+    
+    def __init__(self, parent, title="Find and replace"):
+        tk.simpledialog.Dialog.__init__(self, parent, title)        
+    
+    def body(self, master):
+        """Create dialog body, return widget with initial focus"""
+        
+        self.search_text = tk.StringVar()
+        self.replace_text = tk.StringVar()
+        
+        self.frame = tk.Frame(master)
+        self.search_entry = tk.Entry(
+            self.frame, width=20, textvariable=self.search_text
+        )
+        self.replace_entry = tk.Entry(
+            self.frame, width=20, textvariable=self.replace_text
+        )
+        self.check_case = tk.Checkbutton(
+            self.frame, text="Case sensitive", offvalue=False, onvalue=True
+        )
+        self.check_search_backward = tk.Checkbutton(
+            self.frame, text="Search backward", offvalue=False, onvalue=True
+        )
+        self.btn_search = tk.Button(
+            self.frame, text="Find", command=self.search
+        )
+        self.btn_replace = tk.Button(
+            self.frame, text="Replace", command=self.replace
+        )
+        self.btn_search_and_replace = tk.Button(
+            self.frame, text="Find and Replace", command=self.search_and_replace
+        )
+        self.btn_cancel = tk.Button(
+            self.frame, text="Cancel", command=self.cancel
+        )
+        
+        self.frame.grid(column=0, row=0, sticky="NSEW")
+        self.search_entry.grid(column=1, row=0)
+        tk.Label(self.frame, text="Find:").grid(column=0, row=0)
+        self.replace_entry.grid(column=1, row=1)
+        tk.Label(self.frame, text="Replace:").grid(column=0, row=1)
+        self.check_case.grid(column=0, row=2)
+        self.check_search_backward.grid(column=1, row=2)
+        self.btn_cancel.grid(column=0, row=3)
+        self.btn_search.grid(column=1, row=3)
+        self.btn_replace.grid(column=2, row=3)
+        self.btn_search_and_replace.grid(column=3, row=3)
+        
+        return self.btn_search
+    
+    def search(self, event=0):
+        print('search placeholder')
+    
+    def replace(self, event=0):
+        print('replace placeholder')
+    
+    def search_and_replace(self, event=0):
+        print('search_and_replace placeholder')
+        
+    def buttonbox(self):
+        """Override"""
+        pass
+
+
 class Files(tk.Frame):
 
     def __init__(self, parent):
@@ -79,18 +146,23 @@ class Files(tk.Frame):
 
         fileMenu = tk.Menu(menubar)
         runMenu = tk.Menu(menubar)
+        searchMenu = tk.Menu(menubar)
         fileMenu.add_command(label="Save", command = self.save_file, accelerator="Ctrl+S")
         fileMenu.add_command(label="Save As", command = self.save_as_command, accelerator="Ctrl+Shift+S")
         fileMenu.add_command(label="Open", command = self.open_file, accelerator="Ctrl+O")
         menubar.add_cascade(label="File", menu=fileMenu)
 
         runMenu.add_command(label="Run", command = self.run_command, accelerator="F5")
-        menubar.add_cascade(label="Run", menu=runMenu, command = self.open_file)        
+        menubar.add_cascade(label="Run", menu=runMenu, command = self.open_file) 
+        
+        searchMenu.add_command(label="Find and replace", command = self.search_command, accelerator="Ctrl+F")
+        menubar.add_cascade(label="Search", menu=searchMenu)       
 
         self.bind_all("<F5>", self.run_command)
         self.bind_all("<Control-o>", self.open_file)
         self.bind_all("<Control-s>", self.save_file)
         self.bind_all("<Control-S>", self.save_as_command)
+        self.bind_all("<Control-f>", self.search_command)
         self.bind_all("<Key>", self.key_pressed)
 
         self.run_button = tk.Button(root, command=self.run_command)
@@ -161,6 +233,9 @@ class Files(tk.Frame):
                 self.key_pressed()
         except:
             self.save_as_command()
+            
+    def search_command(self, event=0):
+        d = SearchDialog(self.parent, title="Find and replace")
 
     def save_as_command(self, event=0):
         file = filedialog.asksaveasfile(mode="w", defaultextension=".gb", filetypes=(("greenBerry files", "*.gb"), ("All files", "*")))
