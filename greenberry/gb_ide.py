@@ -71,7 +71,7 @@ class Files(tk.Frame):
         self.parent = parent        
         parent.protocol("WM_DELETE_WINDOW", self.wclose)
 
-        self.parent.title("greenBerry IDE - Untitlted")
+        self.parent.title("greenBerry IDE - Untitled")
         self.pack(fill="both", expand=True)
 
         menubar = tk.Menu(self.parent)
