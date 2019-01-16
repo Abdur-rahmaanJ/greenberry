@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+from tkinter import simpledialog
 import tkinter.scrolledtext as tkst
 import subprocess
 
@@ -63,6 +64,227 @@ class CustomText(tk.Text):
 ###### needed for line numbers ######
 
 
+class MessageBox(tk.simpledialog.Dialog):
+    """Similar to tk.messagebox but updates parent if destroyed"""
+    
+    def __init__(self, parent, title, message):
+        self.messageText = message
+        tk.simpledialog.Dialog.__init__(self, parent, title)
+        
+    def body(self, master):
+        self.frame = tk.Frame(master)
+        self.message = tk.Message(self.frame, text=self.messageText)
+        self.btn_cancel = tk.Button(
+            self.frame, text="Cancel", command=self.cancel
+        )
+        self.bind('<Return>', self.cancel)
+        
+        self.frame.grid(column=0, row=0, sticky="NSEW")
+        self.message.grid(column=0, row=1)
+        self.btn_cancel.grid(column=0, row=2)
+        
+        return self.btn_cancel
+        
+    def destroy(self):
+        """Update parent when destroyed"""
+        self.parent.messageOpen = False
+        super(MessageBox, self).destroy()
+        
+    def buttonbox(self):
+        """Override default simpledialog.Dialog buttons"""
+        pass
+        
+
+class SearchDialog(tk.simpledialog.Dialog):
+    """Dialog for text find and replace"""
+    
+    def __init__(self, parent, txt, old_text, title="Find and replace"):
+        self.txt = txt
+        self.messageOpen = False
+        self.messageRef = None
+        tk.simpledialog.Dialog.__init__(self, parent, title)
+    
+    def body(self, master):
+        """Create dialog body, return widget with initial focus"""
+        
+        # Vars
+        self.search_text = tk.StringVar()
+        self.replace_text = tk.StringVar()
+        self.isCaseSensitive = tk.IntVar()
+        self.isCaseSensitive.set(1)
+        self.isBackward = tk.IntVar()
+        self.isRegExp = tk.IntVar()
+        self.matchLength = tk.IntVar()
+        
+        # Widgets
+        self.frame = tk.Frame(master)
+        self.frame_btn = tk.Frame(self.frame)
+        self.frame_check = tk.Frame(self.frame)
+        self.frame_entry = tk.Frame(self.frame)
+        self.search_entry = tk.Entry(
+            self.frame_entry, width=20, textvariable=self.search_text
+        )
+        self.replace_entry = tk.Entry(
+            self.frame_entry, width=20, textvariable=self.replace_text
+        )
+        self.check_case = tk.Checkbutton(
+            self.frame_check, text="Case sensitive", var=self.isCaseSensitive
+        )
+        self.check_search_backward = tk.Checkbutton(
+            self.frame_check, text="Search backward", var=self.isBackward
+        )
+        self.check_regexp = tk.Checkbutton(
+            self.frame_check, text="Use regular expression", var=self.isRegExp
+        )
+        self.btn_search = tk.Button(
+            self.frame_btn, text="Find", command=self.search
+        )
+        self.btn_replace = tk.Button(
+            self.frame_btn, text="Replace", command=self.replace
+        )
+        self.btn_search_and_replace = tk.Button(
+            self.frame_btn, text="Find and Replace", command=self.search_and_replace
+        )
+        self.btn_cancel = tk.Button(
+            self.frame, text="Cancel", command=self.cancel
+        )
+        
+        # Frame placements
+        self.frame.grid(column=0, row=0, sticky="NSEW")
+        self.btn_cancel.grid(column=1, row=1, sticky='E', padx=(4,8), pady=(4,8))
+        
+        self.frame_entry.grid(column=0, row=0)
+        tk.Label(self.frame_entry, text="Find:").grid(column=0, row=0, sticky='W')
+        self.search_entry.grid(column=1, row=0)
+        tk.Label(self.frame_entry, text="Replace:").grid(column=0, row=1, sticky='W', pady=(6,12))
+        self.replace_entry.grid(column=1, row=1, pady=(6,12))
+        
+        self.frame_btn.grid(column=0, row=1, padx=(8,4), pady=(4,8))
+        self.btn_search.grid(column=0, row=0, sticky='W')
+        self.btn_replace.grid(column=1, row=0, sticky='W', padx=(2,10))
+        self.btn_search_and_replace.grid(column=2, row=0, sticky='E')
+        
+        self.frame_check.grid(column=1, row=0, pady=(6,12))
+        self.check_case.grid(column=0, row=0, sticky='W')
+        self.check_search_backward.grid(column=0, row=1, sticky='W')
+        self.check_regexp.grid(column=0, row=2, sticky='W')
+        
+        return self.search_entry
+        
+    def _createMessage(self, text):
+        """Create MessageBox, update state; recreate if already open"""
+        if self.messageOpen:
+            self._destroyMessage()
+        self.messageRef = MessageBox(self, title='', message=text)
+        self.messageOpen = True
+        
+    def _destroyMessage(self):
+        """Destroy MessageBox and update message state"""
+        if self.messageOpen:
+            self.messageRef.destroy()
+            self.messageRef = None
+            self.messageOpen = False
+        
+    def _searchData(self):
+        """Return snapshot of dialog vars relevant to _search"""
+        return {
+            'caseSensitive': self.isCaseSensitive.get(),
+            'backwards': self.isBackward.get(),
+            'regexp': self.isRegExp.get(),
+            'search_text': self.search_text.get(),
+            'replace_text': self.replace_text.get()
+        }
+        
+    def _search(self, doSearch, doReplace):
+        """Internal method to search and/or replace"""
+        if not doSearch and not doReplace:
+            return
+        
+        self.txt.tag_configure('found', background='#aaaaaa')
+        self.txt.tag_configure('replaced', background='#aaaaaa')
+        data = self._searchData()
+        n_search = len(data['search_text'])
+        if doSearch and not n_search > 0:
+            return
+            
+        if doSearch:
+            if data['backwards']:
+                self.txt.mark_set('search_start', 'insert')
+                self.txt.mark_set('search_end', '1.0' + '-1c')
+            else:
+                self.txt.mark_set('search_start', 'insert')
+                self.txt.mark_set('search_end', 'end')
+                
+            if data['caseSensitive']:
+                nocase = 0
+            else:
+                nocase = 1
+                
+            if data['regexp']:
+                start = self.txt.search(
+                    r'{}'.format(data['search_text']), 
+                    self.txt.index('search_start'), 
+                    stopindex=self.txt.index('search_end'),
+                    backwards=data['backwards'],
+                    count=self.matchLength,
+                    nocase=nocase,
+                    regexp=True
+                )
+            else:
+                start = self.txt.search(
+                    data['search_text'], 
+                    self.txt.index('search_start'), 
+                    stopindex=self.txt.index('search_end'),
+                    backwards=data['backwards'],
+                    count=self.matchLength,
+                    nocase=nocase
+                )
+            if start:
+                end = start + '+{0}c'.format(self.matchLength.get())
+                self.txt.tag_add('found', start, end)
+                if data['backwards']:
+                    self.txt.mark_set('insert', start)
+                else:
+                    self.txt.mark_set('insert', end)
+            else: # if no results found
+                self._createMessage('No matches found.')
+                return
+
+        if doReplace:
+            foundRanges = self.txt.tag_ranges('found')
+            if not foundRanges:
+                # If no 'found' tags, then do a search instead
+                self._search(doSearch=True, doReplace=False)
+                return
+            foundStarts = [idx for i, idx in enumerate(foundRanges) if i % 2 == 0]
+            foundEnds   = [idx for i, idx in enumerate(foundRanges) if i % 2 == 1]
+            for foundStart, foundEnd in zip(foundStarts, foundEnds):
+                self.txt.delete(foundStart, foundEnd)
+                self.txt.insert(foundStart, data['replace_text'], ('replaced',))                
+    
+    def search(self, event=0):
+        """Command for Search button"""
+        self._search(doSearch=True, doReplace=False)
+    
+    def replace(self, event=0):
+        """Command for Replace button"""
+        self._search(doSearch=False, doReplace=True)
+    
+    def search_and_replace(self, event=0):
+        """Command for Search and Replace button"""
+        self._search(doSearch=True, doReplace=True)
+        
+    def destroy(self):
+        """Add text tag cleanup to simpledialog.Dialog destroy"""
+        self.txt.tag_remove('found', '1.0', 'end')
+        self.txt.tag_remove('replaced', '1.0', 'end')
+        super(SearchDialog, self).destroy()
+        
+    def buttonbox(self):
+        """Override default simpledialog.Dialog buttons"""
+        pass
+
+
 class Files(tk.Frame):
 
     def __init__(self, parent):
@@ -71,7 +293,7 @@ class Files(tk.Frame):
         self.parent = parent        
         parent.protocol("WM_DELETE_WINDOW", self.wclose)
 
-        self.parent.title("greenBerry IDE - Untitlted")
+        self.parent.title("greenBerry IDE - Untitled")
         self.pack(fill="both", expand=True)
 
         menubar = tk.Menu(self.parent)
@@ -79,18 +301,23 @@ class Files(tk.Frame):
 
         fileMenu = tk.Menu(menubar)
         runMenu = tk.Menu(menubar)
+        searchMenu = tk.Menu(menubar)
         fileMenu.add_command(label="Save", command = self.save_file, accelerator="Ctrl+S")
         fileMenu.add_command(label="Save As", command = self.save_as_command, accelerator="Ctrl+Shift+S")
         fileMenu.add_command(label="Open", command = self.open_file, accelerator="Ctrl+O")
         menubar.add_cascade(label="File", menu=fileMenu)
 
         runMenu.add_command(label="Run", command = self.run_command, accelerator="F5")
-        menubar.add_cascade(label="Run", menu=runMenu, command = self.open_file)        
+        menubar.add_cascade(label="Run", menu=runMenu, command = self.open_file) 
+        
+        searchMenu.add_command(label="Find and replace", command=self.search_command, accelerator="Ctrl+F")
+        menubar.add_cascade(label="Search", menu=searchMenu)       
 
         self.bind_all("<F5>", self.run_command)
         self.bind_all("<Control-o>", self.open_file)
         self.bind_all("<Control-s>", self.save_file)
         self.bind_all("<Control-S>", self.save_as_command)
+        self.bind_all("<Control-f>", self.search_command)
         self.bind_all("<Key>", self.key_pressed)
 
         self.run_button = tk.Button(root, command=self.run_command)
@@ -161,6 +388,12 @@ class Files(tk.Frame):
                 self.key_pressed()
         except:
             self.save_as_command()
+            
+    def search_command(self, event=0):
+        d = SearchDialog(
+            self.parent, txt = self.txt, old_text = self.old_text, 
+            title="Find and replace"
+        )
 
     def save_as_command(self, event=0):
         file = filedialog.asksaveasfile(mode="w", defaultextension=".gb", filetypes=(("greenBerry files", "*.gb"), ("All files", "*")))
