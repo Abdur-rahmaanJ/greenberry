@@ -113,21 +113,27 @@ class SearchDialog(tk.simpledialog.Dialog):
         self.isCaseSensitive = tk.IntVar()
         self.isCaseSensitive.set(1)
         self.isBackward = tk.IntVar()
+        self.isRegExp = tk.IntVar()
         
         # Widgets
         self.frame = tk.Frame(master)
         self.frame_btn = tk.Frame(self.frame)
+        self.frame_check = tk.Frame(self.frame)
+        self.frame_entry = tk.Frame(self.frame)
         self.search_entry = tk.Entry(
-            self.frame, width=20, textvariable=self.search_text
+            self.frame_entry, width=20, textvariable=self.search_text
         )
         self.replace_entry = tk.Entry(
-            self.frame, width=20, textvariable=self.replace_text
+            self.frame_entry, width=20, textvariable=self.replace_text
         )
         self.check_case = tk.Checkbutton(
-            self.frame, text="Case sensitive", var=self.isCaseSensitive
+            self.frame_check, text="Case sensitive", var=self.isCaseSensitive
         )
         self.check_search_backward = tk.Checkbutton(
-            self.frame, text="Search backward", var=self.isBackward
+            self.frame_check, text="Search backward", var=self.isBackward
+        )
+        self.check_regexp = tk.Checkbutton(
+            self.frame_check, text="Use regular expression", var=self.isRegExp
         )
         self.btn_search = tk.Button(
             self.frame_btn, text="Find", command=self.search
@@ -136,27 +142,31 @@ class SearchDialog(tk.simpledialog.Dialog):
             self.frame_btn, text="Replace", command=self.replace
         )
         self.btn_search_and_replace = tk.Button(
-            self.frame, text="Find and Replace", command=self.search_and_replace
+            self.frame_btn, text="Find and Replace", command=self.search_and_replace
         )
         self.btn_cancel = tk.Button(
             self.frame, text="Cancel", command=self.cancel
         )
         
-        # Main frame placement
+        # Frame placements
         self.frame.grid(column=0, row=0, sticky="NSEW")
-        self.search_entry.grid(column=1, row=0, padx=2, pady=2)
-        tk.Label(self.frame, text="Find:").grid(column=0, row=0)
-        self.replace_entry.grid(column=1, row=1, padx=8, pady=8)
-        tk.Label(self.frame, text="Replace:").grid(column=0, row=1)
-        self.check_case.grid(column=2, row=0, sticky='W')
-        self.check_search_backward.grid(column=2, row=1, sticky='W')
-        self.btn_cancel.grid(column=0, row=3, sticky='W')
-        self.btn_search_and_replace.grid(column=2, row=3, sticky='W', padx=3, pady=3)
-        self.frame_btn.grid(column=1, row=3)
+        self.btn_cancel.grid(column=1, row=1, sticky='E', padx=(4,8), pady=(4,8))
         
-        # Button frame placement
-        self.btn_search.grid(column=0, row=0, padx=3, pady=3)
-        self.btn_replace.grid(column=1, row=0, padx=3, pady=3)
+        self.frame_entry.grid(column=0, row=0)
+        tk.Label(self.frame_entry, text="Find:").grid(column=0, row=0, sticky='W')
+        self.search_entry.grid(column=1, row=0)
+        tk.Label(self.frame_entry, text="Replace:").grid(column=0, row=1, sticky='W', pady=(6,12))
+        self.replace_entry.grid(column=1, row=1, pady=(6,12))
+        
+        self.frame_btn.grid(column=0, row=1, padx=(8,4), pady=(4,8))
+        self.btn_search.grid(column=0, row=0, sticky='W')
+        self.btn_replace.grid(column=1, row=0, sticky='W', padx=(2,10))
+        self.btn_search_and_replace.grid(column=2, row=0, sticky='E')
+        
+        self.frame_check.grid(column=1, row=0, pady=(6,12))
+        self.check_case.grid(column=0, row=0, sticky='W')
+        self.check_search_backward.grid(column=0, row=1, sticky='W')
+        self.check_regexp.grid(column=0, row=2, sticky='W')
         
         return self.search_entry
         
@@ -179,6 +189,7 @@ class SearchDialog(tk.simpledialog.Dialog):
         return {
             'caseSensitive': self.isCaseSensitive.get(),
             'backwards': self.isBackward.get(),
+            'regexp': self.isRegExp.get(),
             'search_text': self.search_text.get(),
             'replace_text': self.replace_text.get()
         }
@@ -214,7 +225,8 @@ class SearchDialog(tk.simpledialog.Dialog):
                 self.txt.index('search_start'), 
                 stopindex=self.txt.index('search_end'),
                 backwards=data['backwards'],
-                nocase=nocase
+                nocase=nocase,
+                regexp=data['regexp']
             )
             if start:
                 end = start + '+{0}c'.format(n_search)
