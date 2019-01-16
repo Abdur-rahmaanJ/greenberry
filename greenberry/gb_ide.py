@@ -107,13 +107,16 @@ class SearchDialog(tk.simpledialog.Dialog):
     def body(self, master):
         """Create dialog body, return widget with initial focus"""
         
+        # Vars
         self.search_text = tk.StringVar()
         self.replace_text = tk.StringVar()
         self.isCaseSensitive = tk.IntVar()
         self.isCaseSensitive.set(1)
         self.isBackward = tk.IntVar()
         
+        # Widgets
         self.frame = tk.Frame(master)
+        self.frame_btn = tk.Frame(self.frame)
         self.search_entry = tk.Entry(
             self.frame, width=20, textvariable=self.search_text
         )
@@ -127,10 +130,10 @@ class SearchDialog(tk.simpledialog.Dialog):
             self.frame, text="Search backward", var=self.isBackward
         )
         self.btn_search = tk.Button(
-            self.frame, text="Find", command=self.search
+            self.frame_btn, text="Find", command=self.search
         )
         self.btn_replace = tk.Button(
-            self.frame, text="Replace", command=self.replace
+            self.frame_btn, text="Replace", command=self.replace
         )
         self.btn_search_and_replace = tk.Button(
             self.frame, text="Find and Replace", command=self.search_and_replace
@@ -139,25 +142,26 @@ class SearchDialog(tk.simpledialog.Dialog):
             self.frame, text="Cancel", command=self.cancel
         )
         
+        # Main frame placement
         self.frame.grid(column=0, row=0, sticky="NSEW")
-        self.search_entry.grid(column=1, row=0)
+        self.search_entry.grid(column=1, row=0, padx=2, pady=2)
         tk.Label(self.frame, text="Find:").grid(column=0, row=0)
-        self.replace_entry.grid(column=1, row=1)
+        self.replace_entry.grid(column=1, row=1, padx=8, pady=8)
         tk.Label(self.frame, text="Replace:").grid(column=0, row=1)
-        self.check_case.grid(column=0, row=2)
-        self.check_search_backward.grid(column=1, row=2)
-        self.btn_cancel.grid(column=0, row=3)
-        self.btn_search.grid(column=1, row=3)
-        self.btn_replace.grid(column=2, row=3)
-        self.btn_search_and_replace.grid(column=3, row=3)
+        self.check_case.grid(column=2, row=0, sticky='W')
+        self.check_search_backward.grid(column=2, row=1, sticky='W')
+        self.btn_cancel.grid(column=0, row=3, sticky='W')
+        self.btn_search_and_replace.grid(column=2, row=3, sticky='W', padx=3, pady=3)
+        self.frame_btn.grid(column=1, row=3)
+        
+        # Button frame placement
+        self.btn_search.grid(column=0, row=0, padx=3, pady=3)
+        self.btn_replace.grid(column=1, row=0, padx=3, pady=3)
         
         return self.search_entry
         
     def _createMessage(self, text):
-        """
-        Create MessageBox and update message state; recreate if there
-        is already an open MessageBox
-        """
+        """Create MessageBox, update state; recreate if already open"""
         if self.messageOpen:
             self._destroyMessage()
         self.messageRef = MessageBox(self, title='', message=text)
@@ -221,6 +225,7 @@ class SearchDialog(tk.simpledialog.Dialog):
                     self.txt.mark_set('insert', end)
             else: # if no results found
                 self._createMessage('No matches found.')
+                return
 
         if doReplace:
             foundRanges = self.txt.tag_ranges('found')
