@@ -114,6 +114,7 @@ class SearchDialog(tk.simpledialog.Dialog):
         self.isCaseSensitive.set(1)
         self.isBackward = tk.IntVar()
         self.isRegExp = tk.IntVar()
+        self.matchLength = tk.IntVar()
         
         # Widgets
         self.frame = tk.Frame(master)
@@ -203,7 +204,6 @@ class SearchDialog(tk.simpledialog.Dialog):
         self.txt.tag_configure('replaced', background='#aaaaaa')
         data = self._searchData()
         n_search = len(data['search_text'])
-        n_replace = len(data['replace_text'])
         if doSearch and not n_search > 0:
             return
             
@@ -219,17 +219,28 @@ class SearchDialog(tk.simpledialog.Dialog):
                 nocase = 0
             else:
                 nocase = 1
-            
-            start = self.txt.search(
-                data['search_text'], 
-                self.txt.index('search_start'), 
-                stopindex=self.txt.index('search_end'),
-                backwards=data['backwards'],
-                nocase=nocase,
-                regexp=data['regexp']
-            )
+                
+            if data['regexp']:
+                start = self.txt.search(
+                    r'{}'.format(data['search_text']), 
+                    self.txt.index('search_start'), 
+                    stopindex=self.txt.index('search_end'),
+                    backwards=data['backwards'],
+                    count=self.matchLength,
+                    nocase=nocase,
+                    regexp=True
+                )
+            else:
+                start = self.txt.search(
+                    data['search_text'], 
+                    self.txt.index('search_start'), 
+                    stopindex=self.txt.index('search_end'),
+                    backwards=data['backwards'],
+                    count=self.matchLength,
+                    nocase=nocase
+                )
             if start:
-                end = start + '+{0}c'.format(n_search)
+                end = start + '+{0}c'.format(self.matchLength.get())
                 self.txt.tag_add('found', start, end)
                 if data['backwards']:
                     self.txt.mark_set('insert', start)
