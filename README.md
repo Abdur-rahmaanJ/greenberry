@@ -1,4 +1,6 @@
 [![first-timers-only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://www.firsttimersonly.com/)
+![Open Source Love](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-pink.svg) 
+![MadeinMoris](https://img.shields.io/badge/Made%20in-Moris-green.svg)
 
 # greenBerry 
 A one-line statement programming language, complete with classes, cli and file compatible
@@ -64,3 +66,5 @@ Run `python gb_ide.py` write and run or load a *.gb* file !
 
 [TimThuma](https://github.com/TimThuma) : thumatim@gmail.com
 
+## credits
+[@arwinneil](https://github.com/arwinneil) for opensource and madeinmoris badges
