@@ -1,0 +1,19 @@
+var x = 1 
+var y = string squashed berry 3 
+var y = juice 
+var y = @ x 
+var z = bool true 
+var z = bool 1 
+var z = bool false
+var z = bool 0
+var num_arr = [1, 54, 54, 543, 5345, 35435, 36565] 
+print @ x
+print @ num_arr
+print @ num_arr[3]
+class Man:power = 10 action walk: print walking... 
+make Man walk 
+add to Man attribute me = string i am me 
+add to Man action run: print running... 
+func vector: print string vector is fun 
+func p x: print @ x 
+call vector 
