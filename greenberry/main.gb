@@ -36,5 +36,5 @@ func p x y: print @x
 call vector
 call p hello hi
 
-plot 1-2.5-6 time[s], 30-60-75.75 path[m]
+plot 1-2.5-6 time[s], 'y.txt' path[m]
 

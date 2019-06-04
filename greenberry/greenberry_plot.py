@@ -33,11 +33,26 @@ class GreenBerryPlot(object):
         handles plotting of points
         '''
         try:
-            dataX = list(map(float, words[i+1].split('-')))
-            labelX = GreenBerrySearch.search(i, 1, words, S.COMMA)
             comma_i = GreenBerrySearch.search_symbol(i, 1, words, S.COMMA)[1]
-            dataY = list(map(float, words[comma_i+1].split('-')))
+            if words[i+1][0] != "\'" and words[i+1][0] != "\"":
+                dataX = list(map(float, words[i+1].split('-')))
+            else:
+                file_name = words[i+1][1:-1]
+                with open(file_name, 'r') as file:
+                    dataX =  list(map(float, file.read().split('-')))
+
+            if words[comma_i+1][0] != "\'" and words[comma_i+1][0] != "\"":
+                dataY = list(map(float, words[comma_i+1].split('-')))
+            else:
+                file_name = words[comma_i+1][1:-1]
+                with open(file_name, 'r') as file:
+                    dataY = list(map(float, file.read().split('-')))
+
+            labelX = GreenBerrySearch.search(i, 1, words, S.COMMA)
             labelY = GreenBerrySearch.search(comma_i, 1, words, [S.NL, S.EOF])
             self.linear_plot(dataX, labelX, dataY, labelY)
         except:
             print(E.PLOT, line)
+
+
+            
