@@ -3,9 +3,9 @@ from collections import OrderedDict
 import inspect
 from symbols import *
 from debug_cp import *
-from greenberry_print import GreenBerryPrint
-from greenberry_plot import GreenBerryPlot
-from greenberry_var_type import GreenBerryVarType
+from gb_utils.greenberry_print import GreenBerryPrint
+from gb_utils.greenberry_plot import GreenBerryPlot
+from gb_utils.greenberry_var_type import GreenBerryVarType
 
 L_USER = 'dear berry'
 
