@@ -10,12 +10,12 @@ from collections import OrderedDict
 import inspect
 from symbols import *
 from debug_cp import *
-from greenberry_print import GreenBerryPrint
-from greenberry_lex import GreenBerryLex
-from greenberry_parse import GreenBerryParse
-from greenberry_plot import GreenBerryPlot
-from greenberry_search import GreenBerrySearch
-from greenberry_var_type import GreenBerryVarType
+from gb_utils.greenberry_print import GreenBerryPrint
+from gb_utils.greenberry_lex import GreenBerryLex
+from gb_utils.greenberry_parse import GreenBerryParse
+from gb_utils.greenberry_plot import GreenBerryPlot
+from gb_utils.greenberry_search import GreenBerrySearch
+from gb_utils.greenberry_var_type import GreenBerryVarType
 L_USER = 'dear berry'
 
 
