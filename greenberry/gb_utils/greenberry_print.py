@@ -3,8 +3,8 @@ from collections import OrderedDict
 import inspect
 from symbols import *
 from debug_cp import *
-from greenberry_var_type import GreenBerryVarType
-from greenberry_var_type import GreenBerrySearch
+from gb_utils.greenberry_var_type import GreenBerryVarType
+from gb_utils.greenberry_var_type import GreenBerrySearch
 
 L_USER = 'dear berry'
 
