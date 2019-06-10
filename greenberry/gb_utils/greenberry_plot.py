@@ -3,7 +3,7 @@ from collections import OrderedDict
 import inspect
 from symbols import *
 from debug_cp import *
-from greenberry_search import GreenBerrySearch
+from gb_utils.greenberry_search import GreenBerrySearch
 
 L_USER = 'dear berry'
 
