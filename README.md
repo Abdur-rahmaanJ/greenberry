@@ -18,7 +18,7 @@ A one-line statement programming language, complete with classes, cli and file c
 
 -   [website](https://abdur-rahmaanj.github.io/greenBerry/)
 -   [lang reference](https://abdur-rahmaanj.github.io/greenBerry/syntax.html)
--   [we have a Discord channel!](https://discord.gg/pffxfQE)
+-   [we have a Discord channel!](https://discord.gg/pffxfQE) - Join for questions!
 
 ## 📖 contributing guidelines
 
