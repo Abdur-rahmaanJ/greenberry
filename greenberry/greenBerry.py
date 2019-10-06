@@ -44,7 +44,7 @@ def greenBerry_eval(x):
     F.isDebugOn = 0 # this is a reset needed for gb_ide
 
     KWDs = [getattr(S, i) for i in [b[0] for b in [a for a in
-                                                   inspect.getmembers(S, lambda a: not(inspect.isroutine(a)))
+                                                   inspect.getmembers(S, lambda a: not inspect.isroutine(a))
                                                                 if not(a[0].startswith('__') and a[0].endswith('__'))]]]
 
     g_vars = M.g_vars

@@ -28,25 +28,24 @@ class GreenBerryPrint:
                 print(' '*5, '@debug->', arg)
 
     def print_handling(g_vars, i, words):
-            '''parses print command'''
-            try:
-                if i+1 < len(words) and words[i+1] not in [S.STRING, S.EVAL, S.VAR_REF]:
-                    print(words[i+1])
-                elif i+1 < len(words) and words[i+1] == S.VAR_REF:
-                    try:
-                        print(GreenBerryVarType.var_ref_handling(i+1, words, g_vars))
-                    except:
-                        print(E.VARREF, line)
-                elif i+1 < len(words) and words[i+1] == S.EVAL:
-                    try:
-                        print(eval(words[i+2]))
-                    except:
-                        print(E.EVAL, line)
-                elif i+1 < len(words) and words[i+1] == S.STRING:
-                    try:
-                        print(GreenBerrySearch.search(i, 1, words, [S.NL, S.EOF]))
-                    except:
-                        print(E.STRING, line)
-            except:
-                print(E.PRINT)
-
+        '''parses print command'''
+        try:
+            if i+1 < len(words) and words[i+1] not in [S.STRING, S.EVAL, S.VAR_REF]:
+                print(words[i+1])
+            elif i+1 < len(words) and words[i+1] == S.VAR_REF:
+                try:
+                    print(GreenBerryVarType.var_ref_handling(i+1, words, g_vars))
+                except:
+                    print(E.VARREF, line)
+            elif i+1 < len(words) and words[i+1] == S.EVAL:
+                try:
+                    print(eval(words[i+2]))
+                except:
+                    print(E.EVAL, line)
+            elif i+1 < len(words) and words[i+1] == S.STRING:
+                try:
+                    print(GreenBerrySearch.search(i, 1, words, [S.NL, S.EOF]))
+                except:
+                    print(E.STRING, line)
+        except:
+            print(E.PRINT)

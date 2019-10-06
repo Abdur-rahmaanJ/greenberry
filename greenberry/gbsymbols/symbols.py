@@ -3,25 +3,25 @@ class S: #Symbols keywords
     NL = '\n'
     WS = ' '
     E = ''
-    
+
     EQUAL = '='
     LESS = '<'
     GREATER = '>'
     COMMA = ','
     SQL = '['
     SQR = ']'
-    
+
     PRINT = 'print'
-    
+
     NUMBER = 'number'
     STRING = 'string'
     BOOL = 'bool'
-    
+
     TRUE = 'true'
     FALSE = 'false'
-    
+
     EVAL = 'eval'
-    
+
     VAR = 'var'
     VAR_REF = '@'
     PLOT = 'plot'
@@ -56,6 +56,3 @@ class S: #Symbols keywords
     COS = 'cos'  # cos(x) returns cosine value of x
     SIN = 'sin'  # sin(x) returns sine value of x
     HYP = 'hyp'  # returns sqroot(x**2 + y**2), takes in two parameters
-
-
-

@@ -11,5 +11,5 @@ x = ''
 
 with open('main.gb', 'r') as f:
     x = f.read()
-    
+
 greenBerry_eval(x)

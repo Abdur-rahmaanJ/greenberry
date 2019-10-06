@@ -12,7 +12,7 @@ COMMON COMPILER THEORY SYNTAX P1
 - context-free grammar -> rules that define a language independent of syntax
 - Context-Free Grammar (CFG) in our case -> a set of rules that 
     describe all possible strings in a given formal language
-*** 
+***
 it is to be noted that source code are of type strings and as such the word 
 'string' is used
 ***
@@ -22,7 +22,7 @@ it is to be noted that source code are of type strings and as such the word
 - start symbol -> In the example below, S is the start symbol
     S → Av
     A → x
-    
+
 - terminal   -> does not appear on the left side of a production
 - non-terminal -> that which can be broken down further
 ***
@@ -40,12 +40,12 @@ basically has → and | where it means or
 normally starts with S to denote Start symbol
 Capital letters means replaceable characters
 
-S -> a 
+S -> a
 #meaning only possible sentence is the token a
 
 S -> aBa
 B -> bb
-#B can be replaced with bb 
+#B can be replaced with bb
 
 USE OF |
 
@@ -67,7 +67,7 @@ S -> aBa
 B -> bb | aaB
 
 more or less complete description of a computer lang :
-    
+
 S -> EXPRESSION
 EXPRESSION -> TERM | TERM + EXPRESSION | TERM - EXPRESSION
 TERM -> FACTOR | FACTOR * EXPRESSION | FACTOR / EXPRESSION
@@ -75,8 +75,8 @@ FACTOR -> NUMBER | ( EXPRESSION )
 NUMBER -> 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 | 
           1 NUMBER | 2 NUMBER | 3 NUMBER | 4 NUMBER |
           5 NUMBER | 6 NUMBER | 7 NUMBER | 8 NUMBER |
-          9 NUMBER | 0 NUMBER 
-          
+          9 NUMBER | 0 NUMBER
+
 -- Extended Backus Naur Form (EBNF)
 Backus and Naur worked on a representation scheme and others extended on it
 
@@ -97,7 +97,7 @@ NUMBER :== '1' | '2' | '3' | '4' | '5' |
            '6' | '7' | '8' | '9' | '0' | 
            '1' NUMBER | '2' NUMBER | '3' NUMBER | 
            '4' NUMBER | '5' NUMBER | '6' NUMBER |
-           '7' NUMBER | '8' NUMBER | '9' NUMBER | '0' NUMBER 
+           '7' NUMBER | '8' NUMBER | '9' NUMBER | '0' NUMBER
 
 
 ______________________________________________________________________
@@ -107,50 +107,50 @@ in many languages you have a file defining the grammar in a file called
 grammar.txt (which greenBerry's author has not yet included upto now). 
 
 1) C lang : see end of file
-    
+
 2)
 Here is a more common example :
 
 program = stmts eof "program1" ;
- 
+
 stmts = stmt "stmts1" (';' stmt "stmts2")* ;
- 
+
 stmt = "stmt1" 
      | selection "stmt2"
      | iteration "stmt3"
      | assignment "stmt4" ;
-      
+
 selection = 'if' alts 'fi' "selection1" ;
- 
+
 iteration = 'do' alts 'od' "iteration1" ;
- 
+
 alts = alt "alts1" ('::' alt "alts2")* ;
- 
+
 alt = guard '?' stmts "alt1" ;
- 
+
 guard = expr "guard1" ;
- 
+
 assignment = vars ':=' exprs                  "assignment1"
            | vars ':=' subprogram ':=' exprs  "assignment2"
            |      ':=' subprogram ':=' exprs  "assignment3"
            | vars ':=' subprogram ':='        "assignment4"
            |      ':=' subprogram ':='        "assignment5" ;
-           
+
 vars = id "vars1" (',' id "vars2")* ;
- 
+
 exprs = expr "exprs1" (',' expr "exprs2")* ;
- 
+
 subprogram = id "subprogram1" ;
- 
+
 expr = disjunction "expr1" ;
- 
+
 disjunction = conjunction "disjunction1" ('|' conjunction "disjunction2")* ;
- 
+
 conjunction = negation "conjunction1" ('&' negation "conjunction2")* ;
- 
+
 negation = relation "negation1" 
          | '~' relation "negation2" ;
-         
+
 relation = sum          "relation1"
          | sum '<'  sum "relation2"
          | sum '<=' sum "relation3"
@@ -158,12 +158,12 @@ relation = sum          "relation1"
          | sum '~=' sum "relation5"
          | sum '>=' sum "relation6"
          | sum '>'  sum "relation7" ;
-         
+
 sum = (term "sum1" | '-' term "sum2") ('+' term "sum3" | '-' term "sum4")* ;
- 
+
 term = factor "term1" 
       ('*' factor "term2" | '/' factor "term3" | '//' factor "term4")* ;
-      
+
 factor = 'true'       "factor1"
        | 'false'      "factor2"
        | integer      "factor3"
@@ -214,30 +214,30 @@ COMMON COMPILER THEORY SYNTAX P2
 
 - CBC lexer -> CBC means Char/character by Char/character, a program that goes 
     over the source text character by character
-    
+
 - keyword   -> word having a special meaning to the compiler
 
 - lexeme    -> set of characters identified by the lexer
     e.g x = 5 + pencils
     lexemes : x,=,5,+,pencils
-    
+
 - pattern   -> set of rules that specifies when the sequence of characters from 
     an input makes a token
-    
+
 - token     -> typically a mapping of value and type. common cases :
     1) identifiers
     2) keywords
     3) operators
     4) special symbols
     5) constant e.g. PI 
-    
+
     for more info see STEP 1 in analysis
     token and terminal symbol are in essence the same
 
 - front-end : from high-level language to some intermediate language
 - back-end : from some intermediary language to binary code
     in each steps below, front-end and back-end has been labelled in ()
-__________ __ __ 
+__________ __ __
 CASE :
 x = 1 + y * 5
 
@@ -291,13 +291,13 @@ also generates parse trees
                               1          |                |
                                      identifier         number        
                                          y                5
- syntax tree as 
- 
+ syntax tree as
+
                                   =
                     <id, 1>                +
                                 <num, 1>           *
                                            <id, 2>    <num, 5>
-                                           
+
 trees are often generated in JSON format or XML format
 
 JSON
@@ -309,7 +309,7 @@ JSON
                 'etc':....,
         }
 }
-        
+
 XML
 <function>
     <keyword> func </keyword>
@@ -375,10 +375,10 @@ useful demos :
 
 if __name__ == "__main__":
     print('see infile notes')
-    
+
 """
 Here is a grammar.txt for the C lanaguage, which reveals quite a few 
-tricks you might not know about 
+tricks you might not know about
 
 primary-expression
     identifier
@@ -560,8 +560,8 @@ struct-declaration
 specifier-qualifier-list
     type-specifier
     type-qualifier
-    type-specifier specifier-qualifier-list 
-    type-qualifier specifier-qualifier-list 
+    type-specifier specifier-qualifier-list
+    type-qualifier specifier-qualifier-list
 
 struct-declarator-list
     struct-declarator
@@ -737,4 +737,3 @@ function-definition
                            declarator declaration-list compound-statement
     declaration-specifiers declarator declaration-list compound-statement
 """
-
