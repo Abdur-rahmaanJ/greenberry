@@ -442,7 +442,6 @@ class Files(tk.Frame):
 
             self.txtout.yview_pickplace("end")
 
-
         elif messagebox.askokcancel("Save before run", "Your file must be saved before running.\nPress OK to save."):
             self.save_file()
             try:
@@ -496,7 +495,6 @@ class Files(tk.Frame):
                 root.destroy()
         else:
             root.destroy()
-
 
     def color_text(self, event=0):
         file_text = self.txt.get("1.0", "end"+"-1c") + " "

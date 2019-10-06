@@ -2,7 +2,11 @@ import contextlib
 from io import StringIO
 from greenBerry import greenBerry_eval
 
-def eval(str):         #Function to evaluate postfix expression
+def eval(str):
+    """
+    Function to evaluate postfix expression
+    """
+
     exp = list(str)
     S = []
     i = 0
@@ -30,9 +34,13 @@ def eval(str):         #Function to evaluate postfix expression
     print(S[0])
 
 def maths_eval(string): # previous InfixCon
-    res = ''                                                              #Converting Infix expression to postfix
-    exp = string                                                          #Enter the expression to evaluate but mind the brackets in case
-    exp = list(exp)                                                       #Multiply and divide
+    """
+    Converts Infix expression to postfix
+    Enter the expression to evaluate but mind the brackets in case of multiply and divide
+    """
+    res = ''
+    exp = string
+    exp = list(exp)
     S = []
     L = []
     i = 0
@@ -55,7 +63,7 @@ def maths_eval(string): # previous InfixCon
                         S.pop()
                     S.append(exp[i])
                 elif(S[-1] == '*' or S[-1] == '/'):
-                    while(len(S) > 0 and S[-1] != '('  and S[-1] != '^'):
+                    while(len(S) > 0 and S[-1] != '(' and S[-1] != '^'):
                         res = res+S[-1]
                         S.pop()
                     S.append(exp[i])
@@ -68,7 +76,7 @@ def maths_eval(string): # previous InfixCon
                         S.pop()
                     S.append(exp[i])
                 elif(S[-1] == '+' or S[-1] == '-'):
-                    while(len(S) > 0 and S[-1] != '('  and S[-1] != '^' and S[-1] != '*' and S[-1] != '/'):
+                    while(len(S) > 0 and S[-1] != '(' and S[-1] != '^' and S[-1] != '*' and S[-1] != '/'):
                         res = res+S[-1]
                         S.pop()
                     S.append(exp[i])
