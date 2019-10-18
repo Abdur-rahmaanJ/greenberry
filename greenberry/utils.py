@@ -2,83 +2,73 @@ from io import StringIO
 from greenBerry import greenBerry_eval
 import contextlib
 
-def eval(str):         #Function to evaluate postfix expression
-    exp=list(str)
+def eval(list):
+    '''Function to evaluate postfix expression'''
+
+    exp=list
     S=[]
-    i=0
-    while(i<len(exp)):
-        if(exp[i].isnumeric()):
-            S.append(exp[i])
+    for e in exp:
+        if e.isnumeric():
+            S.append(e)
         else:
-            y=int(S[-1])
-            S.pop()
-            x=int(S[-1])
-            S.pop()
-            if(exp[i]=='+'):
+            y=int(S.pop())
+            
+            x=int(S.pop())
+            
+            if(e=='+'):
                 S.append(x+y)
-            elif(exp[i]=='-'):
+            elif(e=='-'):
                 S.append(x-y)
-            elif(exp[i]=='*'):
+            elif(e=='*'):
                 S.append(x*y)
-            elif(exp[i]=='/'):
+            elif(e=='/'):
                 S.append(x//y)
-            elif(exp[i]=='^'):
+            elif(e=='^'):
                 S.append(x**y)
             else:
                 pass
-        i=i+1
+
     print(S[0])
 
 def maths_eval(string): # previous InfixCon
-    res=''                                                              #Converting Infix expression to postfix
-    exp=string                                                          #Enter the expression to evaluate but mind the brackets in case
-    exp=list(exp)                                                       #Multiply and divide
-    S=[]
-    L=[]
-    i=0
-    while(i<len(exp)):
-        if(exp[i]>='0' and exp[i]<='9'):
-            res=res+exp[i]
+
+    ''' Takes a string of infix expression and
+        returns the solution'''
+
+    operators = '^/*+-'                                     # operator precedence
+    infix_exp = string                                      # the infix input expression 
+    pfix_exp  = []                                          # the postfix output expression
+    term = ''                                               # multidigit numbers which will be added in the postfix expression
+    S = []                                                  # stack to hold operators
+    
+    for e in infix_exp:
+
+        if e.isnumeric():
+            term += e
 
         else:
-            if(len(S)==0 or exp[i]=='(' or exp[i]=='^'):
-                S.append(exp[i])
-            elif(exp[i]==')'):
-                while(S[-1]!='('):
-                    res=res+S[-1]
-                    S.pop()
+            pfix_exp.append(term)
+            term = ''
+
+            if e == '(':
+                S.append(e)
+
+            elif e == ')':
+                while S[-1] != '(':
+                    pfix_exp.append(S.pop())
                 S.pop()
-            elif(exp[i]=='*' or exp[i]=='/'):
-                if(S[-1]=='^'):
-                    while(len(S)>0 and S[-1]!='('):
-                        res=res+S[-1]
-                        S.pop()
-                    S.append(exp[i])
-                elif(S[-1]=='*' or S[-1]=='/'):
-                    while(len(S)>0 and S[-1]!='('  and S[-1]!='^'):
-                        res=res+S[-1]
-                        S.pop()
-                    S.append(exp[i])
-                else:
-                    S.append(exp[i])
-            elif(exp[i]=='+' or exp[i]=='-'):
-                if(S[-1]=='^' or S[-1]=='*' or S[-1]=='/'):
-                    while(len(S)>0 and S[-1]!='('):
-                        res=res+S[-1]
-                        S.pop()
-                    S.append(exp[i])
-                elif(S[-1]=='+' or S[-1]=='-'):
-                    while(len(S)>0 and S[-1]!='('  and S[-1]!='^' and S[-1]!='*' and S[-1]!='/'):
-                        res=res+S[-1]
-                        S.pop()
-                    S.append(exp[i])
-                else:
-                    S.append(exp[i])
-        i=i+1
-    while(len(S)>0):
-        res=res+S[-1]
-        S.pop()
-    eval(res)
+
+            elif e in operators:
+                while S and not operators.index(e) < operators.index(S[-1]):
+                    pfix_exp.append(S.pop())
+                S.append(e)
+
+    pfix_exp.append(term)
+    while S:
+        pfix_exp.append(S.pop())
+    
+    eval(pfix_exp)
+    
 
 
 def capture_gb_eval_print(code):
