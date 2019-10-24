@@ -26,7 +26,6 @@ class Lexer:
         self.line = 1
         self.status = ''
 
-
     def get_lexemes(self):
         for i, elem in enumerate(self.source):
             if elem == S.NL:

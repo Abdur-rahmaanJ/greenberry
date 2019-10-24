@@ -5,7 +5,7 @@ class Debug_cp(object):
     def __init__(self, name):
         self.name = name
         self.var = 1
-    
+
     def run(self):
-        print(self.name,'*** entered cp',self.var)
+        print(self.name, '*** entered cp', self.var)
         self.var += 1

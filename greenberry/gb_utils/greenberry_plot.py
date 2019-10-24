@@ -39,7 +39,7 @@ class GreenBerryPlot(object):
             else:
                 file_name = words[i+1][1:-1]
                 with open(file_name, 'r') as file:
-                    dataX =  list(map(float, file.read().split('-')))
+                    dataX = list(map(float, file.read().split('-')))
 
             if words[comma_i+1][0] != "\'" and words[comma_i+1][0] != "\"":
                 dataY = list(map(float, words[comma_i+1].split('-')))
@@ -53,6 +53,3 @@ class GreenBerryPlot(object):
             self.linear_plot(dataX, labelX, dataY, labelY)
         except:
             print(E.PLOT, line)
-
-
-            
