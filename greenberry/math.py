@@ -23,7 +23,3 @@ class M:  # math
     COS = 'cos'  # cos(x) returns cosine value of x
     SIN = 'sin'  # sin(x) returns sine value of x
     HYP = 'hyp'  # returns sqroot(x**2 + y**2), takes in two parameters
-
-
-
-

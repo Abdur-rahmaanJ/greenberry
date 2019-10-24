@@ -34,9 +34,8 @@ class GreenBerrySearch:
         while base+j < len(words):
             if words[base+j] in delimeters:
                 break
-            else:
-                string += words[base+j] + ' '
-                j += 1
+            string += words[base+j] + ' '
+            j += 1
         return string
 
     def search_toks(i, offset, words, delimeters):
@@ -57,9 +56,8 @@ class GreenBerrySearch:
         while base+j < len(words):
             if words[base+j] in delimeters:
                 break
-            else:
-                list.append(words[base+j])
-                j += 1
+            list.append(words[base+j])
+            j += 1
         return list
 
     def search_symbol(i, offset, words, delimeters): #i to be resolved
@@ -82,6 +80,5 @@ class GreenBerrySearch:
         while base+j < len(words):
             if words[base+j] in delimeters:
                 break
-            else:
-                j += 1
+            j += 1
         return [words[base+j], base+j]
