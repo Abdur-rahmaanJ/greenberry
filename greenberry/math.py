@@ -4,7 +4,7 @@ Created on Mon Apr 9 11:02:15 2018
 
 @author: KraftyCoder
 Notes : All Rights Reserved
-see theory_notes_simple.py (Not included yet)
+see theory_notes_simple.py in folder 'greenberry'
 """
 
 L_User = 'dear berry'

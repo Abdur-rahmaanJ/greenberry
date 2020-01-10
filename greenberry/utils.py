@@ -2,7 +2,6 @@ import contextlib
 from io import StringIO
 from greenBerry import greenBerry_eval
 
-
 def eval(str):
     """
     Function to evaluate postfix expression
@@ -88,6 +87,7 @@ def maths_eval(string): # previous InfixCon
         res = res+S[-1]
         S.pop()
     eval(res)
+
 
 
 def capture_gb_eval_print(code):
