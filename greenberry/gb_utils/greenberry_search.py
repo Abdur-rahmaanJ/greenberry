@@ -69,6 +69,8 @@ class GreenBerrySearch:
         offset - offset from index
         words - current list of symbol/keyword being searched in
         delimiters - list of delimiting symbols
+        word - symbol or set of symbols currently being checked
+        new_base - index to be returned after the search
 
         return list
 
@@ -78,7 +80,13 @@ class GreenBerrySearch:
         base = i+offset
         j = 1
         while base+j < len(words):
-            if words[base+j] in delimeters:
+            word = ''.join(words[base+j:base+j+2])
+            new_base = base+j+1
+            if word in delimeters:
+                break
+            word = words[base + j]
+            new_base = base + j
+            if word in delimeters:
                 break
             j += 1
-        return [words[base+j], base+j]
+        return [word, new_base]

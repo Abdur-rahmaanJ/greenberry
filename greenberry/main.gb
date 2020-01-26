@@ -11,6 +11,8 @@ print string Hello world!
 if arj = greenBerry : print ok
 if 3 > 2 : print apple
 if 2 > 3 : print orange
+if 1 <= 3: print banana
+if 2 >= 5: print grape
 if @y = abcd : print pear
 if @y = ab : print 6
 

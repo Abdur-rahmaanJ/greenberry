@@ -13,6 +13,8 @@ class S:
     EQUAL = '='
     LESS = '<'
     GREATER = '>'
+    EQUAL_GREATER = '>='
+    EQUAL_LESS = '<='
     COMMA = ','
     SQL = '['
     SQR = ']'
