@@ -92,7 +92,8 @@ def greenBerry_eval(x):
             try:
                 F.bStart = i
                 L, R = 0, 0
-                raw = GreenBerrySearch.search_symbol(i, 1, words, [S.EQUAL, S.LESS, S.GREATER])
+                raw = GreenBerrySearch.search_symbol(i, 1, words,
+                                                     [S.EQUAL, S.LESS, S.GREATER, S.EQUAL_GREATER, S.EQUAL_LESS])
                 symbol = raw[0]
                 symbol_i = raw[1]
                 colon_i = GreenBerrySearch.search_symbol(i, 1, words, S.COLON)[1]
@@ -124,8 +125,14 @@ def greenBerry_eval(x):
                 elif symbol == S.GREATER:
                     if L > R:
                         GreenBerryParse.simple_parse(g_vars, wds, line)
-                if symbol == S.LESS:
+                elif symbol == S.LESS:
                     if L < R:
+                        GreenBerryParse.simple_parse(g_vars, wds, line)
+                elif symbol == S.EQUAL_GREATER:
+                    if L >= R:
+                        GreenBerryParse.simple_parse(g_vars, wds, line)
+                elif symbol == S.EQUAL_LESS:
+                    if L <= R:
                         GreenBerryParse.simple_parse(g_vars, wds, line)
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
                 F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
