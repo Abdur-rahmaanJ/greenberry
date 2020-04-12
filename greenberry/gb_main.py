@@ -7,9 +7,9 @@ Created on Sun Dec 31 22:54:37 2017
 
 from greenBerry import greenBerry_eval
 
-x = ''
+x = ""
 
-with open('main.gb', 'r') as f:
+with open("main.gb", "r") as f:
     x = f.read()
 
 greenBerry_eval(x)

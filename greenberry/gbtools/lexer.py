@@ -5,26 +5,29 @@ class Token:
         self.status = status
         self.line = line
 
+
 class Lexeme:
     def __init__(self, value, line):
         self.value = value
         self.line = line
 
+
 class Lexer:
     global ops
+
     def __init__(self, source, KWDs):
-        #parameters
-        self.source = source #text-file or string
+        # parameters
+        self.source = source  # text-file or string
         self.KWDs = KWDs
 
-        #data containers
-        self.cup = ''
+        # data containers
+        self.cup = ""
         self.lexemes = []
         self.tokens = []
 
-        #info
+        # info
         self.line = 1
-        self.status = ''
+        self.status = ""
 
     def get_lexemes(self):
         for i, elem in enumerate(self.source):
@@ -32,8 +35,12 @@ class Lexer:
                 self.line += 1
             if elem != S.WS:
                 self.cup += elem
-            if i+1 >= len(self.source) or self.source[i+1] == S.WS or \
-                         self.source[i+1] in self.KWDs or elem in self.KWDs:
+            if (
+                i + 1 >= len(self.source)
+                or self.source[i + 1] == S.WS
+                or self.source[i + 1] in self.KWDs
+                or elem in self.KWDs
+            ):
                 if self.cup != S.E:
                     self.lexemes.append(Lexeme(self.cup, self.line))
                     self.cup = S.E
@@ -41,31 +48,31 @@ class Lexer:
 
     def get_tokens(self, lexemes):
         for lexeme in lexemes:
-            type = ''
-            status = ''
+            type = ""
+            status = ""
             isStringOn = 0
             isIfOn = 0
 
             if lexeme.value in MATH_OPS:
-                type = 'math operator'
+                type = "math operator"
             elif lexeme.value in BOOL_OPS:
-                type = 'bool operator'
+                type = "bool operator"
             elif lexeme.value in BOOLS:
-                type = 'bool value'
+                type = "bool value"
             elif lexeme.value == S.STRING:
                 isStringOn = 1
-                type = 'string'
+                type = "string"
             elif lexeme.value == S.EQUAL:
                 if isIfOn == 1:
-                    type = 'equalto comparison'
+                    type = "equalto comparison"
                 else:
-                    type = 'assignment operator'
-            elif lexeme.value in EOS: # newline
+                    type = "assignment operator"
+            elif lexeme.value in EOS:  # newline
                 isStringOn = 0
                 isIfOn = 0
 
             if isStringOn == 1:
-                type = 'string'
+                type = "string"
                 self.tokens.append(Token(lexeme.value, type, status, lexeme.line))
 
         return self.tokens

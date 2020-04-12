@@ -4,20 +4,21 @@ import inspect
 from symbols import *
 from debug_cp import *
 
-L_USER = 'dear berry'
+L_USER = "dear berry"
 
 # another lex would be to identify blobks first this is a side effect
-MATH_OPS = ['+', '-', '*', '/']
+MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
 EOS = [S.NL, S.EOF]
 
+
 class GreenBerrySearch:
     def __init(self):
-        print(self, 'does not have an initialiser')
+        print(self, "does not have an initialiser")
 
     def search(i, offset, words, delimeters):
-        '''
+        """
         searches for symbols and returns string in between specified index
         and symbol
 
@@ -27,19 +28,19 @@ class GreenBerrySearch:
         delimiters - list of delimiting symbols
 
         return string
-        '''
-        base = i+offset
+        """
+        base = i + offset
         j = 1
-        string = ''
-        while base+j < len(words):
-            if words[base+j] in delimeters:
+        string = ""
+        while base + j < len(words):
+            if words[base + j] in delimeters:
                 break
-            string += words[base+j] + ' '
+            string += words[base + j] + " "
             j += 1
         return string
 
     def search_toks(i, offset, words, delimeters):
-        '''
+        """
         searches for symbols and returns all found sybols in between
         specified index and symbol as list
 
@@ -49,19 +50,19 @@ class GreenBerrySearch:
         delimiters - list of delimiting symbols
 
         return list
-        '''
-        base = i+offset
+        """
+        base = i + offset
         j = 1
         list = []
-        while base+j < len(words):
-            if words[base+j] in delimeters:
+        while base + j < len(words):
+            if words[base + j] in delimeters:
                 break
-            list.append(words[base+j])
+            list.append(words[base + j])
             j += 1
         return list
 
-    def search_symbol(i, offset, words, delimeters): #i to be resolved
-        '''
+    def search_symbol(i, offset, words, delimeters):  # i to be resolved
+        """
         finds the index as well as the delimiting symbol (in case there are
         many) we are searching for
 
@@ -76,12 +77,12 @@ class GreenBerrySearch:
 
         list[0] - symbol
         list[1] - index
-        '''
-        base = i+offset
+        """
+        base = i + offset
         j = 1
-        while base+j < len(words):
-            word = ''.join(words[base+j:base+j+2])
-            new_base = base+j+1
+        while base + j < len(words):
+            word = "".join(words[base + j : base + j + 2])
+            new_base = base + j + 1
             if word in delimeters:
                 break
             word = words[base + j]

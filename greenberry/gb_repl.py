@@ -6,20 +6,24 @@ Created on Sun Dec 31 22:21:00 2017
 """
 from greenBerry import greenBerry_eval
 
-print('''
+print(
+    """
       ---greenBerry(c)---
       welcome to the .gb REPL
       ---greenBerry(c)---
-      ''')
+      """
+)
 isSessionOn = 1
 while isSessionOn == 1:
-    x = input('---> ')
+    x = input("---> ")
     greenBerry_eval(x)
-    if x == 'berry exit':
+    if x == "berry exit":
         isSessionOn = 0
     print()
-print('''
+print(
+    """
       ---greenBerry(c)---
       .gb REPL exited. see you soon _ _
       ---greenBerry(c)---
-      ''')
+      """
+)

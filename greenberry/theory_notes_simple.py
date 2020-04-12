@@ -374,7 +374,7 @@ useful demos :
 """
 
 if __name__ == "__main__":
-    print('see infile notes')
+    print("see infile notes")
 
 """
 Here is a grammar.txt for the C lanaguage, which reveals quite a few 
