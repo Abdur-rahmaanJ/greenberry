@@ -44,6 +44,8 @@ Read [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/green
 
 ## 🌊 run files
 
+Read [here](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/code_running_instructions.md) or follow below
+
 ### REPL 🔧
 
 Just run `python gb_repl.py`
