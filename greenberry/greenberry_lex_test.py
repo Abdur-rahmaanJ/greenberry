@@ -8,6 +8,8 @@ MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
 EOS = [S.NL, S.EOF]
+
+
 def greenberry_lex_test(x, expected):
     KWDs = [
         getattr(S, i)
@@ -31,6 +33,8 @@ def greenberry_lex_test(x, expected):
             is_correct = False
         j += 1
     return is_correct
+
+
 def greenberry_lex_tester(to_lex, *args):
     l_args = list(args)
     l_args.append("{***end-of-file***}")
@@ -50,6 +54,8 @@ def greenberry_multi_tests(*args):
         print("\x1b[32m All tests passed. \x1b[39m")
     else:
         print("\x1b[31m A test failed. \x1b[39m")
+
+
 greenberry_multi_tests({
     "test": "print \"hi\"",
     "expected": ["print", "\"hi\""]
