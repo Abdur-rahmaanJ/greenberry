@@ -2,7 +2,6 @@ from gb_utils.greenberry_lex import GreenBerryLex
 from symbols import *
 from debug_cp import *
 import inspect
-from collections import OrderedDict
 MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
