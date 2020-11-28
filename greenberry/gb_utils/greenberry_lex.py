@@ -20,7 +20,7 @@ class GreenBerryLex:
     def __init__(self):
         print(self, "does not have an initialiser")
 
-    def lex(x, KWDs, add_eof=""):
+    def lex(self, x, KWDs, add_eof=""):
         """
         breaks string into symbols and ids
         returns list
