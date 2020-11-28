@@ -65,4 +65,8 @@ greenberry_multi_tests({
 {
     "test": "for 3 times: print greenBerry",
     "expected": ["for", "3", "times", ":", "print", "greenBerry"]
+},
+{
+    "test": "var y = @ x",
+    "expected": ["var", "y", "=", "@", "x"]
 })
