@@ -7,15 +7,7 @@ from collections import OrderedDict
 MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
-EOS = [S.NL, S.EOF]
-def greenberry_lex_test(x, expected):
-   # M.g_vars = {}
-    #M.g_fs = {}
-    #M.g_cls = {}
-    F.bStart = 100
-    F.bEnd = 0
-    F.isDebugOn = 0  # this is a reset needed for gb_ide
-
+EOS = [S.NL, S.EOFdef greenberry_lex_test(x, expected):
     KWDs = [
         getattr(S, i)
         for i in [
@@ -27,18 +19,29 @@ def greenberry_lex_test(x, expected):
             ]
         ]
     ]
-    is_correct = True
     words = GreenBerryLex.lex(x, KWDs, add_eof=1)
     print("\033[1mWords:\033[0m")
+    is_correct = True
     j = 0
     for i in words:
         print(i)
         if not i == expected[j]:
-            print("This token is unexpected.")
+            print("\x1b[31m This token is unexpected.\x1b[30m")
             is_correct = False
         j += 1
     return is_correct
-greenberry_lex_test("print \"Hi\"", ["print", "\"Hi\"", "{***end-of-file***}"])
-greenberry_lex_test("print \"Hi\"", ["print", "\"Hi\"", "{***end-of-file***}"])
-greenberry_lex_test("print \"Hi\"", ["print", "\"Hi\"", "{***end-of-file***}"])
-greenberry_lex_test("print \"Hi\"", ["print", "\"Hi\"", "{***end-of-file***}"])
+def greenberry_lex_tester(to_lex, *args):
+    l_args = list(args)
+    l_args.append("{***end-of-file***}")
+    result = greenberry_lex_test(to_lex, l_args)
+    if result:
+        print("\x1b[32m Test passed \x1b[30m")
+    else:
+        print("\x1b[31m Test failed \x1b[30m")
+def greenberry_multi_tests(*args):
+    for i in args:
+        greenberry_lex_tester(i["test"], *i["expected"])
+greenberry_multi_tests({
+    "test": "print \"hi\"",
+    "expected": ["print", "\"hi\""]
+})
