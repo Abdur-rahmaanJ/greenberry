@@ -1,9 +1,9 @@
-import tkinter as tk
-from tkinter import messagebox
-from tkinter import filedialog
-from tkinter import simpledialog
-import tkinter.scrolledtext as tkst
 import subprocess
+import tkinter as tk
+import tkinter.scrolledtext as tkst
+from tkinter import filedialog
+from tkinter import messagebox
+from tkinter import simpledialog
 
 color1 = ["var", "print", "set", "debug", "plot"]
 color2 = ["string", "eval", "times", "action", "attribute", "bool"]
@@ -90,7 +90,7 @@ class MessageBox(tk.simpledialog.Dialog):
     def destroy(self):
         """Update parent when destroyed"""
         self.parent.messageOpen = False
-        super(MessageBox, self).destroy()
+        super().destroy()
 
     def buttonbox(self):
         """Override default simpledialog.Dialog buttons"""
@@ -240,7 +240,7 @@ class SearchDialog(tk.simpledialog.Dialog):
                     nocase=nocase,
                 )
             if start:
-                end = start + "+{0}c".format(self.matchLength.get())
+                end = start + f"+{self.matchLength.get()}c"
                 self.txt.tag_add("found", start, end)
                 if data["backwards"]:
                     self.txt.mark_set("insert", start)
@@ -278,7 +278,7 @@ class SearchDialog(tk.simpledialog.Dialog):
         """Add text tag cleanup to simpledialog.Dialog destroy"""
         self.txt.tag_remove("found", "1.0", "end")
         self.txt.tag_remove("replaced", "1.0", "end")
-        super(SearchDialog, self).destroy()
+        super().destroy()
 
     def buttonbox(self):
         """Override default simpledialog.Dialog buttons"""
@@ -378,7 +378,7 @@ class Files(tk.Frame):
             self.key_pressed()
 
     def read_file(self, filename):
-        f = open(filename, "r")
+        f = open(filename)
         text = f.read()
         return text
 
@@ -435,7 +435,7 @@ class Files(tk.Frame):
                 [
                     "python",
                     "-c",
-                    'import greenBerry; greenBerry.greenBerry_eval("""{0}""")'.format(
+                    'import greenBerry; greenBerry.greenBerry_eval("""{}""")'.format(
                         self.read_file(self.file_dir)
                     ),
                 ],
@@ -482,7 +482,7 @@ class Files(tk.Frame):
                     [
                         "python",
                         "-c",
-                        'import greenBerry; greenBerry.greenBerry_eval("""{0}""")'.format(
+                        'import greenBerry; greenBerry.greenBerry_eval("""{}""")'.format(
                             self.read_file(self.file_dir)
                         ),
                     ],

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-from collections import OrderedDict
 import inspect
-from symbols import *
+from collections import OrderedDict
+
 from debug_cp import *
 from gb_utils.greenberry_search import GreenBerrySearch
+from symbols import *
 
 L_USER = "dear berry"
 
@@ -14,7 +14,7 @@ BOOL_OPS = [S.GREATER, S.LESS]
 EOS = [S.NL, S.EOF]
 
 
-class GreenBerryPlot(object):
+class GreenBerryPlot:
     def __init__(self):
         print(self, "does not have an initialiser")
 
@@ -40,14 +40,14 @@ class GreenBerryPlot(object):
                 dataX = list(map(float, words[i + 1].split("-")))
             else:
                 file_name = words[i + 1][1:-1]
-                with open(file_name, "r") as file:
+                with open(file_name) as file:
                     dataX = list(map(float, file.read().split("-")))
 
             if words[comma_i + 1][0] != "'" and words[comma_i + 1][0] != '"':
                 dataY = list(map(float, words[comma_i + 1].split("-")))
             else:
                 file_name = words[comma_i + 1][1:-1]
-                with open(file_name, "r") as file:
+                with open(file_name) as file:
                     dataY = list(map(float, file.read().split("-")))
 
             labelX = GreenBerrySearch.search(i, 1, words, S.COMMA)

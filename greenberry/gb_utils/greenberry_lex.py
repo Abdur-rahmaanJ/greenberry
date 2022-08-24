@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """
 Class for breaking strings into symbols
 and return a list of each symbol.
 """
 import inspect
+
 from symbols import *
 
 L_USER = "dear berry"

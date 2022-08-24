@@ -1,5 +1,6 @@
 import contextlib
 from io import StringIO
+
 from greenBerry import greenBerry_eval
 
 
@@ -28,7 +29,7 @@ def eval(str):
             elif exp[i] == "/":
                 S.append(x // y)
             elif exp[i] == "^":
-                S.append(x ** y)
+                S.append(x**y)
             else:
                 pass
         i = i + 1

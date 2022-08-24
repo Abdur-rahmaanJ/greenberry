@@ -7,8 +7,10 @@ import sys
 sys.path.append("..")
 
 import unittest
-from greenBerry import greenBerry_eval
+
 from utils import capture_gb_eval_print
+
+from greenBerry import greenBerry_eval
 
 
 class GBLangTests(unittest.TestCase):

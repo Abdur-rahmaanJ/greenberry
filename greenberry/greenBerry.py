@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Tue Dec 26 21:53:56 2017
 
@@ -6,16 +5,17 @@ Notes : see
 see theory_notes_simple.py
 """
 
-from collections import OrderedDict
 import inspect
-from symbols import *
+from collections import OrderedDict
+
 from debug_cp import *
-from gb_utils.greenberry_print import GreenBerryPrint
 from gb_utils.greenberry_lex import GreenBerryLex
 from gb_utils.greenberry_parse import GreenBerryParse
 from gb_utils.greenberry_plot import GreenBerryPlot
+from gb_utils.greenberry_print import GreenBerryPrint
 from gb_utils.greenberry_search import GreenBerrySearch
 from gb_utils.greenberry_var_type import GreenBerryVarType
+from symbols import *
 
 L_USER = "dear berry"
 

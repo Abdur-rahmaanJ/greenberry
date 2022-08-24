@@ -1,7 +1,9 @@
+import inspect
+
+from debug_cp import *
 from gb_utils.greenberry_lex import GreenBerryLex
 from symbols import *
-from debug_cp import *
-import inspect
+
 MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
@@ -42,6 +44,8 @@ def greenberry_lex_tester(to_lex, *args):
     else:
         print("\x1b[31m Test failed \x1b[39m")
     return result
+
+
 def greenberry_multi_tests(*args):
     result = True
     for i in args:
@@ -54,23 +58,16 @@ def greenberry_multi_tests(*args):
         print("\x1b[31m A test failed. \x1b[39m")
 
 
-greenberry_multi_tests({
-    "test": "print \"hi\"",
-    "expected": ["print", "\"hi\""]
-},
-{
-    "test": "print string hi",
-    "expected": ["print", "string", "hi"]
-},
-{
-    "test": "5 * 3 + (3 / 1)",
-    "expected": ["5", "*", "3", "+", "(", "3", "/", "1", ")"]
-},
-{
-    "test": "for 3 times: print greenBerry",
-    "expected": ["for", "3", "times", ":", "print", "greenBerry"]
-},
-{
-    "test": "var y = @ x",
-    "expected": ["var", "y", "=", "@", "x"]
-})
+greenberry_multi_tests(
+    {"test": 'print "hi"', "expected": ["print", '"hi"']},
+    {"test": "print string hi", "expected": ["print", "string", "hi"]},
+    {
+        "test": "5 * 3 + (3 / 1)",
+        "expected": ["5", "*", "3", "+", "(", "3", "/", "1", ")"],
+    },
+    {
+        "test": "for 3 times: print greenBerry",
+        "expected": ["for", "3", "times", ":", "print", "greenBerry"],
+    },
+    {"test": "var y = @ x", "expected": ["var", "y", "=", "@", "x"]},
+)
