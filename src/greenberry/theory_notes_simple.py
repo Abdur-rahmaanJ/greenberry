@@ -102,7 +102,7 @@ ______________________________________________________________________
 GRAMMAR.TXT
 
 in many languages you have a file defining the grammar in a file called
-grammar.txt (which greenBerry's author has not yet included upto now).
+grammar.txt (which greenberry's author has not yet included upto now).
 
 1) C lang : see end of file
 

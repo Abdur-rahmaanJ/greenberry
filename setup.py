@@ -31,7 +31,7 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 setup(
     name="greenberry",  # Required
-    version="0.9.0",  # Required
+    version="0.10.0",  # Required
     description="lang compiler-theory interpreter",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
@@ -88,5 +88,5 @@ setup(
         "Source": "https://github.com/Abdur-RahmaanJ/greenBerry/",
     },
     packages=find_packages(),
-    entry_points={"console_scripts": ["greenberry=greenberry.gb_main:main"]},
+    entry_points={"console_scripts": ["greenberry=greenberry.main:main"]},
 )

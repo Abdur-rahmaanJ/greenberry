@@ -2,8 +2,8 @@ import inspect
 from collections import OrderedDict
 
 from greenberry.debug_cp import *
-from greenberry.gb_utils.greenberry_search import GreenBerrySearch
 from greenberry.symbols import *
+from greenberry.utils.search import GreenBerrySearch
 
 L_USER = "dear berry"
 

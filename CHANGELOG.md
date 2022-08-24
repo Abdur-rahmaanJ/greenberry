@@ -1,4 +1,10 @@
-## Unreleased
+## v0.10.0 (2022-08-24)
+
+### Fix
+
+- tests location
+- better naming
+- links not working
 
 ## v0.9.0 (2022-08-24)
 
