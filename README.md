@@ -8,6 +8,12 @@ A one-line statement programming language, complete with classes, cli and file c
 
 ![logo](docs/favicon.ico?raw=true 'greenBerry')
 
+
+```
+python -m pip install greenberry
+greenberry file.gb
+```
+
 ## contributing countries
 
 🇲🇺 🇲🇾 🇸🇮 🇰🇪 🇺🇸 🇮🇳
@@ -23,6 +29,13 @@ A one-line statement programming language, complete with classes, cli and file c
 ## 📖 contributing guidelines
 
 Read [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/theory_notes_simple.py)
+
+
+```
+python -m pip install -e .
+python -m pip install -r reqs/dev.txt
+pre-commit install
+```
 
 ## 🌄 contribution areas
 

@@ -435,7 +435,7 @@ class Files(tk.Frame):
                 [
                     "python",
                     "-c",
-                    'import greenBerry; greenBerry.greenBerry_eval("""{}""")'.format(
+                    'import greenberry; greenberry.gb.greenBerry_eval("""{}""")'.format(
                         self.read_file(self.file_dir)
                     ),
                 ],
@@ -482,7 +482,7 @@ class Files(tk.Frame):
                     [
                         "python",
                         "-c",
-                        'import greenBerry; greenBerry.greenBerry_eval("""{}""")'.format(
+                        'import greenberry; greenberry.gb.greenBerry_eval("""{}""")'.format(
                             self.read_file(self.file_dir)
                         ),
                     ],

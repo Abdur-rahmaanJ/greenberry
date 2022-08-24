@@ -8,14 +8,14 @@ see theory_notes_simple.py
 import inspect
 from collections import OrderedDict
 
-from debug_cp import *
-from gb_utils.greenberry_lex import GreenBerryLex
-from gb_utils.greenberry_parse import GreenBerryParse
-from gb_utils.greenberry_plot import GreenBerryPlot
-from gb_utils.greenberry_print import GreenBerryPrint
-from gb_utils.greenberry_search import GreenBerrySearch
-from gb_utils.greenberry_var_type import GreenBerryVarType
-from symbols import *
+from greenberry.debug_cp import *
+from greenberry.gb_utils.greenberry_lex import GreenBerryLex
+from greenberry.gb_utils.greenberry_parse import GreenBerryParse
+from greenberry.gb_utils.greenberry_plot import GreenBerryPlot
+from greenberry.gb_utils.greenberry_print import GreenBerryPrint
+from greenberry.gb_utils.greenberry_search import GreenBerrySearch
+from greenberry.gb_utils.greenberry_var_type import GreenBerryVarType
+from greenberry.symbols import *
 
 L_USER = "dear berry"
 

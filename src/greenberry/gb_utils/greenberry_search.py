@@ -1,8 +1,8 @@
 import inspect
 from collections import OrderedDict
 
-from debug_cp import *
-from symbols import *
+from greenberry.debug_cp import *
+from greenberry.symbols import *
 
 L_USER = "dear berry"
 

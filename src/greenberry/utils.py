@@ -1,7 +1,7 @@
 import contextlib
 from io import StringIO
 
-from greenBerry import greenBerry_eval
+from greenberry.gb import greenBerry_eval
 
 
 def eval(str):
