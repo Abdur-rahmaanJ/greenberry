@@ -1,7 +1,7 @@
 import contextlib
 from io import StringIO
 
-from greenberry.gb import greenBerry_eval
+from greenberry.gb import greenberry_eval
 
 
 def eval(str):
@@ -98,11 +98,11 @@ def maths_eval(string):  # previous InfixCon
     eval(res)
 
 
-def capture_gb_eval_print(code):
+def capture_eval_print(code):
     temp_stdout = StringIO()
     # redirect stdout to catch print statement from eval function
     with contextlib.redirect_stdout(temp_stdout):
-        greenBerry_eval(code)
+        greenberry_eval(code)
     output = temp_stdout.getvalue().strip()
     return output
 

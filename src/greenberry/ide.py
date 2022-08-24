@@ -292,7 +292,7 @@ class Files(tk.Frame):
         self.parent = parent
         parent.protocol("WM_DELETE_WINDOW", self.wclose)
 
-        self.parent.title("greenBerry IDE - Untitled")
+        self.parent.title("greenberry IDE - Untitled")
         self.pack(fill="both", expand=True)
 
         menubar = tk.Menu(self.parent)
@@ -365,12 +365,12 @@ class Files(tk.Frame):
     def open_file(self, event=0):
         self.txt.delete("insert")  # Ctrl+o causes a new line so we need to delete it
 
-        ftypes = [("greenBerry files", "*.gb"), ("All files", "*")]
+        ftypes = [("greenberry files", "*.gb"), ("All files", "*")]
         file = filedialog.askopenfile(filetypes=ftypes)
 
         if file != None:
             self.file_dir = file.name
-            self.parent.title("greenBerry IDE" + " - " + file.name.replace("/", "\\"))
+            self.parent.title("greenberry IDE" + " - " + file.name.replace("/", "\\"))
             self.txt.delete("1.0", "end" + "-1c")
             text = self.read_file(file.name)
             self.txt.insert("end", text)
@@ -401,10 +401,10 @@ class Files(tk.Frame):
         file = filedialog.asksaveasfile(
             mode="w",
             defaultextension=".gb",
-            filetypes=(("greenBerry files", "*.gb"), ("All files", "*")),
+            filetypes=(("greenberry files", "*.gb"), ("All files", "*")),
         )
         if file != None:
-            self.parent.title("greenBerry IDE" + " - " + file.name.replace("/", "\\"))
+            self.parent.title("greenberry IDE" + " - " + file.name.replace("/", "\\"))
             self.file_dir = file.name
             data = self.txt.get("1.0", "end" + "-1c")
             file.write(data)
@@ -417,7 +417,7 @@ class Files(tk.Frame):
         if x == self.old_text and x != "":
             if self.first:
                 self.outwin = tk.Toplevel(root)
-                self.outwin.title("greenBerry IDE - output")
+                self.outwin.title("greenberry IDE - output")
                 self.outwin.geometry("600x640")
 
                 self.txtout = CustomText(self.outwin)
@@ -435,7 +435,7 @@ class Files(tk.Frame):
                 [
                     "python",
                     "-c",
-                    'import greenberry; greenberry.gb.greenBerry_eval("""{}""")'.format(
+                    'import greenberry; greenberry.gb.greenberry_eval("""{}""")'.format(
                         self.read_file(self.file_dir)
                     ),
                 ],
@@ -464,7 +464,7 @@ class Files(tk.Frame):
             try:
                 if self.first:
                     self.outwin = tk.Toplevel(root)
-                    self.outwin.title("greenBerry IDE - output")
+                    self.outwin.title("greenberry IDE - output")
                     self.outwin.geometry("600x640")
 
                     self.txtout = CustomText(self.outwin)
@@ -482,7 +482,7 @@ class Files(tk.Frame):
                     [
                         "python",
                         "-c",
-                        'import greenberry; greenberry.gb.greenBerry_eval("""{}""")'.format(
+                        'import greenberry; greenberry.gb.greenberry_eval("""{}""")'.format(
                             self.read_file(self.file_dir)
                         ),
                     ],

@@ -2,8 +2,8 @@ import inspect
 from collections import OrderedDict
 
 from greenberry.debug_cp import *
-from greenberry.gb_utils.greenberry_search import GreenBerrySearch
 from greenberry.symbols import *
+from greenberry.utils.search import GreenBerrySearch
 
 L_USER = "dear berry"
 
@@ -54,4 +54,4 @@ class GreenBerryPlot:
             labelY = GreenBerrySearch.search(comma_i, 1, words, [S.NL, S.EOF])
             self.linear_plot(dataX, labelX, dataY, labelY)
         except:
-            print(E.PLOT, line)
+            print(S.PLOT, line)

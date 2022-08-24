@@ -2,10 +2,10 @@ import inspect
 from collections import OrderedDict
 
 from greenberry.debug_cp import *
-from greenberry.gb_utils.greenberry_plot import GreenBerryPlot
-from greenberry.gb_utils.greenberry_print import GreenBerryPrint
-from greenberry.gb_utils.greenberry_var_type import GreenBerryVarType
 from greenberry.symbols import *
+from greenberry.utils.plot import GreenBerryPlot
+from greenberry.utils.print import GreenBerryPrint
+from greenberry.utils.var_type import GreenBerryVarType
 
 L_USER = "dear berry"
 

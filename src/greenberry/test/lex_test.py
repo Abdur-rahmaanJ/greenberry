@@ -1,8 +1,8 @@
 import inspect
 
-from debug_cp import *
-from gb_utils.greenberry_lex import GreenBerryLex
-from symbols import *
+from greenberry.debug_cp import *
+from greenberry.symbols import *
+from greenberry.utils.lex import GreenBerryLex
 
 MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
@@ -66,8 +66,8 @@ greenberry_multi_tests(
         "expected": ["5", "*", "3", "+", "(", "3", "/", "1", ")"],
     },
     {
-        "test": "for 3 times: print greenBerry",
-        "expected": ["for", "3", "times", ":", "print", "greenBerry"],
+        "test": "for 3 times: print greenberry",
+        "expected": ["for", "3", "times", ":", "print", "greenberry"],
     },
     {"test": "var y = @ x", "expected": ["var", "y", "=", "@", "x"]},
 )

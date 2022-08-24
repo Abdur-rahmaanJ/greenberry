@@ -2,9 +2,11 @@ import inspect
 from collections import OrderedDict
 
 from greenberry.debug_cp import *
-from greenberry.gb_utils.greenberry_var_type import GreenBerrySearch
-from greenberry.gb_utils.greenberry_var_type import GreenBerryVarType
 from greenberry.symbols import *
+from greenberry.utils.store import Flag
+from greenberry.utils.store import Memory
+from greenberry.utils.var_type import GreenBerrySearch
+from greenberry.utils.var_type import GreenBerryVarType
 
 L_USER = "dear berry"
 
@@ -23,7 +25,7 @@ class GreenBerryPrint:
         custom debugger print
         no return
         """
-        if F.isDebugOn:
+        if Flag.isDebugOn:
             for arg in args:
                 print(" " * 5, "@debug->", arg)
 

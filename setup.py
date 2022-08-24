@@ -88,5 +88,5 @@ setup(
         "Source": "https://github.com/Abdur-RahmaanJ/greenBerry/",
     },
     packages=find_packages(),
-    entry_points={"console_scripts": ["greenberry=greenberry.gb_main:main"]},
+    entry_points={"console_scripts": ["greenberry=greenberry.main:main"]},
 )

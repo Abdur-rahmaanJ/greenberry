@@ -3,26 +3,26 @@ Created on Sun Dec 31 22:21:00 2017
 
 @author: ARJ
 """
-from greenberry.gb import greenBerry_eval
+from greenberry.gb import greenberry_eval
 
 print(
     """
-      ---greenBerry(c)---
+      ---greenberry(c)---
       welcome to the .gb REPL
-      ---greenBerry(c)---
+      ---greenberry(c)---
       """
 )
 isSessionOn = 1
 while isSessionOn == 1:
     x = input("---> ")
-    greenBerry_eval(x)
+    greenberry_eval(x)
     if x == "berry exit":
         isSessionOn = 0
     print()
 print(
     """
-      ---greenBerry(c)---
+      ---greenberry(c)---
       .gb REPL exited. see you soon _ _
-      ---greenBerry(c)---
+      ---greenberry(c)---
       """
 )

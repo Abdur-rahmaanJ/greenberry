@@ -8,14 +8,17 @@ see theory_notes_simple.py
 import inspect
 from collections import OrderedDict
 
-from greenberry.debug_cp import *
-from greenberry.gb_utils.greenberry_lex import GreenBerryLex
-from greenberry.gb_utils.greenberry_parse import GreenBerryParse
-from greenberry.gb_utils.greenberry_plot import GreenBerryPlot
-from greenberry.gb_utils.greenberry_print import GreenBerryPrint
-from greenberry.gb_utils.greenberry_search import GreenBerrySearch
-from greenberry.gb_utils.greenberry_var_type import GreenBerryVarType
-from greenberry.symbols import *
+from greenberry.debug_cp import Debug_cp
+from greenberry.symbols import S
+from greenberry.utils.lex import GreenBerryLex
+from greenberry.utils.parse import GreenBerryParse
+from greenberry.utils.plot import GreenBerryPlot
+from greenberry.utils.print import GreenBerryPrint
+from greenberry.utils.search import GreenBerrySearch
+from greenberry.utils.store import Error
+from greenberry.utils.store import Flag
+from greenberry.utils.store import Memory
+from greenberry.utils.var_type import GreenBerryVarType
 
 L_USER = "dear berry"
 
@@ -25,6 +28,17 @@ MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
 EOS = [S.NL, S.EOF]
+KEYWORDS = [
+    getattr(S, i)
+    for i in [
+        b[0]
+        for b in [
+            a
+            for a in inspect.getmembers(S, lambda a: not inspect.isroutine(a))
+            if not (a[0].startswith("__") and a[0].endswith("__"))
+        ]
+    ]
+]
 
 """
 Function with nested functions with different core
@@ -33,35 +47,23 @@ greenberry functionalities
 """
 
 
-def greenBerry_eval(x):
+def greenberry_eval(x):
     global L_USER
     ###
     # program starts here
     ###
 
-    M.g_vars = {}
-    M.g_fs = {}
-    M.g_cls = {}
-    F.bStart = 100
-    F.bEnd = 0
-    F.isDebugOn = 0  # this is a reset needed for gb_ide
+    Memory.g_vars = {}
+    Memory.g_fs = {}
+    Memory.g_cls = {}
+    Flag.bStart = 100
+    Flag.bEnd = 0
+    Flag.isDebugOn = 0  # this is a reset needed for.ide
 
-    KWDs = [
-        getattr(S, i)
-        for i in [
-            b[0]
-            for b in [
-                a
-                for a in inspect.getmembers(S, lambda a: not inspect.isroutine(a))
-                if not (a[0].startswith("__") and a[0].endswith("__"))
-            ]
-        ]
-    ]
-
-    g_vars = M.g_vars
-    g_fs = M.g_fs
-    g_cls = M.g_cls
-    words = GreenBerryLex.lex(x, KWDs, add_eof=1)
+    g_vars = Memory.g_vars
+    g_fs = Memory.g_fs
+    g_cls = Memory.g_cls
+    words = GreenBerryLex.lex(x, KEYWORDS, add_eof=1)
     GreenBerryPrint.printd(words)
     line = 1
 
@@ -83,25 +85,27 @@ def greenBerry_eval(x):
         #
         elif elem == S.FOR:
             try:
-                F.bStart = i
+                Flag.bStart = i
 
                 times_by = int(words[i + 1])
                 string = GreenBerrySearch.search(i, 3, words, [S.NL, S.EOF])
-                wds = GreenBerryLex.lex(string, KWDs)
+                wds = GreenBerryLex.lex(string, KEYWORDS)
                 GreenBerryPrint.printd(wds)
                 for d in range(times_by):
                     GreenBerryParse.simple_parse(g_vars, wds, line)
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
+                    1
+                ]
             except:
-                print(E.FOR, line)
+                print(S.FOR, line)
 
         #
         # if statement
         #
         elif elem == S.IF:  # to be rededefined
             try:
-                F.bStart = i
+                Flag.bStart = i
                 L, R = 0, 0
                 raw = GreenBerrySearch.search_symbol(
                     i,
@@ -113,7 +117,7 @@ def greenBerry_eval(x):
                 symbol_i = raw[1]
                 colon_i = GreenBerrySearch.search_symbol(i, 1, words, S.COLON)[1]
                 to_do = GreenBerrySearch.search(colon_i, 0, words, [S.NL, S.EOF])
-                wds = GreenBerryLex.lex(to_do, KWDs)
+                wds = GreenBerryLex.lex(to_do, KEYWORDS)
                 if words[i + 1] == S.VAR_REF:
                     # print('L @ detected')
                     L = g_vars[words[i + 2]][0]
@@ -150,9 +154,11 @@ def greenBerry_eval(x):
                     if L <= R:
                         GreenBerryParse.simple_parse(g_vars, wds, line)
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
+                    1
+                ]
             except:
-                print(E.IF, line)
+                print(S.IF, line)
 
             # resolve flag
         #
@@ -162,7 +168,7 @@ def greenBerry_eval(x):
             params = []
             try:
 
-                F.bStart = i
+                Flag.bStart = i
                 func_name = words[i + 1]
                 if words[i + 2] == S.COLON:
                     body = GreenBerrySearch.search(i, 2, words, [S.NL, S.EOF])
@@ -177,9 +183,11 @@ def greenBerry_eval(x):
                     g_fs[func_name] = {"params": registry, "body": body}
 
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
+                    1
+                ]
             except:
-                print(E.FUNCDEF, line)
+                print(S.FUNCDEF, line)
         #
         # function call
         #
@@ -189,7 +197,7 @@ def greenBerry_eval(x):
                 if g_fs[func_name]["params"] is None:
                     # print(g_fs)
                     # print(func_name)
-                    wds = GreenBerryLex.lex(g_fs[func_name]["body"], KWDs)
+                    wds = GreenBerryLex.lex(g_fs[func_name]["body"], KEYWORDS)
                     GreenBerryParse.simple_parse(g_vars, wds, line)
                 else:
                     param_vals = GreenBerrySearch.search_toks(
@@ -203,10 +211,10 @@ def greenBerry_eval(x):
                             GreenBerryVarType.var_type(param_vals[i]),
                         ]  # data
                         i += 1
-                    wds = lex(g_fs[func_name]["body"], KWDs)
+                    wds = lex(g_fs[func_name]["body"], KEYWORDS)
                     GreenBerryParse.simple_parse(registry, wds, line)
             except:
-                print(E.FUNCCALL, line)
+                print(S.FUNCCALL, line)
 
         #
         # class definition
@@ -214,7 +222,7 @@ def greenBerry_eval(x):
         elif elem == S.CLASS:  # class Man : power = 10 action walk : print a
             # attrs = {} future
             try:
-                F.bStart = i
+                Flag.bStart = i
 
                 class_name = words[
                     i + 1
@@ -231,7 +239,9 @@ def greenBerry_eval(x):
                 }
 
                 # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
+                    1
+                ]
                 """
                 class_name = {
                 name = name,
@@ -246,7 +256,7 @@ def greenBerry_eval(x):
                 }
                 """
             except:
-                print(E.CLASSDEC, line)
+                print(S.CLASSDEC, line)
 
         #
         # call class method.
@@ -258,10 +268,10 @@ def greenBerry_eval(x):
                     print("wrong class name berry")
                 action_name = words[i + 2]
                 raw_text = g_cls[class_name]["actions"][action_name]
-                wds = GreenBerryLex.lex(raw_text, KWDs)
+                wds = GreenBerryLex.lex(raw_text, KEYWORDS)
                 GreenBerryParse.simple_parse(g_vars, wds, line)
             except:
-                print(E.CLASSACT, line)
+                print(S.CLASSACT, line)
 
         #
         # attribute viewing
@@ -272,14 +282,14 @@ def greenBerry_eval(x):
                 class_name = words[i + 2]
                 print(g_cls[class_name]["attributes"][attr][0])
             except:
-                print(E.CLASSATT, line)
+                print(S.CLASSATT, line)
 
         #
         # add attribute to class
         #
         elif elem == S.ADD:  # add to Man attribute name = string i am me
             try:
-                F.bStart = i
+                Flag.bStart = i
                 if words[i + 1] in g_cls:
                     if words[i + 2] == S.ATTRIB:
                         if words[i + 4] == S.EQUAL:
@@ -288,7 +298,7 @@ def greenBerry_eval(x):
                             )
                             g_cls[words[i + 1]]["attributes"][words[i + 3]] = value
                         else:
-                            print(E.EQUAL, line)
+                            print(S.EQUAL, line)
                     elif (
                         words[i + 2] == S.ACTION
                     ):  # add to Man action run : print running...
@@ -297,13 +307,15 @@ def greenBerry_eval(x):
                                 words[i + 3]
                             ] = GreenBerrySearch.search(i, 4, words, [S.NL, S.EOF])
                         else:
-                            print(E.COLON, line)
+                            print(S.COLON, line)
 
                 else:
-                    print(E.CLASSNAME, line)
-                F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+                    print(S.CLASSNAME, line)
+                Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
+                    1
+                ]
             except:
-                print(E.ADD, line)
+                print(S.ADD, line)
 
         #
         # debug on or off
@@ -312,17 +324,19 @@ def greenBerry_eval(x):
             try:
                 if words[i + 1] == "debug":
                     if words[i + 2] == "on":
-                        F.isDebugOn = 1
+                        Flag.isDebugOn = 1
                     elif words[i + 2] == "off":
-                        F.isDebugOn = 0
+                        Flag.isDebugOn = 0
             except:
-                print(E.DEBUG, line)
+                print(S.DEBUG, line)
         else:
-            if i < F.bStart or i > F.bEnd and elem != S.EOF:
-                F.bStart = i
-                F.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[1]
+            if i < Flag.bStart or i > Flag.bEnd and elem != S.EOF:
+                Flag.bStart = i
+                Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
+                    1
+                ]
                 to_do = GreenBerrySearch.search(i - 1, 0, words, [S.NL, S.EOF])
-                wds = GreenBerryLex.lex(to_do, KWDs)
+                wds = GreenBerryLex.lex(to_do, KEYWORDS)
                 GreenBerryParse.simple_parse(g_vars, wds, line)
 
     GreenBerryPrint.printd(g_vars)
@@ -330,4 +344,4 @@ def greenBerry_eval(x):
     GreenBerryPrint.printd(g_cls)
 
 
-# python greenBerry_REPL.py
+# python greenberry_REPL.py
