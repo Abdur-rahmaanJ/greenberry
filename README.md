@@ -2,11 +2,11 @@
 ![Open Source Love](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-pink.svg)
 ![MadeinMoris](https://img.shields.io/badge/Made%20in-Moris-green.svg)
 
-# greenBerry
+# greenberry
 
 A one-line statement programming language, complete with classes, cli and file compatible
 
-![logo](docs/favicon.ico?raw=true 'greenBerry')
+![logo](docs/favicon.ico?raw=true 'greenberry')
 
 
 ```
@@ -22,13 +22,13 @@ greenberry file.gb
 
 ## 🔗 links
 
--   [website](https://abdur-rahmaanj.github.io/greenBerry/)
--   [lang reference](https://abdur-rahmaanj.github.io/greenBerry/syntax.html)
+-   [website](https://abdur-rahmaanj.github.io/greenberry/)
+-   [lang reference](https://abdur-rahmaanj.github.io/greenberry/syntax.html)
 -   [we have a Discord channel!](https://discord.gg/pffxfQE) - Join for questions!
 
 ## 📖 contributing guidelines
 
-Read [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/theory_notes_simple.py)
+Read [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenberry/blob/master/greenberry/theory_notes_simple.py)
 
 
 ```
@@ -43,7 +43,7 @@ pre-commit install
 -   language : in the way python code is written so as to be more clear, efficient for example
 -   gui : either ide or others, add new functionalities or improve UX
 -   cli : improve cli experience, add new features
--   compiling engine : improve parser, add new areas of usage (of greenBerry, like on arduino? an electronics library?). also add support for approved new syntax
+-   compiling engine : improve parser, add new areas of usage (of greenberry, like on arduino? an electronics library?). also add support for approved new syntax
 -   website : improve website, update changelog (or implement changes to do this automatically)
 
 ## 🍂 python version
@@ -52,12 +52,12 @@ pre-commit install
 
 ## 🏢 structure notes
 
--   engine : [greenberry/greenBerry.py](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/greenberry/greenBerry.py)
--   website : [docs/](https://github.com/Abdur-rahmaanJ/greenBerry/tree/master/docs)
+-   engine : [greenberry/greenberry.py](https://github.com/Abdur-rahmaanJ/greenberry/blob/master/greenberry/greenberry.py)
+-   website : [docs/](https://github.com/Abdur-rahmaanJ/greenberry/tree/master/docs)
 
 ## 🌊 run files
 
-Read [here](https://github.com/Abdur-rahmaanJ/greenBerry/blob/master/code_running_instructions.md) or follow below
+Read [here](https://github.com/Abdur-rahmaanJ/greenberry/blob/master/code_running_instructions.md) or follow below
 
 ### REPL 🔧
 
