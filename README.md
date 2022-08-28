@@ -6,7 +6,7 @@
 
 A one-line statement programming language, complete with classes, cli and file compatible
 
-![logo](docs/favicon.ico?raw=true 'greenberry')
+![logo](https://github.com/Abdur-rahmaanJ/greenberry/raw/master/docs/favicon.ico 'greenberry')
 
 
 ```
