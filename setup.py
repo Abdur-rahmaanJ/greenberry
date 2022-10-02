@@ -87,6 +87,6 @@ setup(
         "Bug Reports": "https://github.com/Abdur-RahmaanJ/greenBerry/issues",
         "Source": "https://github.com/Abdur-RahmaanJ/greenBerry/",
     },
-    packages=find_packages(),
+    packages=find_packages('src'),
     entry_points={"console_scripts": ["greenberry=greenberry.main:main"]},
 )
