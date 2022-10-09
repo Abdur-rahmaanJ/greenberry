@@ -45,7 +45,7 @@ class GreenBerryPrint:
                 try:
                     print(eval(expression))
                 except:
-                    print(e.EVAL, line)
+                    print(E.EVAL, line)
             elif i + 1 < len(words) and words[i + 1] == S.STRING:
                 try:
                     print(GreenBerrySearch.search(i, 1, words, [S.NL, S.EOF]))
