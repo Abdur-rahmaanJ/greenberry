@@ -3,6 +3,7 @@ from collections import OrderedDict
 
 from greenberry.debug_cp import *
 from greenberry.symbols import *
+from greenberry.symbols import E
 from greenberry.utils.store import Flag
 from greenberry.utils.store import Memory
 from greenberry.utils.var_type import GreenBerrySearch
@@ -40,10 +41,11 @@ class GreenBerryPrint:
                 except:
                     print(E.VARREF, line)
             elif i + 1 < len(words) and words[i + 1] == S.EVAL:
+                expression = "".join([x for x in words[i+2:]])
                 try:
-                    print(eval(words[i + 2]))
+                    print(eval(expression))
                 except:
-                    print(E.EVAL, line)
+                    print(e.EVAL, line)
             elif i + 1 < len(words) and words[i + 1] == S.STRING:
                 try:
                     print(GreenBerrySearch.search(i, 1, words, [S.NL, S.EOF]))

@@ -39,5 +39,5 @@ class GreenBerryLex:
 
         if add_eof == 1:
             words.append(S.EOF)
-
+        
         return words
