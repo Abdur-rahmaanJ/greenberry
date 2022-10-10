@@ -22,24 +22,20 @@ from greenberry.utils.var_type import GreenBerryVarType
 
 L_USER = "dear berry"
 
+def get_keywords():
+    """ returns a list of keyword symbols(attributes) from S class which are not built in methods or attibutes  """
+    a_list = [a for a in inspect.getmembers(S, lambda a: not inspect.isroutine(a)) if not (a[0].startswith("__") and a[0].endswith("__"))]
+    b_list = [b[0] for b in a_list]
+    keywords = [getattr(S,i) for i in b_list]
+
+    return keywords
 
 # another lex would be to identify blobks first this is a side effect
 MATH_OPS = ["+", "-", "*", "/"]
 BOOLS = [S.TRUE, S.FALSE]
 BOOL_OPS = [S.GREATER, S.LESS]
 EOS = [S.NL, S.EOF]
-KEYWORDS = [
-    getattr(S, i)
-    for i in [
-        b[0]
-        for b in [
-            a
-            for a in inspect.getmembers(S, lambda a: not inspect.isroutine(a))
-            if not (a[0].startswith("__") and a[0].endswith("__"))
-        ]
-    ]
-]
-
+KEYWORDS = get_keywords()
 """
 Function with nested functions with different core
 greenberry functionalities
