@@ -80,6 +80,8 @@ class GreenBerrySearch:
         """
         base = i + offset
         j = 1
+        word = ""
+        new_base = 0
         while base + j < len(words):
             word = "".join(words[base + j : base + j + 2])
             new_base = base + j + 1
