@@ -28,7 +28,7 @@ greenberry file.gb
 
 ## 📖 contributing guidelines
 
-Read [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenberry/tree/master/src/greenberry)
+Read [greenberry/theory_notes_simple.py](https://github.com/Abdur-rahmaanJ/greenberry/blob/master/src/greenberry/theory_notes_simple.py)
 
 
 ```
