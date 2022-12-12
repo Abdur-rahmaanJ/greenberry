@@ -5,6 +5,7 @@ and return a list of each symbol.
 import inspect
 
 from greenberry.symbols import *
+from greenberry.utils.print import GreenBerryPrint
 
 L_USER = "dear berry"
 
@@ -29,6 +30,8 @@ class GreenBerryLex:
         """
         words = []
         cup = ""
+        LEX_FLAG = 0  # if lexer occur an error
+
         for i, elem in enumerate(x):
             if elem != " ":
                 cup += elem
@@ -39,5 +42,18 @@ class GreenBerryLex:
 
         if add_eof == 1:
             words.append(S.EOF)
-        
+
+        # idea is to scan over the list of words to make sure that the EOF symbol is not in the middle
+        pos = -1
+        for i in range(0, len(words)):
+            if words[i] is S.EOF:
+                pos = i
+                break
+        if pos != -1 and pos is not len(words) - 1:
+            LEX_FLAG = 1
+            GreenBerryPrint.printLE()
+
+        if LEX_FLAG == 1:
+            return ["Lex-Error"]
+
         return words

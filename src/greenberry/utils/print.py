@@ -2,8 +2,8 @@ import inspect
 from collections import OrderedDict
 
 from greenberry.debug_cp import *
-from greenberry.symbols import *
 from greenberry.symbols import E
+from greenberry.symbols import *
 from greenberry.utils.store import Flag
 from greenberry.utils.store import Memory
 from greenberry.utils.var_type import GreenBerrySearch
@@ -41,7 +41,7 @@ class GreenBerryPrint:
                 except:
                     print(E.VARREF, line)
             elif i + 1 < len(words) and words[i + 1] == S.EVAL:
-                expression = "".join([x for x in words[i+2:]])
+                expression = "".join([x for x in words[i + 2 :]])
                 try:
                     print(eval(expression))
                 except:
@@ -53,3 +53,8 @@ class GreenBerryPrint:
                     print(E.STRING, line)
         except:
             print(E.PRINT)
+
+    def printLE():
+        """Print lexer error"""
+        LEX_ERROR = "lex error: no EOF should used in the middle of file"
+        print(LEX_ERROR)
