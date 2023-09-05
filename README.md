@@ -4,7 +4,7 @@
 
 # greenberry
 
-A one-line statement programming language, complete with classes, cli and file compatible
+A one-line statement programming language, complete with classes, cli and file compatible.
 
 ![logo](https://github.com/Abdur-rahmaanJ/greenberry/raw/master/docs/favicon.ico 'greenberry')
 
@@ -69,7 +69,7 @@ Write in _main.gb_ and then save and run `python gb_main.py`
 
 ### IDE 🖥️
 
-Run `python gb_ide.py` write and run or load a _.gb_ file !
+Run `python gb_ide.py` write and run or load a _.gb_ file!
 
 ## 📋 TODO
 
