@@ -98,10 +98,19 @@ def maths_eval(string):  # previous InfixCon
     eval(res)
 
 
-def capture_print(func, *args, **kwargs):
+def capture_eval_print(code):
     temp_stdout = StringIO()
-    # Redirect stdout to catch the print statements from the provided function
+    # redirect stdout to catch print statement from eval function
     with contextlib.redirect_stdout(temp_stdout):
-        func(*args, **kwargs)
+        greenberry_eval(code)
+    output = temp_stdout.getvalue().strip()
+    return output
+
+
+def capture_maths_eval_print(code):
+    temp_stdout = StringIO()
+    # redirect stdout to catch print statement from eval function
+    with contextlib.redirect_stdout(temp_stdout):
+        maths_eval(code)
     output = temp_stdout.getvalue().strip()
     return output
