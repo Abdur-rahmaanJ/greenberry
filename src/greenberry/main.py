@@ -4,18 +4,46 @@ Created on Sun Dec 31 22:54:37 2017
 @author: ARJ
 """
 
-import os
+from argparse import ArgumentParser, Namespace
 import sys
+import os
 
 from greenberry.gb import greenberry_eval
+from greenberry.repl import run_repl
 
 
 def main():
-    if len(sys.argv) == 2:
-        with open(os.path.join(os.getcwd(), sys.argv[1])) as f:
-            x = f.read()
+    """
+    The command line will take in two arguments, any combination of either a script name or a `repl` argument.
+    First any provided scripts are executed, then the repl is run (if the `-repl` argument has been provided)
+    If it has, the repl will operate in the same namespace as the executed program.
+    """
+    arg_parser = ArgumentParser(
+        prog="Green Berry",
+        description="A one line statement programming language.",
+        epilog="https://github.com/Abdur-rahmaanJ/greenberry",
+    )
+    arg_parser.add_argument(
+        "scriptname",
+        nargs="*",
+        type=str,
+        help="The name of the script you want to run",
+    )
+    arg_parser.add_argument(
+        "-repl",
+        action="store_true",
+        help="Will start a repl after the program has completed, with the program namepsace.",
+    )
 
-        greenberry_eval(x)
+    namespace: Namespace = arg_parser.parse_args(sys.argv[1:])
+
+    if namespace.scriptname:
+        with open(namespace.scriptname, "r") as f:
+            for line in f.readlines():
+                greenberry_eval(line)
+
+    if namespace.repl:
+        run_repl()
 
 
 if __name__ == "__main__":
