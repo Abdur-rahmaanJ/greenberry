@@ -54,7 +54,7 @@ class GreenBerryPrint:
         except:
             print(E.PRINT)
 
-    def printLE():
+    def printLE(self):
         """Print lexer error"""
         LEX_ERROR = "lex error: no EOF should used in the middle of file"
         print(LEX_ERROR)
