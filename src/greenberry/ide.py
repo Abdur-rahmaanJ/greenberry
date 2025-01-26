@@ -421,8 +421,6 @@ class Files(tk.Frame):
             with open("ide_data.txt", "w") as file:
                 file.write(self.file_dir)
         except Exception as e:
-            print(e) #DEBUG
-            print("THIS IS: " + self.file_dir)
             self.save_as_command()
 
     def search_command(self, event=0):
@@ -439,7 +437,6 @@ class Files(tk.Frame):
         if file != None:
             self.parent.title("greenberry IDE" + " - " + file.name.replace("/", "\\"))
             self.file_dir = file.name
-            print(file.name) # DEBUG"
             data = self.txt.get("1.0", "end" + "-1c")
             file.write(data)
             file.close()
