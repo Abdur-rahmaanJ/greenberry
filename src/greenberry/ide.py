@@ -351,7 +351,10 @@ class Files(tk.Frame):
         self.bind_all("<Key>", self.key_pressed)
 
         self.run_button = tk.Button(root, command=self.run_command)
-        self.run_photo = tk.PhotoImage(file="./docs/run_button.png")
+        try:
+            self.run_photo = tk.PhotoImage(file="./docs/run_button.png")
+        except tk.TclError:
+            self.run_photo = tk.PhotoImage(file="../docs/run_button.png") # ! Compatibility again since it wasn't working on my machine
         self.run_button.config(image=self.run_photo, height=20, width=20)
         self.run_button.pack()
         
@@ -650,6 +653,9 @@ ex = Files(root)
 ex.pack(side="bottom")
 
 root.geometry("600x640")
-root.iconbitmap(default="./docs/favicon.ico")
+try:
+    root.iconbitmap(default="../docs/favicon.ico")
+except tk.TclError as e:
+    root.iconbitmap(default="./docs/favicon.ico") # ! Compatibility since it wasn't working on my machine
 
 root.mainloop()
