@@ -4,7 +4,7 @@ import tkinter.scrolledtext as tkst
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import simpledialog
-
+import os
 color1 = ["var", "print", "set", "debug", "plot"]
 color2 = ["string", "eval", "times", "action", "attribute", "bool"]
 color3 = ["=", "<", "<=", ">", ">=", "if", "for"]
@@ -284,15 +284,41 @@ class SearchDialog(tk.simpledialog.Dialog):
         """Override default simpledialog.Dialog buttons"""
         pass
 
+def load_prev_file_text():
+        default_text = "" # Text of file that might have already been opened
+        if not os.path.exists("ide_data.txt"):
+            return 
+        try:
+            with open("ide_data.txt", "r") as f:
+                prev_file_path = f.readline() # FIRST LINE OF CONFIG SHOULD ALWAYS BE THE LAST FILE OPENED IN THE IDE. VERY IMPORTANT!!!!!!!!!
+                if not os.path.exists(prev_file_path): # check if it exists before opening 
+                    return
+            with open(prev_file_path, "r") as f: # OPEN THE FILE AND GET IT'S CONTENTS
+                lines = f.readlines()
+                for line in lines:
+                    default_text += line
+        except OSError as e:
+            print("Error occured: " + e)
+        return default_text, prev_file_path
 
 class Files(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
-
+        ret = load_prev_file_text() # Temp value ust to make sure it isn't None
+        if ret:
+            self.default_text, self.prev_path = load_prev_file_text()
+            self.file_dir = self.prev_path
+        else:
+            self.default_text = ""
+            self.file_dir = ""
+        
+        
         self.parent = parent
         parent.protocol("WM_DELETE_WINDOW", self.wclose)
-
-        self.parent.title("greenberry IDE - Untitled")
+        if self.file_dir == "":
+            self.parent.title("greenberry IDE - Untitled")
+        else:
+            self.parent.title("greenberry IDE" + " - " + self.file_dir.replace("/", "\\"))
         self.pack(fill="both", expand=True)
 
         menubar = tk.Menu(self.parent)
@@ -328,8 +354,9 @@ class Files(tk.Frame):
         self.run_photo = tk.PhotoImage(file="./docs/run_button.png")
         self.run_button.config(image=self.run_photo, height=20, width=20)
         self.run_button.pack()
-
+        
         self.txt = CustomText(self)
+        self.txt.insert("1.0", self.default_text) # At the first character of the file, insert the the text of the previously opened file
         self.linenumbers = TextLineNumbers(self, width=30)
         self.linenumbers.attach(self.txt)
 
@@ -340,7 +367,7 @@ class Files(tk.Frame):
         self.txt.bind("<Configure>", self._on_change)
 
         self.old_text = self.txt.get("1.0", "end" + "-1c")
-        self.file_dir = ""
+        # self.file_dir = ""
 
         self.first = True
 
@@ -369,7 +396,7 @@ class Files(tk.Frame):
         ftypes = [("greenberry files", "*.gb"), ("All files", "*")]
         file = filedialog.askopenfile(filetypes=ftypes)
 
-        if file != None:
+        if file is not None:
             self.file_dir = file.name
             self.parent.title("greenberry IDE" + " - " + file.name.replace("/", "\\"))
             self.txt.delete("1.0", "end" + "-1c")
@@ -381,16 +408,21 @@ class Files(tk.Frame):
     def read_file(self, filename):
         f = open(filename)
         text = f.read()
+        f.close() 
         return text
 
     def save_file(self, event=0):
         try:
             with open(self.file_dir, "w") as file:
                 file.write(self.txt.get("1.0", "end" + "-1c"))
-                file.close()
+                # file.close() With automatically cloeses the file
                 self.old_text = self.txt.get("1.0", "end" + "-1c")
                 self.key_pressed()
-        except Exception:
+            with open("ide_data.txt", "w") as file:
+                file.write(self.file_dir)
+        except Exception as e:
+            print(e) #DEBUG
+            print("THIS IS: " + self.file_dir)
             self.save_as_command()
 
     def search_command(self, event=0):
@@ -407,11 +439,13 @@ class Files(tk.Frame):
         if file != None:
             self.parent.title("greenberry IDE" + " - " + file.name.replace("/", "\\"))
             self.file_dir = file.name
+            print(file.name) # DEBUG"
             data = self.txt.get("1.0", "end" + "-1c")
             file.write(data)
             file.close()
             self.old_text = self.txt.get("1.0", "end" + "-1c")
-
+        with open("ide_data.txt", "w") as file:
+            file.write(self.file_dir)
     def run_command(self, event=0):
         x = self.txt.get("1.0", "end" + "-1c")
 
