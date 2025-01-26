@@ -61,7 +61,7 @@ class CustomText(tk.Text):
 
             return result
 
-        except:  # this prevents error '_tkinter.TclError: text doesn't contain any characters tagged with "sel"'
+        except Exception:  # this prevents error '_tkinter.TclError: text doesn't contain any characters tagged with "sel"'
             pass
 
 
@@ -321,10 +321,11 @@ class Files(tk.Frame):
         self.bind_all("<Control-s>", self.save_file)
         self.bind_all("<Control-S>", self.save_as_command)
         self.bind_all("<Control-f>", self.search_command)
+        self.bind_all("<Control-h>", self.search_command)
         self.bind_all("<Key>", self.key_pressed)
 
         self.run_button = tk.Button(root, command=self.run_command)
-        self.run_photo = tk.PhotoImage(file="../docs/run_button.png")
+        self.run_photo = tk.PhotoImage(file="./docs/run_button.png")
         self.run_button.config(image=self.run_photo, height=20, width=20)
         self.run_button.pack()
 
@@ -389,7 +390,7 @@ class Files(tk.Frame):
                 file.close()
                 self.old_text = self.txt.get("1.0", "end" + "-1c")
                 self.key_pressed()
-        except:
+        except Exception:
             self.save_as_command()
 
     def search_command(self, event=0):
@@ -505,7 +506,7 @@ class Files(tk.Frame):
 
                 self.txtout.yview_pickplace("end")
 
-            except:
+            except Exception:
                 self.run_command()
 
     def wclose(self, event=0):
@@ -618,6 +619,6 @@ ex = Files(root)
 ex.pack(side="bottom")
 
 root.geometry("600x640")
-root.iconbitmap(default="../docs/favicon.ico")
+root.iconbitmap(default="./docs/favicon.ico")
 
 root.mainloop()
