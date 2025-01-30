@@ -44,6 +44,7 @@ class S:  # Symbols keywords
     SET = "set"
     ATTRIB = "attribute"
     TABLE = "table"
+    NEW = "new"
 
     # math
     ODD = "odd"
@@ -96,6 +97,7 @@ class E:
     EQUAL = beg + L_user + " expecting = on line"
     COLON = beg + L_user + " expected : on line"
     ADD = beg + L_user + " wrong add statement"
+    NEW = beg + L_user + " error with class instantiation"
 
 
 class M:  # memory

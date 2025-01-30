@@ -19,6 +19,8 @@ from greenberry.utils.store import Error
 from greenberry.utils.store import Flag
 from greenberry.utils.store import Memory
 from greenberry.utils.var_type import GreenBerryVarType
+import greenberry.utils.class_instance
+from greenberry.utils.class_instance import class_instance 
 
 L_USER = "dear berry"
 
@@ -58,7 +60,7 @@ def greenberry_eval(x):
 
     g_vars = Memory.g_vars
     g_fs = Memory.g_fs
-    g_cls = Memory.g_cls
+    g_cls : dict[str, dict[str, dict]] = Memory.g_cls
     words = GreenBerryLex.lex(x, KEYWORDS, add_eof=1)
     GreenBerryPrint.printd(words)
     line = 1
@@ -70,6 +72,7 @@ def greenberry_eval(x):
     for i, elem in enumerate(words):  # mainloop for complex parsing
         # printd(elem)
 
+        
         #
         # newline
         #
@@ -98,7 +101,21 @@ def greenberry_eval(x):
                     ]
             except:
                 print(E.FOR, line)
-
+        #
+        # new keyword
+        #
+        elif elem == S.NEW:
+            if words[i-1]=="print":
+                pass
+            var_val = GreenBerryVarType.var_data(i, words, [S.NL, S.EOF])
+            class_name = var_val[0]
+            if class_name not in g_cls.keys(): # Check if the class exists
+                print(E.NEW, line)
+            else:
+                g_vars[class_name] = class_instance(class_name, g_cls[class_name]["attributes"])
+                print(g_vars[class_name])
+            
+            
         #
         # if statement
         #
@@ -296,7 +313,7 @@ def greenberry_eval(x):
                 else:
                     attr = words[i + 1]
                     class_name = words[i + 2]
-                print(g_cls[class_name]["attributes"][attr][0])
+                print(g_vars[class_name].instance_vars[attr])
             except:
                 print(E.CLASSATT, line)
 
