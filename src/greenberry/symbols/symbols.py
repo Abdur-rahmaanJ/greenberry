@@ -97,7 +97,8 @@ class E:
     EQUAL = beg + L_user + " expecting = on line"
     COLON = beg + L_user + " expected : on line"
     ADD = beg + L_user + " wrong add statement"
-    NEW = beg + L_user + " error with class instantiation"
+    NEW = beg + L_user + " error with class instantiation on line"
+    UNDEFINED = beg + L_user + " \"{name}\" is undefined"
 
 
 class M:  # memory
@@ -108,6 +109,7 @@ class M:  # memory
     g_vars = {}
     g_fs = {}
     g_cls = {}
+    g_cls_instance = {}
 
 
 class F:
