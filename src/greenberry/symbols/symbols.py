@@ -99,6 +99,7 @@ class E:
     ADD = beg + L_user + " wrong add statement"
     NEW = beg + L_user + " error with class instantiation on line"
     UNDEFINED = beg + L_user + " \"{name}\" is undefined"
+    SYNTAX = beg +L_user + " syntax error on line"
 
 
 class M:  # memory
