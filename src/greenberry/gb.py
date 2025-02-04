@@ -112,11 +112,16 @@ def greenberry_eval(x):
         #
         # new keyword
         #
+        #region new
         elif elem == S.NEW:
             try:
                 if words[i - 1] == "print":
                     pass
-                class_name = words[i + 2]
+                if words[i+2] != ",":
+                    print(E.SYNTAX, line)
+                    return # Stop compiling
+                class_name = words[i + 3]
+                
                 alias = words[i+1]
                 if class_name not in g_cls.keys():  # Check if the class exists
                     print(E.UNDEFINED.format(name=class_name), line)
@@ -327,8 +332,8 @@ def greenberry_eval(x):
                     GreenBerryParse.simple_parse(g_vars, wds, line)
                 else:
                     print("here2")
-                    class_name = words[i + 1]
-                    instance_of_class = g_cls_instance[var_name]
+                    alias = words[i + 1]
+                    instance_of_class = g_cls_instance[alias]
                     print(instance_of_class)
                     wds = GreenBerryLex.lex(
                         instance_of_class.actions[action_name], KEYWORDS
