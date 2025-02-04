@@ -113,21 +113,22 @@ def greenberry_eval(x):
         # new keyword
         #
         elif elem == S.NEW:
-            # try:
+            try:
                 if words[i - 1] == "print":
                     pass
-                class_name = words[i + 1]
+                class_name = words[i + 2]
+                alias = words[i+1]
                 if class_name not in g_cls.keys():  # Check if the class exists
                     print(E.UNDEFINED.format(name=class_name), line)
                 else:
-                    g_cls_instance[class_name] = class_instance(
+                    g_cls_instance[alias] = class_instance(
                         class_name,
                         g_cls[class_name]["attributes"],
                         g_cls[class_name]["actions"],
                     )
-                    print(g_cls_instance[class_name])
-            # except Exception:
-            #     print(E.NEW, line)
+                    print(g_cls_instance[alias])
+            except Exception:
+                print(E.NEW, line)
 
         #
         # if statement
@@ -305,6 +306,8 @@ def greenberry_eval(x):
         #
         # call class method.
         #
+        
+        # region make
         elif elem == S.MAKE:  # make Man walk
             # try:
             if words[i - 1] == "print":
@@ -314,7 +317,7 @@ def greenberry_eval(x):
                 name = words[i + 1]
                 if (
                     words[i + 1] not in g_cls_instance.keys()
-                ):  # Check if the class has been instantiated
+                ):  # Check if the class hasn't been instantiated
                     print("here1")
                     if name not in g_cls:
                         print(E.UNDEFINED.format(name), line)
@@ -324,7 +327,7 @@ def greenberry_eval(x):
                     GreenBerryParse.simple_parse(g_vars, wds, line)
                 else:
                     print("here2")
-                    var_name = words[i + 1]
+                    class_name = words[i + 1]
                     instance_of_class = g_cls_instance[var_name]
                     print(instance_of_class)
                     wds = GreenBerryLex.lex(
