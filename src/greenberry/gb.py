@@ -314,48 +314,59 @@ def greenberry_eval(x):
         
         # region make
         elif elem == S.MAKE:  # make Man walk
-            # try:
-            if words[i - 1] == "print":
-                pass
-            else:
-                action_name = words[i + 2]
-                name = words[i + 1]
-                if (
-                    words[i + 1] not in g_cls_instance.keys()
-                ):  # Check if the class hasn't been instantiated
-                    print("here1")
-                    if name not in g_cls:
-                        print(E.UNDEFINED.format(name), line)
-
-                    raw_text = g_cls[name]["actions"][action_name]
-                    wds = GreenBerryLex.lex(raw_text, KEYWORDS)
-                    GreenBerryParse.simple_parse(g_vars, wds, line)
+            try:
+                if words[i - 1] == "print":
+                    pass
                 else:
-                    print("here2")
-                    alias = words[i + 1]
-                    instance_of_class = g_cls_instance[alias]
-                    print(instance_of_class)
-                    wds = GreenBerryLex.lex(
-                        instance_of_class.actions[action_name], KEYWORDS
-                    )
-                    GreenBerryParse.simple_parse(g_vars, wds, line)
-        # except Exception as e:
-        #     print(e)
-        #     print(E.CLASSACT, line)
+                    action_name = words[i + 2]
+                    name = words[i + 1]
+                    if (
+                        words[i + 1] not in g_cls_instance.keys()
+                    ):  # Check if the class hasn't been instantiated
+                        print("here1")
+                        if name not in g_cls:
+                            print(E.UNDEFINED.format(name), line)
+
+                        raw_text = g_cls[name]["actions"][action_name]
+                        wds = GreenBerryLex.lex(raw_text, KEYWORDS)
+                        GreenBerryParse.simple_parse(g_vars, wds, line)
+                    else:
+                        print("here2")
+                        alias = words[i + 1]
+                        instance_of_class = g_cls_instance[alias]
+                        print(instance_of_class)
+                        wds = GreenBerryLex.lex(
+                            instance_of_class.actions[action_name], KEYWORDS
+                        )
+                        GreenBerryParse.simple_parse(g_vars, wds, line)
+            except Exception as e:
+                print(e)
+                print(E.CLASSACT, line)
 
         #
         # attribute viewing
         #
         elif elem == S.SEE:  # see power of Man
-            try:
+            # try:
+                attr = words[i + 1]
+                class_name = words[i + 3]
                 if words[i - 1] == "print":
                     pass
                 else:
-                    attr = words[i + 1]
-                    class_name = words[i + 2]
-                print(g_vars[class_name].instance_vars[attr])
-            except:
-                print(E.CLASSATT, line)
+                    if (
+                        class_name not in g_cls_instance.keys()
+                    ):
+                        if class_name not in g_cls:
+                            print(E.UNDEFINED.format(name=class_name), line)
+                            return
+                        print(g_vars[class_name].instance_vars[attr])
+                    else:
+                        alias = class_name
+                        print(g_cls_instance[alias].instance_vars[attr])
+
+                
+            # except Exception:
+            #     print(E.CLASSATT, line)
 
         #
         # add attribute to class
