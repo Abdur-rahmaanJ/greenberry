@@ -312,7 +312,7 @@ def greenberry_eval(x):
         
         # region make
         elif elem == S.MAKE:  # make Man walk
-            try:
+            # try:
                 if words[i - 1] == "print":
                     pass
                 else:
@@ -340,8 +340,8 @@ def greenberry_eval(x):
                             instance_of_class.actions[action_name], KEYWORDS
                         )
                         GreenBerryParse.simple_parse(g_vars, wds, line)
-            except Exception as e:
-                print(E.CLASSACT, line)
+            # except Exception as e:
+            #     print(E.CLASSACT, line)
 
         #
         # attribute viewing
@@ -394,9 +394,26 @@ def greenberry_eval(x):
                                     i+5, words, [S.NL, S.EOF]
                                 )
                                 g_cls[alias].instance_vars[attr_name] = value
+                                
+
+                        elif (
+                            type_of_addition == S.ACTION
+                        ):  # add to Man action run : print running...
+                            symbol = words[i + 5]
+                            class_name = words[i + 2]
+                            action_name = words[i + 4]
+                            if words[i + 5] == S.COLON:
+                                g_cls_instance[class_name].actions[action_name] = (
+                                    GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF])
+                                )
+                                print("THIS IS: " + action_name)
                             else:
                                 print(E.SYNTAX, line)
-                    elif alias in g_cls_instance.keys():
+                                return
+                    else:
+                        print(E.UNDEFINED.format(name=alias), line)
+                        
+                    if alias in g_cls_instance.keys():
                         if symbol == S.EQUAL:
                             value = GreenBerryVarType.var_data(
                                 i +5, words, [S.NL, S.EOF]
@@ -410,12 +427,12 @@ def greenberry_eval(x):
                         ):  # add to Man action run : print running...
                             symbol = words[i + 5]
                             class_name = words[i + 2]
-                            action_name = words[i + 3]
+                            action_name = words[i + 4]
                             if words[i + 5] == S.COLON:
                                 g_cls_instance[class_name].actions[action_name] = (
                                     GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF])
                                 )
-                                
+                                print("THIS IS: " + action_name)
                             else:
                                 print(E.SYNTAX, line)
                                 return
