@@ -7,6 +7,7 @@ see theory_notes_simple.py
 
 import inspect
 from collections import OrderedDict
+import traceback
 from typing import Dict
 
 from greenberry.debug_cp import Debug_cp
@@ -279,6 +280,7 @@ def greenberry_eval(x):
                         i + 3
                     ]  # search_symbol var_data(i+4, words, [S.NL, S.EOF])
                     attr_val = GreenBerryVarType.var_data(i + 4, words, [S.ACTION])
+                    
                     action_name = words[i + 7]
                     action_body = GreenBerrySearch.search(
                         i + 7, 1, words, [S.NL, S.EOF]
@@ -322,8 +324,11 @@ def greenberry_eval(x):
                         print("here1")
                         if name not in g_cls:
                             print(E.UNDEFINED.format(name), line)
+                        print("hi:", name, "dd")
+                        print("hi again:", g_cls[name], "d")
+                        raw_text = g_cls[name].actions[action_name]
+                        
 
-                        raw_text = g_cls[name]["actions"][action_name]
                         wds = GreenBerryLex.lex(raw_text, KEYWORDS)
                         GreenBerryParse.simple_parse(g_vars, wds, line)
                     else:
@@ -336,7 +341,6 @@ def greenberry_eval(x):
                         )
                         GreenBerryParse.simple_parse(g_vars, wds, line)
             except Exception as e:
-                print(e)
                 print(E.CLASSACT, line)
 
         #
@@ -356,7 +360,7 @@ def greenberry_eval(x):
                         if class_name not in g_cls:
                             print(E.UNDEFINED.format(name=class_name), line)
                             return
-                        print(g_vars[class_name].instance_vars[attr])
+                        print(g_cls[class_name].instance_vars[attr])
                     else:
                         alias = class_name
                         print(g_cls_instance[alias].instance_vars[attr])
@@ -370,28 +374,35 @@ def greenberry_eval(x):
         #
         # region add
         elif elem == S.ADD:  # add to Man attribute name = string i am me
-            try:
+            # try:
                 if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
-                    alias = words[i + 1]
-                    type_of_addition = words[i + 2] # cant use "type" because it's a keyword
+                    alias = words[i + 2]
+                    type_of_addition = words[i + 3] # cant use "type" because it's a keyword
+                    print(alias)
+                    print(type_of_addition)   
+                    attr_name = words[i+4]
+                    print(attr_name)
+                    symbol = words[i + 5]
+                    print(symbol)
                     if alias in g_cls.keys():
                         if type_of_addition == S.ATTRIB:
-                            if words[i + 4] == S.EQUAL:
+                            if symbol == S.EQUAL:
                                 value = GreenBerryVarType.var_data(
-                                    i + 4, words, [S.NL, S.EOF]
+                                    i+5, words, [S.NL, S.EOF]
                                 )
-                                g_cls[alias]["attributes"][words[i + 3]] = value
+                                g_cls[alias].instance_vars[attr_name] = value
                             else:
-                                print(S.EQUAL, line)
+                                print(E.SYNTAX, line)
                     elif alias in g_cls_instance.keys():
-                        if words[i + 4] == S.EQUAL:
+                        if symbol == S.EQUAL:
                             value = GreenBerryVarType.var_data(
-                                i + 4, words, [S.NL, S.EOF]
+                                i +5, words, [S.NL, S.EOF]
                             )
-                            g_cls[alias]["attributes"][words[i + 3]] = value
+                            
+                            g_cls_instance[alias].instance_vars[attr_name] = value
 
 
                         elif (
@@ -402,15 +413,15 @@ def greenberry_eval(x):
                                     GreenBerrySearch.search(i, 4, words, [S.NL, S.EOF])
                                 )
                             else:
-                                print(S.COLON, line)
+                                print(E.SYNTAX, line)
 
                     else:
-                        print(S.CLASSNAME, line)
+                        pass
                 Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
                     1
                 ]
-            except:
-                print(E.ADD, line)
+            # except:
+            #     print(E.ADD, line)
 
         #
         # debug on or off

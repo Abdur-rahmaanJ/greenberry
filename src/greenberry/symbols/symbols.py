@@ -13,6 +13,7 @@ class S:  # Symbols keywords
     SQL = "["
     SQR = "]"
 
+
     PRINT = "print"
 
     NUMBER = "number"
