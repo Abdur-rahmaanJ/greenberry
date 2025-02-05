@@ -99,7 +99,7 @@ class E:
     COLON = beg + L_user + " expected : on line"
     ADD = beg + L_user + " wrong add statement"
     NEW = beg + L_user + " error with class instantiation on line"
-    UNDEFINED = beg + L_user + " \"{name}\" is undefined"
+    UNDEFINED = beg + L_user + " \"{name}\" is undefined on line"
     SYNTAX = beg +L_user + " syntax error on line"
 
 
