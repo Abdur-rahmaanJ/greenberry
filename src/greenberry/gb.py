@@ -408,12 +408,17 @@ def greenberry_eval(x):
                         elif (
                             type_of_addition == S.ACTION
                         ):  # add to Man action run : print running...
-                            if words[i + 4] == S.COLON:
-                                g_cls[words[i + 1]]["actions"][words[i + 3]] = (
-                                    GreenBerrySearch.search(i, 4, words, [S.NL, S.EOF])
+                            symbol = words[i + 5]
+                            class_name = words[i + 2]
+                            action_name = words[i + 3]
+                            if words[i + 5] == S.COLON:
+                                g_cls_instance[class_name].actions[action_name] = (
+                                    GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF])
                                 )
+                                
                             else:
                                 print(E.SYNTAX, line)
+                                return
 
                     else:
                         pass
