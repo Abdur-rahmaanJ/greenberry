@@ -403,7 +403,8 @@ def greenberry_eval(x):
                             class_name = words[i + 2]
                             action_name = words[i + 4]
                             if words[i + 5] == S.COLON:
-                                g_cls_instance[class_name].actions[action_name] = (
+                                print(GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF]))
+                                g_cls[class_name].actions[action_name] = (
                                     GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF])
                                 )
                                 print("THIS IS: " + action_name)
