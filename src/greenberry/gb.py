@@ -8,18 +8,14 @@ see theory_notes_simple.py
 import inspect
 from collections import OrderedDict
 
-from greenberry.debug_cp import Debug_cp
 from greenberry.symbols import S,E
 from greenberry.utils.lex import GreenBerryLex
 from greenberry.utils.parse import GreenBerryParse
-from greenberry.utils.plot import GreenBerryPlot
 from greenberry.utils.print import GreenBerryPrint
 from greenberry.utils.search import GreenBerrySearch
-from greenberry.utils.store import Error
 from greenberry.utils.store import Flag
 from greenberry.utils.store import Memory
 from greenberry.utils.var_type import GreenBerryVarType
-import greenberry.utils.class_instance
 from greenberry.utils.class_instance import class_instance 
 
 L_USER = "dear berry"
@@ -101,6 +97,7 @@ def greenberry_eval(x):
                     ]
             except:
                 print(E.FOR, line)
+                return
         #
         # new keyword
         #
@@ -111,9 +108,9 @@ def greenberry_eval(x):
             class_name = var_val[0]
             if class_name not in g_cls.keys(): # Check if the class exists
                 print(E.NEW, line)
+                return
             else:
                 g_vars[class_name] = class_instance(class_name, g_cls[class_name]["attributes"])
-                print(g_vars[class_name])
             
             
         #
@@ -178,6 +175,7 @@ def greenberry_eval(x):
                     ]
             except:
                 print(E.IF, line)
+                return
 
             # resolve flag
         #
@@ -209,6 +207,7 @@ def greenberry_eval(x):
                     ]
             except:
                 print(E.FUNCDEF, line)
+                return
         #
         # function call
         #
@@ -235,10 +234,11 @@ def greenberry_eval(x):
                                 GreenBerryVarType.var_type(param_vals[i]),
                             ]  # data
                             i += 1
-                        wds = lex(g_fs[func_name]["body"], KEYWORDS)
+                        wds = GreenBerryLex.lex(g_fs[func_name]["body"], KEYWORDS)
                         GreenBerryParse.simple_parse(registry, wds, line)
             except:
                 print(E.FUNCCALL, line)
+                return
 
         #
         # class definition
@@ -284,6 +284,7 @@ def greenberry_eval(x):
                     """
             except:
                 print(E.CLASSDEC, line)
+                return
 
         #
         # call class method.
@@ -296,12 +297,14 @@ def greenberry_eval(x):
                     class_name = words[i + 1]
                     if class_name not in g_cls:
                         print("wrong class name berry")
+                        return
                     action_name = words[i + 2]
                     raw_text = g_cls[class_name]["actions"][action_name]
                     wds = GreenBerryLex.lex(raw_text, KEYWORDS)
                     GreenBerryParse.simple_parse(g_vars, wds, line)
             except:
                 print(E.CLASSACT, line)
+                return
 
         #
         # attribute viewing
@@ -316,6 +319,7 @@ def greenberry_eval(x):
                 print(g_vars[class_name].instance_vars[attr])
             except:
                 print(E.CLASSATT, line)
+                return
 
         #
         # add attribute to class
@@ -352,6 +356,7 @@ def greenberry_eval(x):
                 ]
             except:
                 print(E.ADD, line)
+                return
 
         #
         # debug on or off
@@ -368,6 +373,7 @@ def greenberry_eval(x):
                             Flag.isDebugOn = 0
             except:
                 print(S.DEBUG, line)
+                return
         else:
             if i < Flag.bStart or i > Flag.bEnd and elem != S.EOF:
                 Flag.bStart = i
