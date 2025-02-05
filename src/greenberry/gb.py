@@ -66,9 +66,9 @@ def greenberry_eval(x):
     Flag.bEnd = 0
     Flag.isDebugOn = 0  # this is a reset needed for.ide
 
-    g_vars: Dict[str, class_instance | any] = Memory.g_vars
+    g_vars: Dict[str, any] = Memory.g_vars
     g_fs = Memory.g_fs
-    g_cls: dict[str, dict[str, dict]] = Memory.g_cls
+    g_cls: dict[str, class_instance] = Memory.g_cls
     g_cls_instance: dict[str, class_instance] = Memory.g_cls_instance
     words = GreenBerryLex.lex(x, KEYWORDS, add_eof=1)
     GreenBerryPrint.printd(words)
@@ -117,7 +117,7 @@ def greenberry_eval(x):
             try:
                 if words[i - 1] == "print":
                     pass
-                if words[i+2] != ",":
+                if words[i+2] != S.COMMA:
                     print(E.SYNTAX, line)
                     return # Stop compiling
                 class_name = words[i + 3]
@@ -128,8 +128,8 @@ def greenberry_eval(x):
                 else:
                     g_cls_instance[alias] = class_instance(
                         class_name,
-                        g_cls[class_name]["attributes"],
-                        g_cls[class_name]["actions"],
+                        g_cls[class_name].instance_vars,
+                        g_cls[class_name].actions,
                     )
                     print(g_cls_instance[alias])
             except Exception:
@@ -283,11 +283,7 @@ def greenberry_eval(x):
                     action_body = GreenBerrySearch.search(
                         i + 7, 1, words, [S.NL, S.EOF]
                     )
-                    g_cls[class_name] = {
-                        "attributes": {attr_name: attr_val},
-                        "actions": {action_name: action_body},
-                    }
-
+                    g_cls[class_name] = class_instance(class_name, {attr_name: attr_val}, {action_name: action_body})
                     # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
                     Flag.bEnd = GreenBerrySearch.search_symbol(
                         i, 1, words, [S.NL, S.EOF]
@@ -346,6 +342,7 @@ def greenberry_eval(x):
         #
         # attribute viewing
         #
+        # region see
         elif elem == S.SEE:  # see power of Man
             # try:
                 attr = words[i + 1]
@@ -371,23 +368,34 @@ def greenberry_eval(x):
         #
         # add attribute to class
         #
+        # region add
         elif elem == S.ADD:  # add to Man attribute name = string i am me
             try:
                 if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
-                    if words[i + 1] in g_cls:
-                        if words[i + 2] == S.ATTRIB:
+                    alias = words[i + 1]
+                    type_of_addition = words[i + 2] # cant use "type" because it's a keyword
+                    if alias in g_cls.keys():
+                        if type_of_addition == S.ATTRIB:
                             if words[i + 4] == S.EQUAL:
                                 value = GreenBerryVarType.var_data(
                                     i + 4, words, [S.NL, S.EOF]
                                 )
-                                g_cls[words[i + 1]]["attributes"][words[i + 3]] = value
+                                g_cls[alias]["attributes"][words[i + 3]] = value
                             else:
                                 print(S.EQUAL, line)
+                    elif alias in g_cls_instance.keys():
+                        if words[i + 4] == S.EQUAL:
+                            value = GreenBerryVarType.var_data(
+                                i + 4, words, [S.NL, S.EOF]
+                            )
+                            g_cls[alias]["attributes"][words[i + 3]] = value
+
+
                         elif (
-                            words[i + 2] == S.ACTION
+                            type_of_addition == S.ACTION
                         ):  # add to Man action run : print running...
                             if words[i + 4] == S.COLON:
                                 g_cls[words[i + 1]]["actions"][words[i + 3]] = (
