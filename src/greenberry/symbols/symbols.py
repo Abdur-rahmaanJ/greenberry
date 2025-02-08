@@ -13,6 +13,7 @@ class S:  # Symbols keywords
     SQL = "["
     SQR = "]"
 
+
     PRINT = "print"
 
     NUMBER = "number"
@@ -97,7 +98,9 @@ class E:
     EQUAL = beg + L_user + " expecting = on line"
     COLON = beg + L_user + " expected : on line"
     ADD = beg + L_user + " wrong add statement"
-    NEW = beg + L_user + " error with class instantiation"
+    NEW = beg + L_user + " error with class instantiation on line"
+    UNDEFINED = beg + L_user + " \"{name}\" is undefined on line"
+    SYNTAX = beg +L_user + " syntax error on line"
 
 
 class M:  # memory
@@ -108,6 +111,7 @@ class M:  # memory
     g_vars = {}
     g_fs = {}
     g_cls = {}
+    g_cls_instance = {}
 
 
 class F:

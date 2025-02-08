@@ -7,8 +7,11 @@ see theory_notes_simple.py
 
 import inspect
 from collections import OrderedDict
+import traceback
+from typing import Dict
 
-from greenberry.symbols import S,E
+from greenberry.debug_cp import Debug_cp
+from greenberry.symbols import S, E
 from greenberry.utils.lex import GreenBerryLex
 from greenberry.utils.parse import GreenBerryParse
 from greenberry.utils.print import GreenBerryPrint
@@ -16,17 +19,24 @@ from greenberry.utils.search import GreenBerrySearch
 from greenberry.utils.store import Flag
 from greenberry.utils.store import Memory
 from greenberry.utils.var_type import GreenBerryVarType
-from greenberry.utils.class_instance import class_instance 
+import greenberry.utils.class_instance
+from greenberry.utils.class_instance import class_instance
 
 L_USER = "dear berry"
 
+
 def get_keywords():
-    """ returns a list of keyword symbols(attributes) from S class which are not built in methods or attibutes  """
-    a_list = [a for a in inspect.getmembers(S, lambda a: not inspect.isroutine(a)) if not (a[0].startswith("__") and a[0].endswith("__"))]
+    """returns a list of keyword symbols(attributes) from S class which are not built in methods or attibutes"""
+    a_list = [
+        a
+        for a in inspect.getmembers(S, lambda a: not inspect.isroutine(a))
+        if not (a[0].startswith("__") and a[0].endswith("__"))
+    ]
     b_list = [b[0] for b in a_list]
-    keywords = [getattr(S,i) for i in b_list]
+    keywords = [getattr(S, i) for i in b_list]
 
     return keywords
+
 
 # another lex would be to identify blobks first this is a side effect
 MATH_OPS = ["+", "-", "*", "/"]
@@ -50,13 +60,15 @@ def greenberry_eval(x):
     Memory.g_vars = {}
     Memory.g_fs = {}
     Memory.g_cls = {}
+    Memory.g_cls_instance = {}
     Flag.bStart = 100
     Flag.bEnd = 0
     Flag.isDebugOn = 0  # this is a reset needed for.ide
 
-    g_vars = Memory.g_vars
+    g_vars: Dict[str, any] = Memory.g_vars
     g_fs = Memory.g_fs
-    g_cls : dict[str, dict[str, dict]] = Memory.g_cls
+    g_cls: dict[str, class_instance] = Memory.g_cls
+    g_cls_instance: dict[str, class_instance] = Memory.g_cls_instance
     words = GreenBerryLex.lex(x, KEYWORDS, add_eof=1)
     GreenBerryPrint.printd(words)
     line = 1
@@ -68,7 +80,6 @@ def greenberry_eval(x):
     for i, elem in enumerate(words):  # mainloop for complex parsing
         # printd(elem)
 
-        
         #
         # newline
         #
@@ -80,7 +91,7 @@ def greenberry_eval(x):
         #
         elif elem == S.FOR:
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
@@ -92,33 +103,44 @@ def greenberry_eval(x):
                     for d in range(times_by):
                         GreenBerryParse.simple_parse(g_vars, wds, line)
                     # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                    Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
-                        1
-                    ]
+                    Flag.bEnd = GreenBerrySearch.search_symbol(
+                        i, 1, words, [S.NL, S.EOF]
+                    )[1]
             except:
                 print(E.FOR, line)
                 return
         #
         # new keyword
         #
+        #region new
         elif elem == S.NEW:
-            if words[i-1]=="print":
-                pass
-            var_val = GreenBerryVarType.var_data(i, words, [S.NL, S.EOF])
-            class_name = var_val[0]
-            if class_name not in g_cls.keys(): # Check if the class exists
+            try:
+                if words[i - 1] == "print":
+                    pass
+                if words[i+2] != S.COMMA:
+                    print(E.SYNTAX, line)
+                    return # Stop compiling
+                class_name = words[i + 3]
+                
+                alias = words[i+1]
+                if class_name not in g_cls.keys():  # Check if the class exists
+                    print(E.UNDEFINED.format(name=class_name), line)
+                    return # stop compiling
+                else:
+                    g_cls_instance[alias] = class_instance(
+                        class_name,
+                        g_cls[class_name].instance_vars,
+                        g_cls[class_name].actions,
+                    )
+                    print(g_cls_instance[alias])
+            except Exception:
                 print(E.NEW, line)
-                return
-            else:
-                g_vars[class_name] = class_instance(class_name, g_cls[class_name]["attributes"])
-            
-            
         #
         # if statement
         #
         elif elem == S.IF:  # to be rededefined
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
@@ -170,9 +192,9 @@ def greenberry_eval(x):
                         if L <= R:
                             GreenBerryParse.simple_parse(g_vars, wds, line)
                     # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                    Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
-                        1
-                    ]
+                    Flag.bEnd = GreenBerrySearch.search_symbol(
+                        i, 1, words, [S.NL, S.EOF]
+                    )[1]
             except:
                 print(E.IF, line)
                 return
@@ -184,7 +206,7 @@ def greenberry_eval(x):
         elif elem == S.FUNCDEF:  # func vector : print aaa #func vector x : print @x
             params = []
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
@@ -194,7 +216,9 @@ def greenberry_eval(x):
                         g_fs[func_name] = {"params": None, "body": body}
                     else:
                         params = GreenBerrySearch.search_toks(i, 1, words, [S.COLON])
-                        col_i = GreenBerrySearch.search_symbol(i, 1, words, [S.COLON])[1]
+                        col_i = GreenBerrySearch.search_symbol(i, 1, words, [S.COLON])[
+                            1
+                        ]
                         body = GreenBerrySearch.search(col_i, 0, words, [S.NL, S.EOF])
                         registry = OrderedDict()
                         for param in params:
@@ -202,9 +226,9 @@ def greenberry_eval(x):
                         g_fs[func_name] = {"params": registry, "body": body}
 
                     # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                    Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
-                        1
-                    ]
+                    Flag.bEnd = GreenBerrySearch.search_symbol(
+                        i, 1, words, [S.NL, S.EOF]
+                    )[1]
             except:
                 print(E.FUNCDEF, line)
                 return
@@ -213,7 +237,7 @@ def greenberry_eval(x):
         #
         elif elem == S.FUNCCALL:  # call vector
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     func_name = words[i + 1]
@@ -246,7 +270,7 @@ def greenberry_eval(x):
         elif elem == S.CLASS:  # class Man : power = 10 action walk : print a
             # attrs = {} future
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
@@ -258,17 +282,16 @@ def greenberry_eval(x):
                         i + 3
                     ]  # search_symbol var_data(i+4, words, [S.NL, S.EOF])
                     attr_val = GreenBerryVarType.var_data(i + 4, words, [S.ACTION])
+                    
                     action_name = words[i + 7]
-                    action_body = GreenBerrySearch.search(i + 7, 1, words, [S.NL, S.EOF])
-                    g_cls[class_name] = {
-                        "attributes": {attr_name: attr_val},
-                        "actions": {action_name: action_body},
-                    }
-
+                    action_body = GreenBerrySearch.search(
+                        i + 7, 1, words, [S.NL, S.EOF]
+                    )
+                    g_cls[class_name] = class_instance(class_name, {attr_name: attr_val}, {action_name: action_body})
                     # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
-                    Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
-                        1
-                    ]
+                    Flag.bEnd = GreenBerrySearch.search_symbol(
+                        i, 1, words, [S.NL, S.EOF]
+                    )[1]
                     """
                     class_name = {
                     name = name,
@@ -289,68 +312,130 @@ def greenberry_eval(x):
         #
         # call class method.
         #
+        
+        # region make
         elif elem == S.MAKE:  # make Man walk
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
-                    class_name = words[i + 1]
-                    if class_name not in g_cls:
-                        print("wrong class name berry")
-                        return
                     action_name = words[i + 2]
-                    raw_text = g_cls[class_name]["actions"][action_name]
-                    wds = GreenBerryLex.lex(raw_text, KEYWORDS)
-                    GreenBerryParse.simple_parse(g_vars, wds, line)
-            except:
+                    name = words[i + 1]
+                    if (
+                        words[i + 1] not in g_cls_instance.keys()
+                    ):  # Check if the class hasn't been instantiated
+                        print("here1")
+                        if name not in g_cls:
+                            print(E.UNDEFINED.format(name), line)
+                            return # Stop compiling
+                        raw_text = g_cls[name].actions[action_name]
+                        
+
+                        wds = GreenBerryLex.lex(raw_text, KEYWORDS)
+                        GreenBerryParse.simple_parse(g_vars, wds, line)
+                    else:
+                        alias = words[i + 1]
+                        instance_of_class = g_cls_instance[alias]
+                        wds = GreenBerryLex.lex(
+                            instance_of_class.actions[action_name], KEYWORDS
+                        )
+                        GreenBerryParse.simple_parse(g_vars, wds, line)
+            except Exception:
                 print(E.CLASSACT, line)
                 return
 
         #
         # attribute viewing
         #
+        # region see
         elif elem == S.SEE:  # see power of Man
             try:
-                if words[i-1]=="print":
+                attr = words[i + 1]
+                class_name = words[i + 3]
+                if words[i - 1] == "print":
                     pass
                 else:
-                    attr = words[i + 1]
-                    class_name = words[i + 2]
-                print(g_vars[class_name].instance_vars[attr])
-            except:
+                    if (
+                        class_name not in g_cls_instance.keys()
+                    ):
+                        if class_name not in g_cls:
+                            print(E.UNDEFINED.format(name=class_name), line)
+                            return # Stop compiling
+                        print(g_cls[class_name].instance_vars[attr])
+                    else:
+                        alias = class_name
+                        print(g_cls_instance[alias].instance_vars[attr])
+
+                
+            except Exception:
                 print(E.CLASSATT, line)
                 return
 
         #
         # add attribute to class
         #
+        # region add
         elif elem == S.ADD:  # add to Man attribute name = string i am me
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     Flag.bStart = i
-                    if words[i + 1] in g_cls:
-                        if words[i + 2] == S.ATTRIB:
-                            if words[i + 4] == S.EQUAL:
+                    alias = words[i + 2]
+                    type_of_addition = words[i + 3] # cant use "type" because it's a keyword
+                    attr_name = words[i+4]
+                    symbol = words[i + 5]
+                    if alias in g_cls.keys():
+                        if type_of_addition == S.ATTRIB:
+                            if symbol == S.EQUAL:
                                 value = GreenBerryVarType.var_data(
-                                    i + 4, words, [S.NL, S.EOF]
+                                    i+5, words, [S.NL, S.EOF]
                                 )
-                                g_cls[words[i + 1]]["attributes"][words[i + 3]] = value
-                            else:
-                                print(S.EQUAL, line)
+                                g_cls[alias].instance_vars[attr_name] = value
+                                
+
                         elif (
-                            words[i + 2] == S.ACTION
+                            type_of_addition == S.ACTION
                         ):  # add to Man action run : print running...
-                            if words[i + 4] == S.COLON:
-                                g_cls[words[i + 1]]["actions"][
-                                    words[i + 3]
-                                ] = GreenBerrySearch.search(i, 4, words, [S.NL, S.EOF])
+                            symbol = words[i + 5]
+                            class_name = words[i + 2]
+                            action_name = words[i + 4]
+                            if words[i + 5] == S.COLON:
+                                g_cls[class_name].actions[action_name] = (
+                                    GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF])
+                                )
                             else:
-                                print(S.COLON, line)
+                                print(E.SYNTAX, line)
+                                return # Stop compiling
+                    elif alias not in g_cls_instance.keys():
+                        print(E.UNDEFINED.format(name=alias), line)
+                        return # Stop compiling
+                        
+                    if alias in g_cls_instance.keys():
+                        if symbol == S.EQUAL:
+                            value = GreenBerryVarType.var_data(
+                                i +5, words, [S.NL, S.EOF]
+                            )
+                            
+                            g_cls_instance[alias].instance_vars[attr_name] = value
+
+
+                        elif (
+                            type_of_addition == S.ACTION
+                        ):  # add to Man action run : print running...
+                            symbol = words[i + 5]
+                            class_name = words[i + 2]
+                            action_name = words[i + 4]
+                            if words[i + 5] == S.COLON:
+                                g_cls_instance[class_name].actions[action_name] = (
+                                    GreenBerrySearch.search(i, 5, words, [S.NL, S.EOF])
+                                )
+                            else:
+                                print(E.SYNTAX, line)
+                                return # Stop compiling
 
                     else:
-                        print(S.CLASSNAME, line)
+                        pass
                 Flag.bEnd = GreenBerrySearch.search_symbol(i, 1, words, [S.NL, S.EOF])[
                     1
                 ]
@@ -363,7 +448,7 @@ def greenberry_eval(x):
         #
         elif elem == S.SET:  # set debug on - set debug off
             try:
-                if words[i-1]=="print":
+                if words[i - 1] == "print":
                     pass
                 else:
                     if words[i + 1] == "debug":
