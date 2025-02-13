@@ -46,6 +46,9 @@ class S:  # Symbols keywords
     ATTRIB = "attribute"
     TABLE = "table"
     NEW = "new"
+    IMPORT = "import"
+    NAMESPACE = "namespace"
+    NAMESPACE_IDENTIFIER = "::"
 
     # math
     ODD = "odd"
