@@ -8,6 +8,7 @@ from argparse import ArgumentParser, Namespace
 import sys
 import os
 
+from greenberry.utils.store import Memory
 from greenberry.gb import greenberry_eval
 from greenberry.repl import run_repl
 
@@ -52,4 +53,9 @@ if __name__ == "__main__":
     with open("main.gb") as f:
         x = f.read()
 
+    Memory.g_vars = {}
+    Memory.g_fs = {}
+    Memory.g_cls = {}
+    Memory.g_cls_instance = {}
+    
     greenberry_eval(x)
