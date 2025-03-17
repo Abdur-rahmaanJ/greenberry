@@ -57,10 +57,6 @@ def greenberry_eval(x):
     # program starts here
     ###
 
-    Memory.g_vars = {}
-    Memory.g_fs = {}
-    Memory.g_cls = {}
-    Memory.g_cls_instance = {}
     Flag.bStart = 100
     Flag.bEnd = 0
     Flag.isDebugOn = 0  # this is a reset needed for.ide

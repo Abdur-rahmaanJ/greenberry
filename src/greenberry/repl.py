@@ -3,6 +3,7 @@ Created on Sun Dec 31 22:21:00 2017
 
 @author: ARJ
 """
+from greenberry.utils.store import Memory
 from greenberry.gb import greenberry_eval
 
 
@@ -14,6 +15,12 @@ def run_repl():
   ---greenberry(c)---
   """
     )
+    
+    Memory.g_vars = {}
+    Memory.g_fs = {}
+    Memory.g_cls = {}
+    Memory.g_cls_instance = {}
+    
     try:
         while True:
             x = input("---> ")
