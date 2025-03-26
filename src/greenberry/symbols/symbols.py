@@ -1,6 +1,11 @@
 L_user = "dear berry"
 
+
 class S:  # Symbols keywords
+    """
+    contains symbols used in lang
+    """
+    
     EOF = "{***end-of-file***}"
     NL = "\n"
     WS = " "
@@ -9,6 +14,8 @@ class S:  # Symbols keywords
     EQUAL = "="
     LESS = "<"
     GREATER = ">"
+    EQUAL_GREATER = ">="
+    EQUAL_LESS = "<="
     COMMA = ","
     SQL = "["
     SQR = "]"
