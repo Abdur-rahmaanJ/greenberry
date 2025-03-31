@@ -23,10 +23,10 @@ set debug on
 class Man : power = 10 action walk : print walking...
 
 make Man walk
-see power Man
+see power of Man
 
-add Man attribute name = string i am me
-add Man action run : print running...
+add to Man attribute name = string i am me
+add to Man action run : print running...
 
 var x = [3,2,3,4,3]
 print @x
@@ -35,7 +35,7 @@ print @x[0]
 func vector: print string vector is fun
 func p x y: print @x
 
-call vector
+call vector 
 call p hello hi
 
 plot 1-2.5-6 time[s], 'y.txt' path[m]
