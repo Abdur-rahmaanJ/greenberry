@@ -659,3 +659,4 @@ except tk.TclError as e:
     root.iconbitmap(default="./docs/favicon.ico") # ! Compatibility since it wasn't working on my machine
 
 root.mainloop()
+ 
