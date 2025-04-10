@@ -6,8 +6,8 @@ from greenberry.symbols import E
 from greenberry.symbols import *
 from greenberry.utils.store import Flag
 from greenberry.utils.store import Memory
-from greenberry.utils.var_type import GreenBerrySearch
-from greenberry.utils.var_type import GreenBerryVarType
+from greenberry.utils.references import GreenBerryReferences
+from greenberry.utils.search import GreenBerrySearch
 
 L_USER = "dear berry"
 
@@ -37,7 +37,7 @@ class GreenBerryPrint:
                 print(words[i + 1])
             elif i + 1 < len(words) and words[i + 1] == S.VAR_REF:
                 try:
-                    print(GreenBerryVarType.var_ref_handling(i + 1, words, g_vars))
+                    print(GreenBerryReferences.var_ref_handling(i + 1, words, g_vars))
                 except:
                     print(E.VARREF, line)
             elif i + 1 < len(words) and words[i + 1] == S.EVAL:

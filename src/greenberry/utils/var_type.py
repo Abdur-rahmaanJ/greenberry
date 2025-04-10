@@ -4,6 +4,7 @@ from collections import OrderedDict
 from greenberry.debug_cp import *
 from greenberry.symbols import *
 from greenberry.utils.search import GreenBerrySearch
+from greenberry.utils.lex import GreenBerryLex
 
 L_USER = "dear berry"
 
@@ -47,9 +48,9 @@ class GreenBerryVarType:
             type = "word"
         return [value, type]
 
-    def var_type(string):  # var x = 1
+    def var_type(string, KWDs):  # var x = 1
         type = None
-        words = lex(string, KWDs)
+        words = GreenBerryLex.lex(string, KWDs)
         if words[0] == S.STRING:
             type = "string"
         elif words[0] == S.VAR_REF:
@@ -67,16 +68,4 @@ class GreenBerryVarType:
             type = "word"
         return type
 
-    def var_ref_handling(at_i, words, g_vars):  # @y[1]
-        """recognises references to variables"""
-        name = words[at_i + 1]  # class debug
-        type = g_vars[name][1]
-        value = g_vars[name][0]
-        returned_val = 0
-        if type == "array" and len(words) > 3:
-            value = value.split(S.COMMA)
-            returned_val = value[int(words[at_i + 3])].strip()
-        else:
-            returned_val = value
-
-        return returned_val
+    

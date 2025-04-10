@@ -10,8 +10,8 @@ import os
 
 from greenberry.utils.store import Memory
 from greenberry.gb import greenberry_eval
-from greenberry.repl import run_repl
-
+from repl import run_repl
+ 
 
 def main():
     """

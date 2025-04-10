@@ -251,7 +251,7 @@ def greenberry_eval(x):
                         for key in registry:
                             registry[key] = [
                                 param_vals[i],
-                                GreenBerryVarType.var_type(param_vals[i]),
+                                GreenBerryVarType.var_type(param_vals[i], KEYWORDS),
                             ]  # data
                             i += 1
                         wds = GreenBerryLex.lex(g_fs[func_name]["body"], KEYWORDS)
