@@ -653,10 +653,14 @@ ex = Files(root)
 ex.pack(side="bottom")
 
 root.geometry("600x640")
-try:
-    root.iconbitmap(default="../docs/favicon.ico")
-except tk.TclError as e:
-    root.iconbitmap(default="./docs/favicon.ico") # ! Compatibility since it wasn't working on my machine
+if os.name == 'posix':
+    img = tk.PhotoImage(file="../docs/favicon.gif")
+    root.tk.call('wm', 'iconphoto', root._w, img)
+else:
+    try:
+        root.iconbitmap(default="../docs/favicon.ico")
+    except tk.TclError as e:
+        root.iconbitmap(default="./docs/favicon.ico") # ! Compatibility since it wasn't working on my machine
 
 root.mainloop()
- 
+
