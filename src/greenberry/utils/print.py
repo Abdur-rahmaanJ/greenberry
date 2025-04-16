@@ -1,5 +1,6 @@
 import inspect
 from collections import OrderedDict
+from json import dumps
 
 from greenberry.debug_cp import *
 from greenberry.symbols import E
@@ -28,7 +29,14 @@ class GreenBerryPrint:
         """
         if Flag.isDebugOn:
             for arg in args:
-                print(" " * 5, "@debug->", arg)
+                try:
+                    print("\033[95m", #purple color
+                        "@debug->", 
+                        dumps(arg, indent=1), 
+                        "\033[00m", # reset color
+                        sep='')
+                except:
+                    print(" " * 5, "@debug->", arg)
 
     def print_handling(g_vars, i, words):
         """parses print command"""
@@ -58,3 +66,4 @@ class GreenBerryPrint:
         """Print lexer error"""
         LEX_ERROR = "lex error: no EOF should used in the middle of file"
         print(LEX_ERROR)
+
