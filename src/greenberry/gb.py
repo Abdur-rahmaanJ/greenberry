@@ -66,7 +66,8 @@ def greenberry_eval(x):
     g_cls: dict[str, class_instance] = Memory.g_cls
     g_cls_instance: dict[str, class_instance] = Memory.g_cls_instance
     words = GreenBerryLex.lex(x, KEYWORDS, add_eof=1)
-    GreenBerryPrint.printd(words)
+    if Flag.isDebugOn:
+        GreenBerryPrint.printd(words)
     line = 1
 
     """
@@ -81,6 +82,11 @@ def greenberry_eval(x):
         #
         if elem == S.NL:
             line += 1
+            # if the line is non-empty, make debug output
+            if words[i - 1] != S.NL and Flag.isDebugOn:
+                GreenBerryPrint.printd(g_vars)
+                GreenBerryPrint.printd(g_fs)
+                GreenBerryPrint.printd(g_cls)
 
         #
         # minified for loop
@@ -95,7 +101,8 @@ def greenberry_eval(x):
                     times_by = int(words[i + 1])
                     string = GreenBerrySearch.search(i, 3, words, [S.NL, S.EOF])
                     wds = GreenBerryLex.lex(string, KEYWORDS)
-                    GreenBerryPrint.printd(wds)
+                    if Flag.isDebugOn:
+                        GreenBerryPrint.printd(wds)
                     for d in range(times_by):
                         GreenBerryParse.simple_parse(g_vars, wds, line)
                     # colon_i = search_symbol(i, 1, words, [S.COLON])[1]
@@ -465,9 +472,7 @@ def greenberry_eval(x):
                 wds = GreenBerryLex.lex(to_do, KEYWORDS)
                 GreenBerryParse.simple_parse(g_vars, wds, line)
 
-    GreenBerryPrint.printd(g_vars)
-    GreenBerryPrint.printd(g_fs)
-    GreenBerryPrint.printd(g_cls)
+    
 
 
 # python greenberry_REPL.py

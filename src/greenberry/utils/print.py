@@ -27,16 +27,15 @@ class GreenBerryPrint:
         custom debugger print
         no return
         """
-        if Flag.isDebugOn:
-            for arg in args:
-                try:
-                    print("\033[95m", #purple color
-                        "@debug->", 
-                        dumps(arg, indent=1), 
-                        "\033[00m", # reset color
-                        sep='')
-                except:
-                    print(" " * 5, "@debug->", arg)
+        for arg in args:
+            try:
+                print("\033[95m", #purple color
+                    "@debug->", 
+                    dumps(arg, indent=1), 
+                    "\033[00m", # reset color
+                    sep='')
+            except:
+                print(" " * 5, "@debug->", arg)
 
     def print_handling(g_vars, i, words):
         """parses print command"""
