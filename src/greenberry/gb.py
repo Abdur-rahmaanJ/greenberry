@@ -122,13 +122,13 @@ def greenberry_eval(x):
                     pass
                 if words[i+2] != S.COMMA:
                     print(E.SYNTAX, line)
-                    return # Stop compiling
+                    return # Stop interpreting
                 class_name = words[i + 3]
                 
                 alias = words[i+1]
                 if class_name not in g_cls.keys():  # Check if the class exists
                     print(E.UNDEFINED.format(name=class_name), line)
-                    return # stop compiling
+                    return # stop interpreting
                 else:
                     g_cls_instance[alias] = class_instance(
                         class_name,
@@ -327,7 +327,6 @@ def greenberry_eval(x):
                     if (
                         words[i + 1] not in g_cls_instance.keys()
                     ):  # Check if the class hasn't been instantiated
-                        print("here1")
                         if name not in g_cls:
                             print(E.UNDEFINED.format(name), line)
                             return # Stop compiling
@@ -363,7 +362,7 @@ def greenberry_eval(x):
                     ):
                         if class_name not in g_cls:
                             print(E.UNDEFINED.format(name=class_name), line)
-                            return # Stop compiling
+                            return # Stop interpreting
                         print(g_cls[class_name].instance_vars[attr])
                     else:
                         alias = class_name
